@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/09 10:06:15 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/09 15:26:00 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_node
 typedef struct	s_shell
 {
 	char		**env;
-	t_node		nodes;
+	t_node		*nodes;
 }				t_shell;
 
 #endif
