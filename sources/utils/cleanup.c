@@ -1,0 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/04/09 17:30:10 by ekeinan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/**
+ * 
+ * @param arr An array of pointers to be freed, also freeing the array itself
+ * (basically `void **`, the single-pointer type is misleading but necessary)
+ * 
+ */
+void	free_2d_arr(void *arr, size_t length)
+{
+	char **array;
+
+	array = arr;
+	while (length)
+		free(array[--length]);
+	free(array);
+}
+
+void	free_nodes(t_node *node)
+{
+	t_node	*next;
+
+	while (node)
+	{
+		next = node->next;
+		free_2d_arr(node->argv, node->argc);
+		free(node);
+		node = next;
+	}
+}
+
+void	shell_cleanup(t_shell *shell)
+{
+	if (shell->latest_input)
+		free(shell->latest_input);
+	free_nodes(shell->nodes);
+}
+
+void	shell_exit(t_shell *shell, int exit_status)
+{
+	shell_cleanup(shell);
+	exit(exit_status);
+}
