@@ -6,14 +6,17 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/09 10:36:55 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/04/09 16:52:33 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 
 SRC_DIR := sources
-SRC_FILES := main.c
+SRC_FILES := main.c \
+			 utils/cleanup.c \
+			 parsing/parsing.c \
+			 parsing/input_to_nodes.c
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h

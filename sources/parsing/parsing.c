@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/09 19:43:19by ekeinan          ###   ########.fr       */
+/*   Created: 2025/04/09 15:39:06 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/04/09 19:42:09 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+void	parsing(t_shell *shell)
 {
-	t_shell shell;
-	
-	(void) argc;
-	(void) argv;
-	(void) envp;
-
-	ft_bzero(&shell, sizeof(t_shell));
-
-	while (1)
-	{
-		shell.latest_input = readline("shellGBTQ+ >");
-		if (!shell.latest_input || !shell.latest_input[0])
-			continue;
-		add_history(shell.latest_input);
-		parsing(&shell);
-		// execution(&shell);
-	}
-
-	return (EXIT_SUCCESS);
+	shell->nodes = input_to_nodes(shell->latest_input);
+	if (!shell->nodes)
+		shell_exit(shell, 1);
+	// ^ NOTE: Exit here might not even be necessary.
+	//         Might be better to always exit inside with specific status
 }
