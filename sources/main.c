@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		add_history(shell.latest_input);
 		parsing(&shell);
-		// execution(&shell);
+		execution(&shell);
 	}
 
 	return (EXIT_SUCCESS);
