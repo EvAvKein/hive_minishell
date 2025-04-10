@@ -15,6 +15,8 @@
 int main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
+	char	*input;
+	size_t	input_i;
 	
 	(void) argc;
 	(void) argv;
@@ -24,12 +26,20 @@ int main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
-		shell.latest_input = readline("shellGBTQ+ >");
-		if (!shell.latest_input || !shell.latest_input[0])
+		input_i = 0;
+		input = readline("shellGBTQ+ >");
+		if (!input) // replace with EOF (ctrl-D) signal-handler
 			continue;
-		add_history(shell.latest_input);
+		if (is_entirely_spaces(input))
+		{
+			free(input);
+			continue;
+		}
+		add_history(input);
+		shell.latest_input = input;
 		parsing(&shell);
 		execution(&shell);
+		free(shell.latest_input);
 	}
 
 	return (EXIT_SUCCESS);

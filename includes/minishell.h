@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/09 19:45:59 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/10 08:24:33 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ t_node	*input_to_nodes(char *input);
 /* EXECUTION FUNCTIONS ********************************************************/
 
 void	execution(t_shell *shell);
+
+/* UTILITY FUNCTIONS **********************************************************/
+
+bool is_space(char c);
+bool is_entirely_spaces(char *string);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
