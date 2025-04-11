@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:39:06 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/11 09:43:30 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/11 17:57:06 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,58 @@
  * 
  * 
  */
-static bool	is_skippable_quote(bool in_quotes[2], char *c, bool has_previous)
+// static bool	is_skippable_quote(bool in_quotes[2], char *c, bool has_previous)
+// {
+// 	if (*c == '\'')
+// 	{
+// 		if (in_quotes[1])
+// 			return (false);
+// 		if ((has_previous && *(c - 1) != '\'') || in_quotes[0])
+// 		{
+// 			in_quotes[0] = !in_quotes[0];
+// 			return (true);
+// 		}
+// 	}
+// 	if (*c == '"')
+// 	{
+// 		if (in_quotes[0])
+// 			return (false);
+// 		if ((has_previous && *(c - 1) != '"') || in_quotes[1])
+// 		{
+// 			in_quotes[1] = !in_quotes[1];
+// 			return (true);
+// 		}
+// 	}
+// 	return (false);
+// }
+
+/**
+ * 
+ *  TODO: Write this doc
+ * 
+ */
+static bool	toggle_quote_by_c(char *containing_quote, char *c)
 {
-	if (*c == '\'')
+	char chr;
+
+	chr = *c;
+	if (chr == *containing_quote)
 	{
-		if (in_quotes[1])
-			return (false);
-		if ((has_previous && *(c - 1) != '\'') || in_quotes[0])
-		{
-			in_quotes[0] = !in_quotes[0];
-			return (true);
-		}
+		printf("found closing quote %c\n", chr);
+		*containing_quote = '\0';
+		return (true);
 	}
-	if (*c == '"')
+	else if (!*containing_quote && (chr == '\'' || chr == '"'))
 	{
-		if (in_quotes[0])
-			return (false);
-		if ((has_previous && *(c - 1) != '"') || in_quotes[1])
-		{
-			in_quotes[1] = !in_quotes[1];
-			return (true);
-		}
+		printf("found opening quote %c\n", chr);
+		*containing_quote = chr;
+		return (true);
 	}
+	// if (!in_arg)
+	// {
+	// 	printf("not in_arg toggle\n");
+	// 	*containing_quote = '\0';
+	// }
 	return (false);
 }
 
@@ -75,18 +105,12 @@ static bool	is_skippable_quote(bool in_quotes[2], char *c, bool has_previous)
  * @param external_i Pointer to an external index for this string,
  *                   to be incremented during this parsing until past the arg.
  *                   Pass `NULL` if there's not need for this.
- * 
- * NEWS FLASH DUMMMY (me!), YOU CAN REPLACE WITH THIS A QUOTE VAR THAT SKIPS
- * UNTIL REACHING THE CURRENT QUOTE AGAIN.
- * DON'T INCREASE LEN WHEN AT OPENING/CLOSING QUOTE
- *
  */
-static int	arg_len(char *arg, size_t *external_i)
+int	arg_len(char *arg, size_t *external_i)
 {
 	size_t		i;
 	size_t		length;
 	char		in_quote;
-	const bool	in_quotes[2] = {false, false};
 
 	i = 0;
 	length = 0;
@@ -99,79 +123,62 @@ static int	arg_len(char *arg, size_t *external_i)
 		if (is_space(arg[i]))
 		{
 			if (in_quote && ++length && ++i)
-				continue;
+				continue ;
 			return (length);
 		}
-		if ((arg[i] == '\'' || arg[i] == '"')
-			&& arg[i] == )
+		if (toggle_quote_by_c(&in_quote, &arg[i]))
 			length--;
 		i++;
 	}
 	return (length);
 }
 
-////////////////////
-
-static int	input_to_argc(char *input)
+/**
+ * 
+ *  TODO: Write this doc
+ * 
+ */
+static int	argc_of_input(char *input)
 {
-	// size_t		i;
-	// int			argc;
-	// bool		in_arg;
-	// const bool	in_quotes[2] = {false, false};
+	int		argc;
+	size_t	i;
+	char	in_quote;
+	bool	in_arg;
 
-	// i = 0;
-	// argc = 0;
-	// in_arg = false;
-	// while (input[i])
-	// {
-	// 	length++;
-	// 	if (external_i)
-	// 		(*external_i)++;
-	// 	if (is_space(arg[i]))
-	// 	{
-	// 		if ((in_quotes[0] || in_quotes[1]) && ++length && ++i)
-	// 			continue;
-	// 		return (length);
-	// 	}
-	// 	if ((arg[i] == '\'' || arg[i] == '"')
-	// 		&& is_skippable_quote(in_quotes, arg[i], i))
-	// 		length--;
-	// 	i++;
-	// }
-	// return (length);
+	argc = 0;
+	i = 0;
+	in_quote = '\0';
+	in_arg = false;
+	while (input[i])
+	{
+		if (is_space(input[i]))
+		{
+			if (in_arg && !in_quote)
+			{
+				// printf("i %lu: end of quotes\n", i);
+				in_arg = false;
+			}
+			if (!in_arg && in_quote)
+				in_quote = '\0';
+			// printf("i %lu: space\n", i);
+			i++;
+			continue ;
+		}
+		if (!in_arg)
+		{
+			// printf("i %lu: new arg\n", i);
+			argc++;
+			in_arg = true;
+		}
+		toggle_quote_by_c(&in_quote, &input[i]);
+		i++;
+	}
+	return (argc);
 }
 void	parsing(t_shell *shell)
 {
-	char	*input;
-	size_t	token_start_i;
-	size_t	token_len;
-	size_t	parse_i;
-	const bool	in_quotes[2] = {false, false};
-
-	input = shell->latest_input;
-	token_start_i = 0;
-	token_len = 0;
-	parse_i = 0;
-	while (input[parse_i])
-	{
-		if (is_space(input[parse_i]))
-		{
-			if (in_quotes[0] || in_quotes[1])
-			{
-				token_len++;
-				parse_i++;
-				continue;
-			}
-			if (token_start_i < parse_i)
-			{
-				// extract_token(input[parse_i], token_start_i, token_len);
-				token_start_i++;
-				token_len = 0;
-			}
-			parse_i++;
-		}
-		
-	}
+	int	argc = argc_of_input(shell->latest_input);
+	printf("argc: %d\n", argc);
 	shell->nodes = input_to_nodes(shell->latest_input);
 	if (!shell->nodes)
 		shell_exit(shell, 1);
