@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/10 11:02:13 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/11 15:06:11 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_node	*input_to_nodes(char *input);
 /* EXECUTION FUNCTIONS ********************************************************/
 
 void	execution(t_shell *shell);
+int		get_env_elements(char **envp);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
