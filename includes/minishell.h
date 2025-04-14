@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/11 15:06:11 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/14 11:40:28 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct	s_shell
 {
 	char		*latest_input;
 	char		**env;
+	char		**env_dup;
 	t_node		*nodes;
 }				t_shell;
 
@@ -58,6 +59,9 @@ t_node	*input_to_nodes(char *input);
 
 void	execution(t_shell *shell);
 int		get_env_elements(char **envp);
+void	ms_env(t_shell *shell);
+void	ms_pwd(void);
+void	ms_unset(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 

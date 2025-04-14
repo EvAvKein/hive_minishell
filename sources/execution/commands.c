@@ -6,25 +6,28 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/11 15:53:28 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/14 11:43:05 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ms_env(char **envp)
+void	ms_env(t_shell *shell)
 {
 	int	i;
 
 	i = 0;
-	if (envp)
+	shell->env_dup = ft_calloc(get_env_elements(shell->env), sizeof(char *));
+		if (!shell->env_dup)
+			//error TODO
+	while(shell->env[i])
 	{
-		while(envp[i])
+		if (ft_strchr(shell->env[i], '='))
 		{
-			if (ft_strchr(envp[i], '='))
-				printf("%s\n", envp[i]);
-			i++;
+			shell->env_dup[i] = shell->env[i];
+			printf("%s\n", shell->env[i]);
 		}
+		i++;
 	}
 }
 
@@ -34,68 +37,28 @@ void	ms_pwd(void)
 	
 	path = getcwd(NULL, 0);
 	if (!path)
-		//error
+		//error - TODO
 	printf("%s\n", path);
 	free(path);
 }
 
-int	check_removables(char *line, char **remove)
+void	ms_echo(char **argv)
 {
 	int	i;
+	int	flag;
 
-	i = 0;
-	while (remove[i])
+	i = 1;
+	flag = 0;
+	if (ft_strchr(argv[i], '\n'))
 	{
-		if (!ft_strncmp(line, remove[i], ft_strlen(remove[i])))
-			return (1);
+		flag = 1;
 		i++;
 	}
-	return (0);
-}
-
-char **set_removables(t_shell *shell)
-{
-	char **ret;
-	int	i;
-	int	k;
-
-	i = 0;
-	k = 1;
-	ret = ft_calloc(shell->nodes->argc, sizeof(char *));
-	if (!ret)
-		//error, return NULL
-	while (shell->nodes->argv[k])
+	while(argv[i])
 	{
-		ret[i] = shell->nodes->argv[k];
+		ft_putstr_fd(argv[i], 1);
 		i++;
-		k++;
 	}
-	return (ret);
-}
-
-void	ms_unset(t_shell *shell)
-{
-	int		i;
-	int		k;
-	char	**dup;
-	char	**remove;
-
-	dup = ft_calloc(get_env_elements, sizeof(char *));
-	if (!dup)
-		//error
-	remove = set_removables(shell);
-	if (!remove)
-		//error
-	i = 0;
-	k = 0;
-	while (shell->env[i])
-	{
-		if (!check_removables(shell->env[i], remove))
-		{
-			dup[k] = shell->env[i];
-			i++;
-		}
-		else
-			i++;
-	}
+	if (flag)
+		ft_putchar_fd('\n', 1);
 }

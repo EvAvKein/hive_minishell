@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
+#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/14 09:38:18 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/04/14 10:07:53 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,10 @@ SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
 			 parsing/parsing.c \
 			 parsing/input_to_nodes.c \
-			 execution/execution.c
+			 execution/execution.c \
+			 execution/commands.c \
+			 execution/commands_ms_unset.c \
+			 execution/utils.c
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h
