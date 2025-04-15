@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:21:54 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/10 08:26:19 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/15 17:22:56 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,24 @@
 
 #include "minishell.h"
 
+/**
+ * 
+ * @returns Whether the provided `c` is a space character
+ * (an actual space, or horizontal/vertical tab, or newline,
+ * or form feed, or carriage return)
+ * 
+ */
 bool is_space(char c)
 {
 	return (c == ' ' || (c <= '\r' && c >= '\t'));
 }
 
+/**
+ * 
+ * @returns Whether the provided `string` contains exclusively space characters
+ * (as per the above `is_space` function).
+ * 
+ */
 bool is_entirely_spaces(char *string)
 {
 	if (!string)
