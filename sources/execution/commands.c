@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/16 14:31:20 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 14:34:18 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,18 @@ void	ms_env(t_shell *shell)
 	int	i;
 
 	i = 0;
-	while(shell->ms_envp[i])
+	shell->ms_envp = ft_calloc(get_env_elements(shell->env), sizeof(char *));
+	if (!shell->ms_envp)
 	{
-		if (ft_strchr(shell->ms_envp[i], '='))
+		shell->ms_envp = NULL;
+		perror("env: Memory allocation failed!\n");
+		return ;
+	}
+	while(shell->env[i])
+	{
+		if (ft_strchr(shell->env[i], '='))
+		{
+			shell->ms_envp[i] = shell->env[i];
 			printf("%s\n", shell->env[i]);
 		i++;
 	}
@@ -70,16 +79,20 @@ int	check_removables(char *line, char **remove)
 
 	i = 1;
 	flag = 0;
-	if (ft_strchr(argv[i], '\n'))
+	if (argv[1][0] == '-' && argv[1][1] == 'n')
 	{
 		flag = 1;
 		i++;
 	}
+	if (flag && argc == 2)
+		return ;
 	while(argv[i])
 	{
 		ft_putstr_fd(argv[i], 1);
 		i++;
+		if (i < argc)
+			ft_putchar_fd(' ', 1);
 	}
-	if (flag)
+	if (!flag)
 		ft_putchar_fd('\n', 1);
 }
