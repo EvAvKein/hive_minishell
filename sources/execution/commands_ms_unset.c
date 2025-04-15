@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/14 11:45:28 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/15 11:43:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,26 +54,27 @@ void	ms_unset(t_shell *shell)
 	int		i;
 	int		k;
 	char	**remove;
+	char	**new_env;
 
 	i = 0;
 	k = 0;
-	shell->env_dup = ft_calloc(get_env_elements(shell->env), sizeof(char *));
-	if (!shell->env_dup)
-		printf("Error!"); //TODO
 	remove = set_removables(shell);
-	if (!remove)
+	new_env = ft_calloc(get_env_elements(shell->ms_envp) + 1, sizeof(char *));
+	if (!remove || !new_env)
 		printf("Error!"); //TODO
-	while (shell->env[i])
+	while (shell->ms_envp[i])
 	{
-		if (!line_is_removable(shell->env[i], remove))
+		if (!line_is_removable(shell->ms_envp[i], remove))
 		{
-			shell->env_dup[k] = shell->env[i];
-			i++;
+			new_env[k] = ft_strdup(shell->ms_envp[i]);
 			k++;
 		}
-		else
-			i++;
+		i++;
 	}
+	new_env[k] = NULL;
+	free_env_array(shell->ms_envp);
+	shell->ms_envp = new_env;
+	free(remove);
 }
 
 /*int main(int argc, char **argv, char **envp)

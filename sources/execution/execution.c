@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/14 11:40:15 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/15 12:28:58 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	execute_command(t_shell *shell)
 	if (!ft_strncmp(shell->nodes->argv[0], "env", 3))
 		ms_env(shell);
 	if (!ft_strncmp(shell->nodes->argv[0], "cd", 2))
-		return(ms_cd());
+		return(ms_cd(shell));
 	if (!ft_strncmp(shell->nodes->argv[0], "pwd", 3))
 		return(ms_pwd());
 	if (!ft_strncmp(shell->nodes->argv[0], "export", 6))
@@ -35,7 +35,6 @@ int	execute_command(t_shell *shell)
 	if (!ft_strncmp(shell->nodes->argv[0], "exit", 4))
 	{
 		(void)shell;
-		//TODO: clean up
 		return(0);
 	}
 	return (0);
@@ -45,9 +44,11 @@ void	execution(t_shell *shell)
 {
 	pid_t	pid;
 	
+	shell->ms_envp = dup_envp(shell->env);
 	pid = fork();
 	if (pid < 0)
 		printf("Error!");
 	if (shell->nodes->type == COMMAND)
 		execute_command(shell);
+	free_env_array(shell->ms_envp);
 }

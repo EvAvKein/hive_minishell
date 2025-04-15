@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/14 11:43:05 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/15 12:24:13 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,18 @@ void	ms_env(t_shell *shell)
 	int	i;
 
 	i = 0;
-	shell->env_dup = ft_calloc(get_env_elements(shell->env), sizeof(char *));
-		if (!shell->env_dup)
-			//error TODO
+	shell->ms_envp = ft_calloc(get_env_elements(shell->env), sizeof(char *));
+	if (!shell->ms_envp)
+	{
+		shell->ms_envp = NULL;
+		perror("env: Memory allocation failed!\n");
+		return ;
+	}
 	while(shell->env[i])
 	{
 		if (ft_strchr(shell->env[i], '='))
 		{
-			shell->env_dup[i] = shell->env[i];
+			shell->ms_envp[i] = shell->env[i];
 			printf("%s\n", shell->env[i]);
 		}
 		i++;
@@ -37,28 +41,35 @@ void	ms_pwd(void)
 	
 	path = getcwd(NULL, 0);
 	if (!path)
-		//error - TODO
+	{
+		perror(RED"pwd: getcwd failed!\n"RESET);
+		return ;
+	}
 	printf("%s\n", path);
 	free(path);
 }
 
-void	ms_echo(char **argv)
+void	ms_echo(int argc, char **argv)
 {
 	int	i;
 	int	flag;
 
 	i = 1;
 	flag = 0;
-	if (ft_strchr(argv[i], '\n'))
+	if (argv[1][0] == '-' && argv[1][1] == 'n')
 	{
 		flag = 1;
 		i++;
 	}
+	if (flag && argc == 2)
+		return ;
 	while(argv[i])
 	{
 		ft_putstr_fd(argv[i], 1);
 		i++;
+		if (i < argc)
+			ft_putchar_fd(' ', 1);
 	}
-	if (flag)
+	if (!flag)
 		ft_putchar_fd('\n', 1);
 }
