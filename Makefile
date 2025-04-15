@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/16 14:18:20 by ahavu            ###   ########.fr        #
+#    Updated: 2025/04/16 14:20:22 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ MAIN := main.c
 SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
 			 parsing/parsing.c \
-			 parsing/input_to_nodes.c \
+			 parsing/quotes.c \
 			 execution/execution.c \
 			 execution/commands.c \
 			 execution/commands_ms_unset.c \

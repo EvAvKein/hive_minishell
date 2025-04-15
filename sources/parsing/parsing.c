@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:39:06 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/11 17:57:06 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/15 08:39:56by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,99 +14,16 @@
 
 /**
  * 
- * Validates whether a character is a skippable quote or not,
- * updating `in_quotes` accordingly.
- * 
- * @param in_quotes    Bools for whether we're already inside
- *                     single or double quotes respectively.
- *                     This function flips the booleans accordingly. 
- * 
- * @param c            A pointer to the char that this function should validate.
- *
- * @param has_previous Whether this character has a previous one,
- *                     i.e. if it's safe to check the previous memory address.
- * 
- * Cases to keep in mind:
- * 
- * - `'echo' string`: valid
- * 
- * - `ec''ho string`: valid
- * 
- * - `ec'''ho' string`: valid
- * 
- * - `ec"''"ho string`: invalid
- * 
- * 
- */
-// static bool	is_skippable_quote(bool in_quotes[2], char *c, bool has_previous)
-// {
-// 	if (*c == '\'')
-// 	{
-// 		if (in_quotes[1])
-// 			return (false);
-// 		if ((has_previous && *(c - 1) != '\'') || in_quotes[0])
-// 		{
-// 			in_quotes[0] = !in_quotes[0];
-// 			return (true);
-// 		}
-// 	}
-// 	if (*c == '"')
-// 	{
-// 		if (in_quotes[0])
-// 			return (false);
-// 		if ((has_previous && *(c - 1) != '"') || in_quotes[1])
-// 		{
-// 			in_quotes[1] = !in_quotes[1];
-// 			return (true);
-// 		}
-// 	}
-// 	return (false);
-// }
-
-/**
- * 
- *  TODO: Write this doc
- * 
- */
-static bool	toggle_quote_by_c(char *containing_quote, char *c)
-{
-	char chr;
-
-	chr = *c;
-	if (chr == *containing_quote)
-	{
-		printf("found closing quote %c\n", chr);
-		*containing_quote = '\0';
-		return (true);
-	}
-	else if (!*containing_quote && (chr == '\'' || chr == '"'))
-	{
-		printf("found opening quote %c\n", chr);
-		*containing_quote = chr;
-		return (true);
-	}
-	// if (!in_arg)
-	// {
-	// 	printf("not in_arg toggle\n");
-	// 	*containing_quote = '\0';
-	// }
-	return (false);
-}
-
-/**
  * Counts the length of an argument in a given string,
  * omitting quotes that should be parsed away
  * and including spaces within quotes.
  * 
- * Can optionally receive an index pointer to be incremented past the arg.
+ * @param arg The string for which to calucate the argument length.
  * 
- * @param arg        The string for which to calucate the argument length.
+ * @returns The total length, with the aforementioned parsing aspects in mind.
  * 
- * @param external_i Pointer to an external index for this string,
- *                   to be incremented during this parsing until past the arg.
- *                   Pass `NULL` if there's not need for this.
  */
-int	arg_len(char *arg, size_t *external_i)
+int	arg_to_len(char *arg)
 {
 	size_t		i;
 	size_t		length;
@@ -118,15 +35,13 @@ int	arg_len(char *arg, size_t *external_i)
 	while (arg[i])
 	{
 		length++;
-		if (external_i)
-			(*external_i)++;
 		if (is_space(arg[i]))
 		{
 			if (in_quote && ++length && ++i)
 				continue ;
 			return (length);
 		}
-		if (toggle_quote_by_c(&in_quote, &arg[i]))
+		if (toggle_quote_by_c(&in_quote, arg[i]))
 			length--;
 		i++;
 	}
@@ -135,10 +50,12 @@ int	arg_len(char *arg, size_t *external_i)
 
 /**
  * 
- *  TODO: Write this doc
+ * Counts how many arguments are in the provided string.
+ * 
+ * @param str The string in which to count the args.
  * 
  */
-static int	argc_of_input(char *input)
+static int	str_to_argc(char *str)
 {
 	int		argc;
 	size_t	i;
@@ -149,39 +66,135 @@ static int	argc_of_input(char *input)
 	i = 0;
 	in_quote = '\0';
 	in_arg = false;
-	while (input[i])
+	while (str[i])
 	{
-		if (is_space(input[i]))
+		if (is_space(str[i]))
 		{
 			if (in_arg && !in_quote)
-			{
-				// printf("i %lu: end of quotes\n", i);
 				in_arg = false;
-			}
 			if (!in_arg && in_quote)
 				in_quote = '\0';
-			// printf("i %lu: space\n", i);
 			i++;
 			continue ;
 		}
-		if (!in_arg)
-		{
-			// printf("i %lu: new arg\n", i);
-			argc++;
+		if (!in_arg && ++argc)
 			in_arg = true;
-		}
-		toggle_quote_by_c(&in_quote, &input[i]);
-		i++;
+		toggle_quote_by_c(&in_quote, str[i++]);
 	}
 	return (argc);
 }
+
+/**
+ * 
+ * Copies from `src` to `dest` until the end of the provided arg.
+ * 
+ * @param dest       The destination for copying.
+ *
+ * @param src        The source for copying.
+ * 
+ * @param external_i An address to an external index
+ *                   to be incremented past the arg being copied.
+ * 
+ */
+void	arg_cpy(char *dest, char *src, size_t *external_i)
+{
+	size_t		src_i;
+	size_t		dest_i;
+	char		in_quote;
+
+	src_i = 0;
+	dest_i = 0;
+	in_quote = '\0';
+	while (src[src_i])
+	{
+		if (is_space(src[src_i]))
+		{
+			if (!in_quote)
+				return ;
+			(*external_i)++;
+			dest[dest_i++] = src[src_i++];
+			continue ;
+		}
+		if (!toggle_quote_by_c(&in_quote, src[src_i]))
+			dest[dest_i++] = src[src_i++];
+		else
+			src_i++;
+		(*external_i)++;
+	}
+	return ;
+}
+
+/**
+ * 
+ * Translates the provided string into an array of arguments,
+ * allocating the array based on the provided argument count.
+ * 
+ * @param str  The string to be translated.
+ * 
+ * @param argc The argument count. ASSUMED TO BE VALID
+ *             (i.e. not negative, and a correct count) and is not validated.
+ * 
+ * @returns An array of the arguments in the `str`
+ *          (or `NULL` if allocation failed).
+ * 
+ */
+static char	**str_to_argv(char *str, int argc)
+{
+	char	**argv;
+	int		argv_i;
+	size_t	arg_len;
+	size_t	str_i;
+
+	argv = ft_calloc(argc, sizeof(char *));
+	if (!argv)
+		return (NULL);
+	argv_i = 0;
+	str_i = 0;
+	while (argv_i < argc)
+	{
+		while (is_space(str[str_i]))
+		{
+			str_i++;
+			continue ;
+		}
+		arg_len = arg_to_len(&str[str_i]);
+		argv[argv_i] = ft_calloc(1, arg_len * (sizeof(char) + 1));
+		if (!argv[argv_i])
+			return (free_2d_arr(argv, argv_i));
+		arg_cpy(argv[argv_i++], &str[str_i], &str_i);
+	}
+	return (argv);
+}
+
+/**
+ * 
+ * Parses the user input stored in `shell`: Storing the parsed output inside
+ * `shell` on success, or exiting the program if encountering a parsing issue.
+ * 
+ * @param shell The address of the initialized shell struct,
+ *              from which to get the user input
+ *              and in which to store the parsed output.
+ * 
+ */
 void	parsing(t_shell *shell)
 {
-	int	argc = argc_of_input(shell->latest_input);
-	printf("argc: %d\n", argc);
-	shell->nodes = input_to_nodes(shell->latest_input);
-	if (!shell->nodes)
-		shell_exit(shell, 1);
-	// ^ NOTE: Exit here might not even be necessary.
-	//         Might be better to always exit inside with specific status
+	t_node *node;
+	
+	int	argc = str_to_argc(shell->latest_input);
+	char **argv = str_to_argv(shell->latest_input, argc);
+	if (!argv)
+		return ;
+	node = ft_calloc(1, sizeof(t_node));
+	if (!node)
+	{
+		free_2d_arr(argv, argc);
+		return ;
+	}
+	*node = (t_node){
+		.type = COMMAND,
+		.argc = argc,
+		.argv = argv,
+		.next = NULL
+	};
+	shell->nodes = node;
 }

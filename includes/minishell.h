@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/16 11:56:33 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 14:20:45 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 /* TYPES **********************************************************************/
 
-typedef enum	e_node_type
+typedef enum e_node_type
 {
 	INVALID,
 	COMMAND,
@@ -37,7 +37,7 @@ typedef enum	e_node_type
 	INFILE,
 	OUTFILE,
 	APPENDFILE
-}				t_node_type;
+}	t_node_type;
 
 typedef struct s_node
 {
@@ -47,7 +47,7 @@ typedef struct s_node
 	struct s_node	*next;	
 }					t_node;
 
-typedef struct	s_shell
+typedef struct s_shell
 {
 	char		*latest_input;
 	char		**env;
@@ -59,7 +59,7 @@ typedef struct	s_shell
 
 void	parsing(t_shell *shell);
 
-t_node	*input_to_nodes(char *input);
+bool	toggle_quote_by_c(char *containing_quote, char c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
@@ -86,6 +86,6 @@ void	shell_cleanup(t_shell *shell);
 void	shell_exit(t_shell *shell, int exit_status);
 
 void	free_nodes(t_node *node);
-void	free_2d_arr(void *arr, size_t length);
+void	*free_2d_arr(void *arr, size_t length);
 
 #endif
