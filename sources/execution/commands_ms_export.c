@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/16 14:33:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 14:35:43 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	ms_export(t_shell *shell)
 		return (perror("export: Memory allocation failed!\n"));
 	if (append_envp(shell, add, 0, 0) == 1)
 		return (perror("export: ft_strdup failed!\n"));
-	free(shell->ms_envp);
+	free_env_array(shell->ms_envp);
 	shell->ms_envp = add;
 }
-
