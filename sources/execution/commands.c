@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/16 14:36:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 14:58:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,6 @@ void	ms_pwd(void)
 }
 
 void	ms_echo(t_shell *shell)
-{
-	int	i;
-	int	flag;
-
-	i = 1;
-	flag = 0;
-	if (shell->nodes->argv[1][0] == '-' && shell->nodes->argv[1][1] == 'n')
-	{
-		flag = 1;
-		i++;
-	}
-	if (flag && shell->nodes->argc == 2)
-		return ;
-	while(shell->nodes->argv[i])
-	{
-		ft_putstr_fd(shell->nodes->argv[i], 1);
-		i++;
-		if (i < shell->nodes->argc)
-			ft_putchar_fd(' ', 1);
-	}
-	if (!flag)
-		ft_putchar_fd('\n', 1);
-}
-int	check_removables(char *line, char **remove)
 {
 	int	i;
 	int	flag;
