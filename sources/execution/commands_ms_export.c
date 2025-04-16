@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/15 12:40:26 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 13:56:25 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	append_envp(t_shell *shell, char **add, int i, int k)
 		k++;
 	}
 	add[i] = NULL;
+	return (0);
 }
 
 void	ms_export(t_shell *shell)
@@ -48,7 +49,6 @@ void	ms_export(t_shell *shell)
 		return (perror("export: Memory allocation failed!\n"));
 	if (append_envp(shell, add, 0, 0) == 1)
 		return (perror("export: ft_strdup failed!\n"));
-	free(shell->ms_envp);
+	free_env_array(shell->ms_envp);
 	shell->ms_envp = add;
 }
-

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/15 16:12:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 11:19:36 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	ms_cd(t_shell *shell)
 		destination = shell->nodes->argv[1];
 	if (chdir(destination) != 0)
 		return (perror("cd: chdir failed!\n"));
-	if (update_pwds(shell, oldpwd) == 1);
+	if (update_pwds(shell, oldpwd) == 1)
 		return (perror("cd: ft_strjoin failed!\n"));
 }
-

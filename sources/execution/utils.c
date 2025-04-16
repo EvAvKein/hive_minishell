@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/15 09:35:12 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 11:48:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ char	**dup_envp(char **envp)
 	{
 		dup[i] = ft_strdup(envp[i]);
 		if (!dup[i])
-			//TODO: error/cleanup
+		{
+			perror("Memory allocation failed!\n");
+			return (NULL);
+		}
 		i++;
 	}
 	dup[i] = NULL;
@@ -58,4 +61,15 @@ void	free_env_array(char **env)
 		i++;
 	}
 	free(env);
+}
+
+int	is_builtin(char *cmd)
+{
+	if (!ft_strncmp(cmd, "env", 3) || !ft_strncmp(cmd, "cd", 2) ||
+	!ft_strncmp(cmd, "pwd", 3) || !ft_strncmp(cmd, "export", 6) ||
+	!ft_strncmp(cmd, "unset", 5) || !ft_strncmp(cmd, "echo", 4) ||
+	!ft_strncmp(cmd, "exit", 4))
+		return (1);
+	else
+		return (0);
 }

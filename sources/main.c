@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/09 19:43:19by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/16 11:12:04 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ int main(int argc, char **argv, char **envp)
 	
 	(void) argc;
 	(void) argv;
-	(void) envp;
 
 	ft_bzero(&shell, sizeof(t_shell));
-
+	shell.env = envp;
 	while (1)
 	{
 		input_i = 0;

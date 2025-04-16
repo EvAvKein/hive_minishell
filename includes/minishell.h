@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/15 12:24:06 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/16 11:56:33 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,22 @@ t_node	*input_to_nodes(char *input);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
-char	**dup_envp(t_shell *shell);
+char	**dup_envp(char **envp);
 void	execution(t_shell *shell);
 void	free_env_array(char **env);
 int		get_env_elements(char **envp);
-void	ms_echo(t_node *node);
+void	ms_cd(t_shell *shell);
+void	ms_echo(t_shell *shell);
 void	ms_env(t_shell *shell);
+void	ms_export(t_shell *shell);
 void	ms_pwd(void);
 void	ms_unset(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
-bool is_space(char c);
-bool is_entirely_spaces(char *string);
+int		is_builtin(char *cmd);
+bool	is_space(char c);
+bool 	is_entirely_spaces(char *string);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
