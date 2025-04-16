@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/09 17:30:10 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/15 17:17:07 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 /**
  * 
- * @param arr An array of pointers to be freed, also freeing the array itself
- * (basically `void **`, the single-pointer type is misleading but necessary)
+ * @param arr    An array of pointers to be freed, also freeing the array itself
+ *               (basically `void **`, the single-pointer type is misleading
+ *               but necessary).
+ * 
+ * @param length The amount of individual allocations inside the provided `arr`.
+ * 
+ * @returns `NULL` (for external line-saving reason, due to Norminette).
  * 
  */
-void	free_2d_arr(void *arr, size_t length)
+void	*free_2d_arr(void *arr, size_t length)
 {
 	char **array;
 
@@ -26,8 +31,15 @@ void	free_2d_arr(void *arr, size_t length)
 	while (length)
 		free(array[--length]);
 	free(array);
+	return (NULL);
 }
 
+/**
+ * 
+ * Frees the provided linked list of nodes
+ * (and every heap-allocated thing inside them).
+ * 
+ */
 void	free_nodes(t_node *node)
 {
 	t_node	*next;
@@ -41,6 +53,11 @@ void	free_nodes(t_node *node)
 	}
 }
 
+/**
+ * 
+ * Frees all allocations in the provided `shell`.
+ * 
+ */
 void	shell_cleanup(t_shell *shell)
 {
 	if (shell->latest_input)
@@ -48,6 +65,12 @@ void	shell_cleanup(t_shell *shell)
 	free_nodes(shell->nodes);
 }
 
+/**
+ * 
+ * Frees all allocations in the provided `shell`
+ * and exit the program with the provided `exit_status`.
+ * 
+ */
 void	shell_exit(t_shell *shell, int exit_status)
 {
 	shell_cleanup(shell);

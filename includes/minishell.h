@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/10 08:24:33 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/15 17:33:53 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 /* TYPES **********************************************************************/
 
-typedef enum	e_node_type
+typedef enum e_node_type
 {
 	INVALID,
 	COMMAND,
@@ -30,7 +30,7 @@ typedef enum	e_node_type
 	INFILE,
 	OUTFILE,
 	APPENDFILE
-}				t_node_type;
+}	t_node_type;
 
 typedef struct s_node
 {
@@ -40,7 +40,7 @@ typedef struct s_node
 	struct s_node	*next;	
 }					t_node;
 
-typedef struct	s_shell
+typedef struct s_shell
 {
 	char		*latest_input;
 	char		**env;
@@ -51,7 +51,7 @@ typedef struct	s_shell
 
 void	parsing(t_shell *shell);
 
-t_node	*input_to_nodes(char *input);
+bool	toggle_quote_by_c(char *containing_quote, char c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
@@ -59,8 +59,8 @@ void	execution(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
-bool is_space(char c);
-bool is_entirely_spaces(char *string);
+bool	is_space(char c);
+bool	is_entirely_spaces(char *string);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
@@ -68,6 +68,6 @@ void	shell_cleanup(t_shell *shell);
 void	shell_exit(t_shell *shell, int exit_status);
 
 void	free_nodes(t_node *node);
-void	free_2d_arr(void *arr, size_t length);
+void	*free_2d_arr(void *arr, size_t length);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/14 09:38:18 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/04/14 11:40:24 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ MAIN := main.c
 SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
 			 parsing/parsing.c \
-			 parsing/input_to_nodes.c \
+			 parsing/quotes.c \
 			 execution/execution.c
 
 INCLUDE_DIR := includes
