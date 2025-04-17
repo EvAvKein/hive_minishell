@@ -145,7 +145,7 @@ static char	**str_to_argv(char *str, int argc)
 	size_t	arg_len;
 	size_t	str_i;
 
-	argv = ft_calloc(argc, sizeof(char *));
+	argv = ft_calloc(argc + 1, sizeof(char *));
 	if (!argv)
 		return (NULL);
 	argv_i = 0;

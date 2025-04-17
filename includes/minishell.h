@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/16 14:35:22 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/17 14:41:16 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int		get_env_elements(char **envp);
 void	ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
 void	ms_env(t_shell *shell);
+void	execute_command(t_shell *shell);
+void	ms_exit(t_shell *shell);
 void	ms_export(t_shell *shell);
 void	ms_pwd(void);
 void	ms_unset(t_shell *shell);

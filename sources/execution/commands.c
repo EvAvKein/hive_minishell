@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/16 14:58:30 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/17 11:03:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,16 @@ void	ms_echo(t_shell *shell)
 
 	i = 1;
 	flag = 0;
-	if (shell->nodes->argv[1][0] == '-' && shell->nodes->argv[1][1] == 'n')
+	if (shell->nodes->argv[1] && shell->nodes->argv[1][0] == '-'
+			&& shell->nodes->argv[1][1] == 'n')
 	{
 		flag = 1;
 		i++;
 	}
 	if (flag && shell->nodes->argc == 2)
 		return ;
+	if (shell->nodes->argc == 1)
+		return (ft_putchar_fd('\n', 1));
 	while(shell->nodes->argv[i])
 	{
 		ft_putstr_fd(shell->nodes->argv[i], 1);
@@ -62,4 +65,10 @@ void	ms_echo(t_shell *shell)
 	}
 	if (!flag)
 		ft_putchar_fd('\n', 1);
+}
+
+void	ms_exit(t_shell *shell)
+{
+	free_env_array(shell->ms_envp);
+	exit(EXIT_SUCCESS);
 }

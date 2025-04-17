@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/16 14:36:09 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/17 11:10:43 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ void	ms_unset(t_shell *shell)
 	i = 0;
 	k = 0;
 	removables = set_removables(shell);
+	while(removables[i])
+	{
+		printf("%s\n", removables[i]);
+		i++;
+	}
+	i = 0;
 	new_env = ft_calloc(get_env_elements(shell->ms_envp) + 1, sizeof(char *));
 	if (!removables || !new_env)
 		printf("Error!"); //TODO
@@ -74,6 +80,7 @@ void	ms_unset(t_shell *shell)
 	new_env[k] = NULL;
 	free_env_array(shell->ms_envp);
 	shell->ms_envp = new_env;
+	k = 0;
 	free(removables);
 }
 
