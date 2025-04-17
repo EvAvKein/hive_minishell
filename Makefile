@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/14 11:40:24 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/04/17 11:20:10 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,15 @@ MAIN := main.c
 SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
 			 parsing/parsing.c \
+			 parsing/args.c \
 			 parsing/quotes.c \
+			 parsing/operator_handling.c \
+			 parsing/operators/appendfile.c \
+			 parsing/operators/equals.c \
+			 parsing/operators/heredoc.c \
+			 parsing/operators/infile.c \
+			 parsing/operators/outfile.c \
+			 parsing/operators/plusequals.c \
 			 execution/execution.c
 
 INCLUDE_DIR := includes

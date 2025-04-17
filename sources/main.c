@@ -37,7 +37,11 @@ int main(int argc, char **argv, char **envp)
 		}
 		add_history(input);
 		shell.latest_input = input;
-		parsing(&shell);
+		if (!parsing(&shell))
+		{
+			free(shell.latest_input);
+			continue ;
+		}
 		execution(&shell);
 		free(shell.latest_input);
 	}
