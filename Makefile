@@ -23,7 +23,8 @@ SRC_FILES := utils/spaces.c \
 			 execution/commands_ms_unset.c \
 			 execution/commands_ms_cd.c \
 			 execution/commands_ms_export.c \
-			 execution/utils.c
+			 execution/utils.c \
+			 execution/execution_funcs.c
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h

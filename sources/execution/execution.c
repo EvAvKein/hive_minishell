@@ -80,8 +80,6 @@ int	execute_builtin(t_shell *shell)
 
 void	execution(t_shell *shell)
 {
-	pid_t	pid;
-	
 	if (shell->nodes->type == COMMAND)
 		execute_command(shell);
 }

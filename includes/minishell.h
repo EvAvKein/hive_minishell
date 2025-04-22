@@ -65,6 +65,8 @@ bool	toggle_quote_by_c(char *containing_quote, char c);
 /* EXECUTION FUNCTIONS ********************************************************/
 
 char	**dup_envp(char **envp);
+int		execute_builtin(t_shell *shell);
+int		execute_sys_command(t_shell *shell);
 void	execution(t_shell *shell);
 void	free_env_array(char **env);
 int		get_env_elements(char **envp);
