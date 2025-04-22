@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/22 12:23:33 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/22 15:28:27 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execution(t_shell *shell)
 	t_node	*current;
 
 	current = shell->nodes;
-	while(current)
+	while (current)
 	{
 		current = current->next;
 	}
