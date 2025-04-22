@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/17 14:41:16 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/22 10:38:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_shell
 	char		*latest_input;
 	char		**env;
 	char		**ms_envp;
+	int			last_exit_status;
 	t_node		*nodes;
 }				t_shell;
 
@@ -68,8 +69,11 @@ char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
 int		execute_sys_command(t_shell *shell);
 void	execution(t_shell *shell);
+int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 int		get_env_elements(char **envp);
+char	*get_path_from_arg(t_shell *shell);
+char	*get_path_from_envp(shell);
 void	ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
 void	ms_env(t_shell *shell);
