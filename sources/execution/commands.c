@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/17 11:03:30 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/23 14:05:59 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ms_pwd(void)
 	path = getcwd(NULL, 0);
 	if (!path)
 	{
-		perror(RED"pwd: getcwd failed!\n"RESET);
+		perror("pwd: getcwd failed!");
 		return ;
 	}
 	printf("%s\n", path);
@@ -70,5 +70,6 @@ void	ms_echo(t_shell *shell)
 void	ms_exit(t_shell *shell)
 {
 	free_env_array(shell->ms_envp);
+	(void)shell;
 	exit(EXIT_SUCCESS);
 }

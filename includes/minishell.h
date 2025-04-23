@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/22 10:38:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/23 14:15:21 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@
 # include <unistd.h>
 # include <stdio.h>
 # include "libft_plus.h"
-
-/* FANCY STUFF ****************************************************************/
-
-# define RED "/033[31m"
-# define RESET "/033[0m"
 
 /* TYPES **********************************************************************/
 
@@ -73,11 +68,14 @@ int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 int		get_env_elements(char **envp);
 char	*get_path_from_arg(t_shell *shell);
-char	*get_path_from_envp(shell);
+char	*get_path_from_envp(t_shell *shell);
 void	ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
 void	ms_env(t_shell *shell);
 void	execute_command(t_shell *shell);
+int		execute_appendfile(char *file);
+int		execute_infile(char *file);
+int		execute_outfile(char *file);
 void	ms_exit(t_shell *shell);
 void	ms_export(t_shell *shell);
 void	ms_pwd(void);

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/22 10:51:08 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/23 08:15:50 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	execute_sys_command(t_shell *shell)
 		perror("executable or path doesn't exist\n");
 		return (1);
 	}
-	//if redirection, do it here
+	//TODO: if redirection, do it here
     if (execve(path, shell->nodes->argv, shell->env) == -1)
 		perror("execve failed");
 	if (path_list)
