@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   infile.c                                           :+:      :+:    :+:   */
+/*   traversal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 10:30:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/17 15:51:37 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/04/19 16:51:39 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/04/24 15:45:44 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	parse_infile(t_shell *shell, t_node *preceding_node, size_t *i)
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ * @param node_next An address to a t_node pointer
+ * 
+ */
+void	skip_to_last_node(t_node **node)
 {
-	(void) shell;
-	(void) preceding_node;
-	(void) i;
-	
-	printf("Infile detected: '%.2s' @ i-%lu\n", &shell->latest_input[*i], *i);
-	
-	(*i)++;
-	
-	return (true);
+	while (node && *node && (*node)->next)
+		*node = (*node)->next;
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ * @param node An address to a `t_node` pointer
+ * 
+ */
+void	skip_to_first_node(t_node **node)
+{
+	while (node && *node && (*node)->prev)
+		*node = (*node)->prev;
 }

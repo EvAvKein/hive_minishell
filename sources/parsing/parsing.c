@@ -6,40 +6,11 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/17 18:27:28 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/24 20:35:31 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * 
- * TODO: Either remove, or move to "verbose" printing file/directory
- * 
- */
-void	print_nodes(t_node *node)
-{
-	// size_t	count = 1;
-	int		i;
-
-	while (node)
-	{
-		// printf(" node %lu\n", count);
-		printf("  argc: %d\n", node->argc);
-		if (!node->argc)
-		{
-			node = node->next;
-			continue ;
-		}
-		i = 0;
-		while (node->argv[i])
-		{
-			printf("  argv i-%d: \"%s\"\n", i, node->argv[i]);
-			i++;
-		}
-		node = node->next;
-	}
-}
 
 /**
  * 
@@ -53,31 +24,31 @@ void	print_nodes(t_node *node)
  * @returns Whether the parsed input is valid.
  * 
  */
-bool	parsing(t_shell *shell)
+bool	parsing(t_shell *shell, char *input)
 {
-	t_node	*node;
-	t_node	**node_next;
-	char	*input;
-	size_t	i;
+	t_parsing	parsing;
 
-	i = 0;
-	input = shell->latest_input;
-	node_next = &shell->nodes;
-	while (input[i])
+	parsing = (t_parsing){.i = 0, .input = input, .last_node_preinput = NULL,
+		.command_node = NULL, .midparse_nodes = 0};
+	if (shell->nodes)
 	{
-		if (is_space(input[i]) && ++i)
-			continue ;
-		if (!handle_operator(shell, node, &i))
-			return (false);
-		node = extract_args(input, &i);
-		if (!node)
-			return (false);
-		*node_next = node;
-		while (*node_next)
+		parsing.last_node_preinput = shell->nodes;
+		skip_to_last_node(&parsing.last_node_preinput);
+	}
+	while (input[parsing.i])
+	{
+		skip_spaces(&parsing);
+		if (!parsing.input[parsing.i])
+			break ;
+		parsing.command_node = extract_nodes(shell, &parsing);
+		if ((!parsing.command_node && !parsing.midparse_nodes)
+			|| !sort_nodes_segment(shell, &parsing))
 		{
-			print_nodes(node);
-			node_next = &((*node_next)->next);
+			free(input);
+			return (false);
 		}
 	}
+	// print_nodes(STDERR_FILENO, shell->nodes);
+	free(input);
 	return (true);
 }

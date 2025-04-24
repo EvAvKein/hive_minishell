@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:21:54 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/15 17:22:56 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/24 15:52:05 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
  * or form feed, or carriage return)
  * 
  */
-bool is_space(char c)
+bool	is_space(char c)
 {
 	return (c == ' ' || (c <= '\r' && c >= '\t'));
 }
@@ -35,11 +35,26 @@ bool is_space(char c)
  * (as per the above `is_space` function).
  * 
  */
-bool is_entirely_spaces(char *string)
+bool	is_entirely_spaces(char *string)
 {
 	if (!string)
 		return (false);
 	while (is_space(*string))
 		string++;
 	return (*string == '\0');
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ */
+bool	input_was_entirely_spaces(char *input)
+{
+	if (is_entirely_spaces(input))
+	{
+		free(input);
+		return (true);
+	}
+	return (false);
 }

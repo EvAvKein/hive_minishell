@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/17 11:20:10 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/04/24 14:33:19 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,20 +16,20 @@ SRC_DIR := sources
 MAIN := main.c
 SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
+			 utils/printing.c \
 			 parsing/parsing.c \
-			 parsing/args.c \
-			 parsing/quotes.c \
+			 parsing/traversal.c \
+			 parsing/misc.c \
+			 parsing/arg_handling.c \
+			 parsing/node_handling.c \
+			 parsing/node_sorting_utils.c \
 			 parsing/operator_handling.c \
-			 parsing/operators/appendfile.c \
-			 parsing/operators/equals.c \
-			 parsing/operators/heredoc.c \
-			 parsing/operators/infile.c \
-			 parsing/operators/outfile.c \
-			 parsing/operators/plusequals.c \
+			 parsing/operators/assignments.c \
+			 parsing/operators/redirections.c \
 			 execution/execution.c
 
 INCLUDE_DIR := includes
-INCLUDE_FILES := minishell.h
+INCLUDE_FILES := minishell.h parsing.h
 
 LIBFT_DIR := libft_plus
 LIBFT_LIB := $(LIBFT_DIR)/libft_plus.a

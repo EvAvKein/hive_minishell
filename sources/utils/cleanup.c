@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/15 17:17:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/23 08:37:25 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ void	*free_2d_arr(void *arr, size_t length)
  * Frees the provided linked list of nodes
  * (and every heap-allocated thing inside them).
  * 
+ * @returns `NULL` (for external line-saving reason, due to Norminette).
+ * 
  */
-void	free_nodes(t_node *node)
+void	*free_nodes(t_node *node)
 {
 	t_node	*next;
 
@@ -51,6 +53,7 @@ void	free_nodes(t_node *node)
 		free(node);
 		node = next;
 	}
+	return (NULL);
 }
 
 /**
@@ -60,8 +63,6 @@ void	free_nodes(t_node *node)
  */
 void	shell_cleanup(t_shell *shell)
 {
-	if (shell->latest_input)
-		free(shell->latest_input);
 	free_nodes(shell->nodes);
 }
 
