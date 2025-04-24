@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/23 14:15:21 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 12:57:11 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_node
 typedef struct s_shell
 {
 	char		*latest_input;
-	char		**env;
+	char		**envp;
 	char		**ms_envp;
 	int			last_exit_status;
 	t_node		*nodes;
@@ -73,9 +73,9 @@ void	ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
 void	ms_env(t_shell *shell);
 void	execute_command(t_shell *shell);
-int		execute_appendfile(char *file);
-int		execute_infile(char *file);
-int		execute_outfile(char *file);
+int		handle_appendfile(char *file);
+int		handle_infile(char *file);
+int		handle_outfile(char *file);
 void	ms_exit(t_shell *shell);
 void	ms_export(t_shell *shell);
 void	ms_pwd(void);

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/23 14:05:59 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 14:10:46 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	ms_env(t_shell *shell)
 	int	i;
 
 	i = 0;
-	while(shell->ms_envp[i])
+	while (shell->ms_envp[i])
 	{
 		if (ft_strchr(shell->ms_envp[i], '='))
-			printf("%s\n", shell->env[i]);
+			printf("%s\n", shell->ms_envp[i]);
 		i++;
 	}
 }
@@ -28,7 +28,7 @@ void	ms_env(t_shell *shell)
 void	ms_pwd(void)
 {
 	char	*path;
-	
+
 	path = getcwd(NULL, 0);
 	if (!path)
 	{
@@ -56,7 +56,7 @@ void	ms_echo(t_shell *shell)
 		return ;
 	if (shell->nodes->argc == 1)
 		return (ft_putchar_fd('\n', 1));
-	while(shell->nodes->argv[i])
+	while (shell->nodes->argv[i])
 	{
 		ft_putstr_fd(shell->nodes->argv[i], 1);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/17 11:04:24 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 08:54:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int main(int argc, char **argv, char **envp)
 	(void) argv;
 
 	ft_bzero(&shell, sizeof(t_shell));
-	shell.env = envp;
-	shell.ms_envp = dup_envp(shell.env);
+	shell.envp = envp;
+	shell.ms_envp = dup_envp(shell.envp);
 	if(!shell.ms_envp)
 	{
 		perror("envp duplication failed :( goodbye\n");

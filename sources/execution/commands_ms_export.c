@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/23 14:46:07 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 14:27:24 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	append_envp(t_shell *shell, char **add, int i, int k)
 {
-	while(shell->ms_envp[i])
+	while (shell->ms_envp[i])
 	{
 		add[i] = ft_strdup(shell->ms_envp[i]);
 		if (!add[i])
@@ -24,7 +24,7 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 		}
 		i++;
 	}
-	while(shell->nodes->argv[k])
+	while (shell->nodes->argv[k])
 	{
 		add[i] = ft_strdup(shell->nodes->argv[k]);
 		if (!add[i])
@@ -39,34 +39,27 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 	return (0);
 }
 
-
 static void	print_sorted_envp(char **envp)
 {
 	int	i;
 	int	k;
 
 	i = 0;
-	while(envp[i])
+	while (envp[i])
 	{
 		k = 0;
 		if (ft_strchr(envp[i], '='))
 		{
 			write(1, "declare -x ", 11);
-			while(envp[i][k] != '=')
+			while (envp[i][k] != '=')
 			{
 				write(1, &envp[i][k], 1);
 				k++;
 			}
-			k++;
-			write(1, "=", 1);
-			write(1, "\"", 1);
-			while(envp[i][k])
-			{
+			write(1, "=\"", 2);
+			while (envp[i][k++])
 				write(1, &envp[i][k], 1);
-				k++;
-			}
-			write(1, "\"", 1);
-			write(1, "\n", 1);
+			write(1, "\"\n", 2);
 		}
 		i++;
 	}
@@ -75,14 +68,12 @@ static void	print_sorted_envp(char **envp)
 static void	sort_envp(char **envp)
 {
 	int		i;
-	int		len;
 	char	*tmp;
 	bool	swapped;
 
 	i = 0;
-	len = get_env_elements(envp);
 	swapped = true;
-	while(swapped)
+	while (swapped)
 	{
 		swapped = false;
 		while (envp[i + 1])
@@ -106,10 +97,15 @@ void	ms_export(t_shell *shell)
 {
 	char	**add;
 
+	if (shell->nodes->argc > 2 && shell->nodes->argv[1][0] == '-')
+	{
+		perror("no options allowed");
+		return ;
+	}
 	if (shell->nodes->argc > 1)
 	{
-		add = ft_calloc(shell->nodes->argc + get_env_elements(shell->ms_envp) + 1,
-			sizeof(char *));
+		add = ft_calloc(shell->nodes->argc
+				+ get_env_elements(shell->ms_envp) + 1, sizeof(char *));
 		if (!add)
 			return (perror("export: Memory allocation failed!\n"));
 		if (append_envp(shell, add, 0, 1) == 1)

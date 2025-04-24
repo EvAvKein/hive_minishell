@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/17 11:10:43 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 14:17:01 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static int	line_is_removable(char *line, char **remove)
 	return (0);
 }
 
-static char **set_removables(t_shell *shell)
+static char	**set_removables(t_shell *shell)
 {
-	char **ret;
-	int	i;
-	int	k;
+	char	**ret;
+	int		i;
+	int		k;
 
 	i = 0;
 	k = 1;
@@ -59,7 +59,7 @@ void	ms_unset(t_shell *shell)
 	i = 0;
 	k = 0;
 	removables = set_removables(shell);
-	while(removables[i])
+	while (removables[i])
 	{
 		printf("%s\n", removables[i]);
 		i++;
@@ -83,4 +83,3 @@ void	ms_unset(t_shell *shell)
 	k = 0;
 	free(removables);
 }
-

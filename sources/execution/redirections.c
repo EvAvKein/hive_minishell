@@ -6,13 +6,13 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:37:30 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/23 14:30:17 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 09:06:16 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_infile(char *file)
+int	handle_infile(char *file)
 {
 	int	fd;
 
@@ -31,11 +31,11 @@ int	execute_infile(char *file)
 	return (0);
 }
 
-int	execute_outfile(char *file)
+int	handle_outfile(char *file)
 {
 	int	fd;
 
-	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror("fd failed");
@@ -50,7 +50,7 @@ int	execute_outfile(char *file)
 	return (0);
 }
 
-int	execute_appendfile(char *file)
+int	handle_appendfile(char *file)
 {
 	int	fd;
 

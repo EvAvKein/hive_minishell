@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/23 08:15:50 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 14:20:11 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*get_path_from_envp(t_shell *shell)
 char	*get_path_from_arg(t_shell *shell)
 {
 	char	*path;
+
 	path = shell->nodes->argv[0];
 	if (access(path, F_OK) != 0)
 	{
@@ -74,7 +75,7 @@ int	execute_sys_command(t_shell *shell)
 	char	*path;
 	char	**path_list;
 	int		i;
-	
+
 	i = 0;
 	path_list = NULL;
 	if (ft_strchr(shell->nodes->argv[0], '/'))
@@ -87,7 +88,7 @@ int	execute_sys_command(t_shell *shell)
 		return (1);
 	}
 	//TODO: if redirection, do it here
-    if (execve(path, shell->nodes->argv, shell->env) == -1)
+	if (execve(path, shell->nodes->argv, shell->ms_envp) == -1)
 		perror("execve failed");
 	if (path_list)
 		free_env_array(path_list);
@@ -100,7 +101,7 @@ int	fork_and_execute_sys_command(t_shell *shell)
 {
 	int	pid;
 	int	status;
-	
+
 	pid = fork();
 	if (pid == 0)
 	{

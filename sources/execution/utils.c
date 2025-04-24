@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/23 10:21:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/24 14:18:40 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	get_env_elements(char **envp)
 	i = 0;
 	if (envp)
 	{
-		while(envp[i])
+		while (envp[i])
 			i++;
 	}
 	return (i);
@@ -34,7 +34,7 @@ char	**dup_envp(char **envp)
 	i = 0;
 	env_count = get_env_elements(envp);
 	dup = ft_calloc(env_count + 1, sizeof(char *));
-	while(envp[i])
+	while (envp[i])
 	{
 		dup[i] = ft_strdup(envp[i]);
 		if (!dup[i])
@@ -45,7 +45,7 @@ char	**dup_envp(char **envp)
 		i++;
 	}
 	dup[i] = NULL;
-	return(dup);
+	return (dup);
 }
 
 void	free_env_array(char **env)
@@ -65,12 +65,11 @@ void	free_env_array(char **env)
 
 int	is_builtin(char *cmd)
 {
-	if (!ft_strncmp(cmd, "env", 3) || !ft_strncmp(cmd, "cd", 2) ||
-	!ft_strncmp(cmd, "pwd", 3) || !ft_strncmp(cmd, "export", 6) ||
-	!ft_strncmp(cmd, "unset", 5) || !ft_strncmp(cmd, "echo", 4) ||
-	!ft_strncmp(cmd, "exit", 4))
+	if (!ft_strncmp(cmd, "env", 3) || !ft_strncmp(cmd, "cd", 2)
+		|| !ft_strncmp(cmd, "pwd", 3) || !ft_strncmp(cmd, "export", 6)
+		|| !ft_strncmp(cmd, "unset", 5) || !ft_strncmp(cmd, "echo", 4)
+		|| !ft_strncmp(cmd, "exit", 4))
 		return (1);
 	else
 		return (0);
 }
-
