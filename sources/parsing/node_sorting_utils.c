@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:17:31 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 20:25:50 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/24 21:12:53 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_node	*link_collected_nodes(t_node ***nodes_arr, size_t i)
  * TODO: Write these docs
  * 
  */
-static void	append_and_update_prev_node(
+static void	prepend_and_update_prev_node(
 	t_node_sort_reattach *reattach, t_node *append)
 {
 	append->prev = reattach->prev_node;
@@ -123,19 +123,19 @@ void	reattach_nodes(t_parsing *parsing, t_node_sort_reattach *reattach)
 	if (reattach->infiles)
 	{
 		reattach->start = reattach->infiles;
-		append_and_update_prev_node(reattach, reattach->infiles);
+		prepend_and_update_prev_node(reattach, reattach->infiles);
 	}
 	if (parsing->command_node)
 	{
 		set_prev_and_next(parsing->command_node, NULL, NULL);
 		if (!reattach->start)
 			reattach->start = parsing->command_node;
-		append_and_update_prev_node(reattach, parsing->command_node);
+		prepend_and_update_prev_node(reattach, parsing->command_node);
 	}
 	if (reattach->outfiles)
 	{
 		if (!reattach->start)
 			reattach->start = reattach->outfiles;
-		append_and_update_prev_node(reattach, reattach->outfiles);
+		prepend_and_update_prev_node(reattach, reattach->outfiles);
 	}
 }
