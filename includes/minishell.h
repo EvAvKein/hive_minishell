@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 10:37:55 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/25 13:31:03 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		*latest_input;
 	char		**envp;
 	char		**ms_envp;
 	int			last_exit_status;
@@ -106,6 +105,7 @@ void	free_env_array(char **env);
 int		get_env_elements(char **envp);
 char	*get_path_from_arg(t_shell *shell);
 char	*get_path_from_envp(t_shell *shell);
+int		is_builtin(char *cmd);
 void	ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
 void	ms_env(t_shell *shell);
@@ -120,7 +120,6 @@ void	ms_unset(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
-int		is_builtin(char *cmd);
 void	print_nodes(int fd, t_node *node);
 void	print_node_type(int fd, t_node_type type);
 
