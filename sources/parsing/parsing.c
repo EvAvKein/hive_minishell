@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 10:39:45 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/25 14:50:37 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 /**
  * 
- * Parses the user input stored in `shell`, storing the parsed output inside
- * `shell` on success.
+ * Parses user input and stores the parsed output inside `shell` on success.
  * 
- * @param shell The address of the initialized shell struct,
- *              from which to get the user input
- *              and in which to store the parsed output.
+ * @param shell The address of the initialized shell struct
+ *              in which to store the parsed output.
+ * 
+ * @param input The user input.
  * 
  * @returns Whether the parsed input is valid.
  * 
@@ -47,7 +47,7 @@ bool	parsing(t_shell *shell, char *input)
 			return (false);
 		}
 	}
-	// print_nodes(STDERR_FILENO, shell->nodes);
+	print_nodes(STDERR_FILENO, shell->nodes);
 	free(input);
 	return (true);
 }

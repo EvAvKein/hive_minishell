@@ -6,15 +6,22 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:36:35 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 09:39:21 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 20:25:17 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * 
- * TODO: Write these docs
+ *
+ * Parses past the upcoming redirection operator, appending its new node to the
+ * list with its argument.
+ *
+ * @param operator_len The length of the operator being skipped,
+ *                     for adding to the parsing index at the very start.
+ *  
+ * @returns The new appended node,
+ *          or `NULL` on parsing error or memory allocation failure.
  * 
  */
 static t_node	*parse_redirection(t_shell *shell, t_parsing *parsing,
@@ -42,7 +49,9 @@ static t_node	*parse_redirection(t_shell *shell, t_parsing *parsing,
 
 /**
  * 
- * TODO: Write these docs
+ * Parses an appendfile operation from its (assumed) operator.
+ * 
+ * @returns Whether parsing and memory allocations were all successful.
  * 
  */
 bool	parse_appendfile(t_shell *shell, t_parsing *parsing)
@@ -60,7 +69,9 @@ bool	parse_appendfile(t_shell *shell, t_parsing *parsing)
 
 /**
  * 
- * TODO: Write these docs
+ * Parses a heredoc operation from its (assumed) operator.
+ * 
+ * @returns Whether parsing and memory allocations were all successful.
  * 
  */
 bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
@@ -78,7 +89,9 @@ bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
 
 /**
  * 
- * TODO: Write these docs
+ * Parses an infile operation from its (assumed) operator.
+ * 
+ * @returns Whether parsing and memory allocations were all successful.
  * 
  */
 bool	parse_infile(t_shell *shell, t_parsing *parsing)
@@ -96,7 +109,9 @@ bool	parse_infile(t_shell *shell, t_parsing *parsing)
 
 /**
  * 
- * TODO: Write these docs
+ * Parses an outfile operation from its (assumed) operator.
+ * 
+ * @returns Whether parsing and memory allocations were all successful.
  * 
  */
 bool	parse_outfile(t_shell *shell, t_parsing *parsing)

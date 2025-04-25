@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   spaces.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:21:54 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 10:41:32 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/25 14:48:41 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ bool	is_entirely_spaces(char *string)
 
 /**
  * 
- * TODO: Write these docs
+ * Checks if the provided string contains only space characters,
+ * deallocating that string's memory if so. 
+ * 
+ * @returns Whether the input was entirely spaces.
  * 
  */
 bool	input_was_entirely_spaces(char *input)

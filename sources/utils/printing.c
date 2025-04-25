@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:20:37 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 09:34:28 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:54:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 /**
  * 
- * TODO: Write these docs
+ * Prints the name of the provided node type
+ * (which would otherwise be printed as its enum value).
+ *  
+ * @param fd   The file descriptor to which to write the node type.
+ * 
+ * @param node The node type for which to print the name.
  * 
  */
 void	print_node_type(int fd, t_node_type type)
@@ -39,7 +44,12 @@ void	print_node_type(int fd, t_node_type type)
 
 /**
  * 
- * TODO: Write these docs 
+ * Prints a tree-like visualization for the provided linked list of nodes,
+ * displaying the node's type, argument count, and argument values.
+ * 
+ * @param fd   The file descriptor to which to write the visualization.
+ * 
+ * @param node The start of the linked list of nodes to be visualized.
  * 
  */
 void	print_nodes(int fd, t_node *node)

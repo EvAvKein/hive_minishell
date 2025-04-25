@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   traversal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:51:39 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 10:44:56 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/25 14:48:34 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 /**
  * 
- * TODO: Write these docs
+ * Skips the provided pointer for a linked list to its first node.
  * 
- * @param node_next An address to a t_node pointer
+ * @param node An address to a `t_node` pointer.
  * 
  */
 void	skip_to_last_node(t_node **node)
@@ -27,9 +27,9 @@ void	skip_to_last_node(t_node **node)
 
 /**
  * 
- * TODO: Write these docs
+ * Skips the provided pointer for a linked list to its final node.
  * 
- * @param node An address to a `t_node` pointer
+ * @param node An address to a `t_node` pointer.
  * 
  */
 void	skip_to_first_node(t_node **node)

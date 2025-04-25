@@ -6,11 +6,60 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 20:18:33 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 20:22:31 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static inline void	set_start_of_arg(t_str_to_argc_vars *var)
+{
+	if (!var->in_arg)
+	{
+		var->in_arg = true;
+		if (var->in_operator[0])
+			var->in_operator[0] = '\0';
+		else
+			var->argc++;
+	}
+}
+/**
+ * 
+ * Counts how many arguments are in the provided string.
+ * 
+ * @param str The string in which to count the args.
+ * 
+ * @returns The argument count of the provided string, or `-1` on syntax error.
+ * 
+ */
+int	str_to_argc(char *str, t_str_to_argc_vars var)
+{
+	while (str[var.i])
+	{
+		if (is_space(str[var.i]))
+		{
+			if (var.in_arg && !var.in_quote)
+				var.in_arg = false;
+			if (!var.in_arg && var.in_quote)
+				var.in_quote = '\0';
+			var.i++;
+			continue ;
+		}
+		if (!var.in_quote)
+		{
+			if (str[var.i] == '|')
+				break ;
+			if (operator_of_c(&str[var.i])
+				&& memorize_and_skip_operator(str, &var.i, var.in_operator))
+					continue ;
+		}
+		set_start_of_arg(&var);
+		toggle_quote_by_c(&var.in_quote, str[var.i++]);
+	}
+	if (var.in_operator[0])
+		return (-1); /** TODO: Change into syntax error printout */
+	return (var.argc);
+}
 
 /**
  * 
@@ -48,52 +97,6 @@ int	arg_to_len(char *arg)
 		i++;
 	}
 	return (length);
-}
-
-/**
- * 
- * Counts how many arguments are in the provided string.
- * 
- * @param str The string in which to count the args.
- * 
- * @returns The argument count of the provided string, or `-1` on syntax error.
- * 
- */
-int	str_to_argc(char *str, t_str_to_argc_vars var)
-{
-	while (str[var.i])
-	{
-		if (is_space(str[var.i]))
-		{
-			if (var.in_arg && !var.in_quote)
-				var.in_arg = false;
-			if (!var.in_arg && var.in_quote)
-				var.in_quote = '\0';
-			var.i++;
-			continue ;
-		}
-		if (!var.in_quote)
-		{
-			if (str[var.i] == '|')
-				break ;
-			if (operator_of_c(&str[var.i])
-				&& memorize_and_skip_operator(str, &var.i, var.in_operator))
-					continue ;
-		}
-		if (!var.in_arg)
-		{
-			var.in_arg = true;
-			if (var.in_operator[0])
-				var.in_operator[0] = '\0';
-			else
-				var.argc++;
-		}
-		toggle_quote_by_c(&var.in_quote, str[var.i++]);
-	}
-	if (var.in_operator[0])
-		return (-1); /** TODO: Change into syntax error printout */
-	else 
-		return (var.argc);
 }
 
 /**
@@ -136,7 +139,9 @@ void	arg_cpy(char *dest, char *input, size_t *input_i)
 
 /**
  * 
- * TODO: Write these docs
+ * Parses through the next valid argument and creates a copy of it.
+ * 
+ * @returns A copy of the next valid argument (or `NULL` on allocation failure).
  * 
  */
 char	*extract_arg(t_parsing *parsing)

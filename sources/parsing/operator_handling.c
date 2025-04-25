@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:23:07 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 16:05:18 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:42:12 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ t_operator operator_of_c(char *c)
 
 /**
  * 
- * TODO: Write these docs
+ * Updates the provided `memory` array based on the character(s) in `
+ * str[i]` (wiping the memory if it's no operator),
+ * and skips the index past any operator found.
+ * 
+ * @returns `true` (for external line-saving reason, due to Norminette).
  * 
  */
 bool	memorize_and_skip_operator(char *str, size_t *i, char memory[3])
@@ -72,7 +76,11 @@ bool	memorize_and_skip_operator(char *str, size_t *i, char memory[3])
 
 /**
  * 
- * TODO: Write these docs
+ * Checks if the current point in parsing is an operator - if so, calls the
+ * appropriate function for parsing that operator.
+ * 
+ * @returns Whether the operator parsing was successful,
+ *          or `true` if the current point in parsing is not an operator.
  * 
  */
 bool	handle_operator(t_shell *shell, t_parsing *parsing)
