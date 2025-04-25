@@ -1,18 +1,28 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_shell.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 09:55:34 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/16 11:08:47 by ahavu            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_shell_struct(t_shell *shell, char **envp)
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ * @param node_next An address to a t_node pointer
+ * 
+ */
+void	skip_to_last_node(t_node **node)
 {
-	shell->env = envp;
+	while (node && *node && (*node)->next)
+		*node = (*node)->next;
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ * @param node An address to a `t_node` pointer
+ * 
+ */
+void	skip_to_first_node(t_node **node)
+{
+	while (node && *node && (*node)->prev)
+		*node = (*node)->prev;
 }
