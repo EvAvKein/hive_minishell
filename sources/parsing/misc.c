@@ -1,58 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes.c                                           :+:      :+:    :+:   */
+/*   misc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:06:37 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/14 19:15:50 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/23 15:22:21 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * 
- * Validates whether a character is a skippable quote or not,
- * updating `in_quotes` accordingly.
- * 
- * @param in_quotes    Bools for whether we're already inside
- *                     single or double quotes respectively.
- *                     This function flips the booleans accordingly. 
- * 
- * @param c            A pointer to the char that this function should validate.
- *
- * @param has_previous Whether this character has a previous one,
- *                     i.e. if it's safe to check the previous memory address.
- * 
- * @returns Boolean, whether the quote is skippable.
- * 
- */
-// bool	is_skippable_quote(bool in_quotes[2], char *c, bool has_previous)
-// {
-// 	if (*c == '\'')
-// 	{
-// 		if (in_quotes[1])
-// 			return (false);
-// 		if ((has_previous && c[-1] != '\'') || in_quotes[0])
-// 		{
-// 			in_quotes[0] = !in_quotes[0];
-// 			return (true);
-// 		}
-// 	}
-// 	if (*c == '"')
-// 	{
-// 		if (in_quotes[0])
-// 			return (false);
-// 		if ((has_previous && c[-1] != '"') || in_quotes[1])
-// 		{
-// 			in_quotes[1] = !in_quotes[1];
-// 			return (true);
-// 		}
-// 	}
-// 	return (false);
-// }
 
 /**
  * 
@@ -83,4 +41,26 @@ bool	toggle_quote_by_c(char *containing_quote, char c)
 		return (true);
 	}
 	return (false);
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ */
+void	skip_spaces(t_parsing *parsing)
+{
+	while (is_space(parsing->input[parsing->i]))
+		parsing->i++;
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ */
+void	set_prev_and_next(t_node *node, t_node *new_prev, t_node *new_next)
+{
+	node->prev = new_prev;
+	node->next = new_next;
 }

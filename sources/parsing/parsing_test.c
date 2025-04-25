@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:02:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/15 17:14:26 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/22 12:34:13 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ static void	test(t_shell *shell, char *input, t_node expected)
 	bool	same;
 
 	printf("\ninput: %s\n", input);
-	shell->latest_input = input;
-	parsing(shell);
+	parsing(shell, input);
 	
 	if (expected.argc != shell->nodes->argc)
 	{
