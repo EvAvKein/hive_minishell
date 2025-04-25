@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
+#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/24 14:33:19 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/04/25 10:48:32 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,14 @@ MAIN := main.c
 SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
+			 execution/execution.c \
+			 execution/commands.c \
+			 execution/commands_ms_unset.c \
+			 execution/commands_ms_cd.c \
+			 execution/commands_ms_export.c \
+			 execution/utils.c \
+			 execution/builtin_or_sys_command.c \
+			 execution/redirections.c \
 			 parsing/parsing.c \
 			 parsing/traversal.c \
 			 parsing/misc.c \
@@ -26,7 +34,6 @@ SRC_FILES := utils/spaces.c \
 			 parsing/operator_handling.c \
 			 parsing/operators/assignments.c \
 			 parsing/operators/redirections.c \
-			 execution/execution.c
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h parsing.h

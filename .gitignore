@@ -1,0 +1,4 @@
+*.o
+.vscode
+minishell
+libft_plus.a

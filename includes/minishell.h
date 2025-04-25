@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/23 11:09:03 ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 13:31:03 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -18,6 +19,8 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <unistd.h>
+# include <stdio.h>
 # include "libft_plus.h"
 # include "parsing.h"
 
@@ -51,7 +54,9 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		**env;
+	char		**envp;
+	char		**ms_envp;
+	int			last_exit_status;
 	t_node		*nodes;
 }				t_shell;
 
@@ -91,7 +96,27 @@ bool	parse_plusequals(t_shell *shell, t_parsing *parsing);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
+char	**dup_envp(char **envp);
+int		execute_builtin(t_shell *shell);
+int		execute_sys_command(t_shell *shell);
 void	execution(t_shell *shell);
+int		fork_and_execute_sys_command(t_shell *shell);
+void	free_env_array(char **env);
+int		get_env_elements(char **envp);
+char	*get_path_from_arg(t_shell *shell);
+char	*get_path_from_envp(t_shell *shell);
+int		is_builtin(char *cmd);
+void	ms_cd(t_shell *shell);
+void	ms_echo(t_shell *shell);
+void	ms_env(t_shell *shell);
+void	execute_command(t_shell *shell);
+int		handle_appendfile(char *file);
+int		handle_infile(char *file);
+int		handle_outfile(char *file);
+void	ms_exit(t_shell *shell);
+void	ms_export(t_shell *shell);
+void	ms_pwd(void);
+void	ms_unset(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
