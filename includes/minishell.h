@@ -64,7 +64,7 @@ void	skip_to_last_node(t_node **node);
 t_node	*append_new_node(t_shell *shell, int argc);
 
 char	*extract_arg(t_parsing *parsing);
-t_node	*extract_nodes(t_shell *shell, t_parsing *parsing);
+bool	extract_nodes(t_shell *shell, t_parsing *parsing);
 bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing);
 
 void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort);
@@ -104,6 +104,7 @@ bool	input_was_entirely_spaces(char *input);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
+void	command_cleanup(t_shell *shell);
 void	shell_cleanup(t_shell *shell);
 void	shell_exit(t_shell *shell, int exit_status);
 

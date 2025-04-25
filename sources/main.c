@@ -32,10 +32,12 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		add_history(input);
 		if (!parsing(&shell, input))
+		{
+			command_cleanup(&shell);
 			continue ;
+		}
 		execution(&shell);
-		free_nodes(shell.nodes);
-		shell.nodes = NULL;
+		command_cleanup(&shell);
 	}
 
 	return (EXIT_SUCCESS);

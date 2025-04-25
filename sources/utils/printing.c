@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:20:37 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 20:21:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 09:34:28 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,28 +45,24 @@ void	print_node_type(int fd, t_node_type type)
 void	print_nodes(int fd, t_node *node)
 {
 	int		i;
+	bool	print_finale;
 
+	print_finale = !!node;
 	while (node)
 	{
 		ft_dprintf(fd, "│\n├─┬─ type: ");
 		print_node_type(fd, node->type);
-		ft_dprintf(fd, "\n");
-		ft_dprintf(fd, "│ └─┬─ argc: %d\n", node->argc);
-		if (!node->argc)
-		{
-			node = node->next;
-			continue ;
-		}
-		i = 0;
-		while (node->argv[i])
+		ft_dprintf(fd, "\n│ └─┬─ argc: %d\n", node->argc);
+		i = -1;
+		while (node->argv[++i])
 		{
 			if (node->argv[i + 1])
 				ft_dprintf(fd, "│   ├─── argv[%d]: \"%s\"\n", i, node->argv[i]);
 			else
 				ft_dprintf(fd, "│   └─── argv[%d]: \"%s\"\n", i, node->argv[i]);
-			i++;
 		}
 		node = node->next;
 	}
-	ft_dprintf(fd, "│\n");
+	if (print_finale)
+		ft_dprintf(fd, "│\n");
 }

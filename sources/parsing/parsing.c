@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 20:35:31 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 09:38:36 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ bool	parsing(t_shell *shell, char *input)
 		skip_spaces(&parsing);
 		if (!parsing.input[parsing.i])
 			break ;
-		parsing.command_node = extract_nodes(shell, &parsing);
-		if ((!parsing.command_node && !parsing.midparse_nodes)
+		if (!extract_nodes(shell, &parsing)
 			|| !sort_nodes_segment(shell, &parsing))
 		{
 			free(input);

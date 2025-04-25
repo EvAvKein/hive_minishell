@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/23 08:37:25 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 09:34:17 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,23 @@ void	*free_nodes(t_node *node)
 
 /**
  * 
+ * Frees all command-specific allocations in the provided `shell`.
+ * 
+ */
+void	command_cleanup(t_shell *shell)
+{
+	free_nodes(shell->nodes);
+	shell->nodes = NULL;
+}
+
+/**
+ * 
  * Frees all allocations in the provided `shell`.
  * 
  */
 void	shell_cleanup(t_shell *shell)
 {
-	free_nodes(shell->nodes);
+	command_cleanup(shell);
 }
 
 /**

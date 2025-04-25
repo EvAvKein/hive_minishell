@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 16:09:28 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 09:37:52 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
 		if (input[parsing->i] == '|')
 			return (true);
 		if (!handle_operator(shell, parsing))
-			return (false); /** Does this need extra handling? */
+			return (false);
 		skip_spaces(parsing);
 		if (input[parsing->i] == '|')
 			return (true);
@@ -81,7 +81,7 @@ t_node	*append_new_node(t_shell *shell, int argc)
  * TODO: Write these docs
  * 
  */
-t_node	*extract_nodes(t_shell *shell, t_parsing *parsing)
+bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*cmd_node;
 	int		argc;
@@ -91,16 +91,17 @@ t_node	*extract_nodes(t_shell *shell, t_parsing *parsing)
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
 		.in_quote = '\0', .in_operator = {'\0', '\0', '\0'}});
 	if (argc < 0)
-		return (NULL);
+		return (false);
 	if (argc)
 	{
-		cmd_node = append_new_node(shell, argc);
-		if (!cmd_node)
-			return (NULL);
-		cmd_node->type = COMMAND;
+		parsing->command_node = append_new_node(shell, argc);
+		if (!parsing->command_node)
+			return (false);
+		parsing->command_node->type = COMMAND;
 	}
-	str_to_nodes(shell, parsing, cmd_node);
-	return (cmd_node);
+	if (!str_to_nodes(shell, parsing, parsing->command_node))
+		return (false);
+	return (true);
 }
 
 /**

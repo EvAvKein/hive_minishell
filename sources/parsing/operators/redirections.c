@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:36:35 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/23 11:06:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 09:39:21 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ static t_node	*parse_redirection(t_shell *shell, t_parsing *parsing,
 	new_node->argv[0] = extract_arg(parsing);
 	if (!new_node->argv[0])
 		return (NULL);
+	if (!new_node->argv[0][0])
+	{
+		ft_dprintf(2, "Ambiguous redirect (PLACEHOLDER ERR)\n");
+		return (NULL); /** TODO: Print better message */
+	}
 	parsing->midparse_nodes++;
 	return (new_node);
 }
