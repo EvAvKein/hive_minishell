@@ -6,11 +6,23 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:08:45 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:20:57 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/25 14:15:19 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// < cat Makefile | head | cat > jou
+//
+// 2 pipes = 3 children/phrases
+// first pipe -> fork left side (< cat Makefile)
+// first pipe read_end -> stdin for next (head)
+// second pipe -> fork left side (head)
+// second pipe read_end -> stdin for next (cat > jou)
+// no more pipes == last command
+
+// int fd[2]
+// int previous_pipe = previous pipe's read end
 
 static pid_t	left_side(int fd[2])
 {
@@ -41,6 +53,7 @@ static pid_t	right_side(int fd[2])
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
+		// if more pipes -> also left side
 		//execute
 	}
 	return (pid);
