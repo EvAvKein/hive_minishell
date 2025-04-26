@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 20:31:01 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/26 18:09:07 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **envp)
 	}
 	while (1)
 	{
-		input = readline("shellGBTQ+ >");
+		input = readline(SHELL_PROMPT);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
 			continue;
 		if (input_was_entirely_spaces(input))

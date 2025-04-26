@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 13:31:03 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/26 18:07:32 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -23,6 +22,18 @@
 # include <stdio.h>
 # include "libft_plus.h"
 # include "parsing.h"
+
+# define SHELL_NAME "shellGBTQ+"
+
+# define SHELL_PROMPT	"\
+\001\x1b[1;38;2;162;77;167m\002shell\
+\001\x1b[1;38;2;39;115;255m\002G\
+\001\x1b[1;38;2;32;170;10m\002B\
+\001\x1b[1;38;2;220;202;0m\002T\
+\001\x1b[1;38;2;240;115;0m\002Q\
+\001\x1b[1;38;2;228;3;3m\002+\
+\001\x1b[1;38;2;110;110;110m\002 >\
+\001\x1b[0m\002"
 
 /* SETTINGS *******************************************************************/
 
@@ -62,78 +73,79 @@ typedef struct s_shell
 
 /* PARSING FUNCTIONS **********************************************************/
 
-bool	parsing(t_shell *shell, char *input);
+bool		parsing(t_shell *shell, char *input);
 
-void	skip_to_first_node(t_node **node);
-void	skip_to_last_node(t_node **node);
-t_node	*append_new_node(t_shell *shell, int argc);
+void		skip_to_first_node(t_node **node);
+void		skip_to_last_node(t_node **node);
+t_node		*append_new_node(t_shell *shell, int argc);
 
-char	*extract_arg(t_parsing *parsing);
-bool	extract_nodes(t_shell *shell, t_parsing *parsing);
-bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing);
+char		*extract_arg(t_parsing *parsing);
+bool		extract_nodes(t_shell *shell, t_parsing *parsing);
+bool		sort_nodes_segment(t_shell *shell, t_parsing *parsing);
 
-void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort);
-bool	collect_segment_nodes(t_node_sort *sort);
-t_node	*link_collected_nodes(t_node ***nodes_arr, size_t i);
-void	reattach_nodes(t_parsing *parsing, t_node_sort_reattach *reattach);
+void		count_segment_nodes(t_parsing *parsing, t_node_sort *sort);
+bool		collect_segment_nodes(t_node_sort *sort);
+t_node		*link_collected_nodes(t_node ***nodes_arr, size_t i);
+void		reattach_nodes(t_parsing *parsing, t_node_sort_reattach *reattach);
 
-void	skip_spaces(t_parsing *parsing);
-void	set_prev_and_next(t_node *node, t_node *new_prev, t_node *new_next);
+void		skip_spaces(t_parsing *parsing);
+void		set_prev_and_next(t_node *node, t_node *new_prev, t_node *new_next);
 
-int		str_to_argc(char *str, t_str_to_argc_vars var);
-t_operator operator_of_c(char *c);
-bool	handle_operator(t_shell *shell, t_parsing *parsing);
-bool	memorize_and_skip_operator(char *str, size_t *i, char memory[3]);
+int			str_to_argc(char *str, t_str_to_argc_vars var);
+bool		handle_operator(t_shell *shell, t_parsing *parsing);
+bool		memorize_and_skip_operator(char *str, size_t *i, char memory[3]);
 
-bool	toggle_quote_by_c(char *containing_quote, char c);
+bool		toggle_quote_by_c(char *containing_quote, char c);
 
-bool	parse_heredoc(t_shell *shell, t_parsing *parsing);
-bool	parse_appendfile(t_shell *shell, t_parsing *parsing);
-bool	parse_infile(t_shell *shell, t_parsing *parsing);
-bool	parse_outfile(t_shell *shell, t_parsing *parsing);
-bool	parse_equals(t_shell *shell, t_parsing *parsing);
-bool	parse_plusequals(t_shell *shell, t_parsing *parsing);
+bool		parse_heredoc(t_shell *shell, t_parsing *parsing);
+bool		parse_appendfile(t_shell *shell, t_parsing *parsing);
+bool		parse_infile(t_shell *shell, t_parsing *parsing);
+bool		parse_outfile(t_shell *shell, t_parsing *parsing);
+bool		parse_equals(t_shell *shell, t_parsing *parsing);
+bool		parse_plusequals(t_shell *shell, t_parsing *parsing);
+
+t_operator	operator_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
-char	**dup_envp(char **envp);
-int		execute_builtin(t_shell *shell);
-int		execute_sys_command(t_shell *shell);
-void	execution(t_shell *shell);
-int		fork_and_execute_sys_command(t_shell *shell);
-void	free_env_array(char **env);
-int		get_env_elements(char **envp);
-char	*get_path_from_arg(t_shell *shell);
-char	*get_path_from_envp(t_shell *shell);
-int		is_builtin(char *cmd);
-void	ms_cd(t_shell *shell);
-void	ms_echo(t_shell *shell);
-void	ms_env(t_shell *shell);
-void	execute_command(t_shell *shell);
-int		handle_appendfile(char *file);
-int		handle_infile(char *file);
-int		handle_outfile(char *file);
-void	ms_exit(t_shell *shell);
-void	ms_export(t_shell *shell);
-void	ms_pwd(void);
-void	ms_unset(t_shell *shell);
+char		**dup_envp(char **envp);
+int			execute_builtin(t_shell *shell);
+int			execute_sys_command(t_shell *shell);
+void		execution(t_shell *shell);
+int			fork_and_execute_sys_command(t_shell *shell);
+void		free_env_array(char **env);
+int			get_env_elements(char **envp);
+char		*get_path_from_arg(t_shell *shell);
+char		*get_path_from_envp(t_shell *shell);
+int			is_builtin(char *cmd);
+void		ms_cd(t_shell *shell);
+void		ms_echo(t_shell *shell);
+void		ms_env(t_shell *shell);
+void		execute_command(t_shell *shell);
+int			handle_appendfile(char *file);
+int			handle_infile(char *file);
+int			handle_outfile(char *file);
+void		ms_exit(t_shell *shell);
+void		ms_export(t_shell *shell);
+void		ms_pwd(void);
+void		ms_unset(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
-void	print_nodes(int fd, t_node *node);
-void	print_node_type(int fd, t_node_type type);
+void		print_nodes(int fd, t_node *node);
+void		print_node_type(int fd, t_node_type type);
 
-bool	is_space(char c);
-bool	is_entirely_spaces(char *string);
-bool	input_was_entirely_spaces(char *input);
+bool		is_space(char c);
+bool		is_entirely_spaces(char *string);
+bool		input_was_entirely_spaces(char *input);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
-void	command_cleanup(t_shell *shell);
-void	shell_cleanup(t_shell *shell);
-void	shell_exit(t_shell *shell, int exit_status);
+void		command_cleanup(t_shell *shell);
+void		shell_cleanup(t_shell *shell);
+void		shell_exit(t_shell *shell, int exit_status);
 
-void	*free_nodes(t_node *node);
-void	*free_2d_arr(void *arr, size_t length);
+void		*free_nodes(t_node *node);
+void		*free_2d_arr(void *arr, size_t length);
 
 #endif
