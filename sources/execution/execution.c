@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/07 12:37:34 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:43:07 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,24 @@ int	execute_command(t_shell *shell)
 		}
 	}
 	return (0);
+}
+
+int	count_commands(t_node *head)
+{
+	t_node	*tmp;
+	int		count;
+	
+	tmp = head;
+	count = 0;
+	while (tmp->next && tmp->next != head)
+	{
+		if (tmp->type == COMMAND)
+			count++;
+		tmp = tmp->next;
+	}
+	if (tmp->type == COMMAND)
+		count++;
+	return (count);
 }
 
 int	count_commands(t_node *head)
