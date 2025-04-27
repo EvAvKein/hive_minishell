@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/25 14:30:50 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/27 09:08:47 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,34 @@ void	execute_command(t_shell *shell)
 	}
 }
 
+int	count_commands(t_node *head)
+{
+	t_node	*tmp;
+	int		count;
+	
+	tmp = head;
+	count = 0;
+	while (tmp->next && tmp->next != head)
+	{
+		if (tmp->type == COMMAND)
+			count++;
+		tmp = tmp->next;
+	}
+	if (tmp->type == COMMAND)
+		count++;
+	return (count);
+}
+
 void	execution(t_shell *shell)
 {
-	t_node	*current;
+	if (count_commands(shell->nodes) == 1)
+		execute_command(shell);
+	else
+		execute_pipeline(shell);
+}
 
-	current = shell->nodes;
-	while (current)
+		
+	/*while (current)
 	{
 		if (current->type == COMMAND)
 			execute_command(shell);
@@ -54,4 +76,5 @@ void	execution(t_shell *shell)
 		current = current->next;
 	}
 	// if there's more than one COMMAND, there will assumedly be a PIPE
-}
+}*/
+

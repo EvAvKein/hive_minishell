@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:20:11 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/26 16:27:06 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ int	execute_sys_command(t_shell *shell)
 {
 	char	*path;
 	char	**path_list;
-	int		i;
+	//int		i;
 
-	i = 0;
+	//i = 0;
 	path_list = NULL;
 	if (ft_strchr(shell->nodes->argv[0], '/'))
 		path = get_path_from_arg(shell);
