@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 09:37:52 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/26 16:45:21 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ t_node	*append_new_node(t_shell *shell, int argc)
  */
 bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 {
-	t_node	*cmd_node;
+	//t_node	*cmd_node; these were giving me a compiling error so i commented them out
 	int		argc;
 
-	cmd_node = NULL;
+	//cmd_node = NULL;
 	argc = str_to_argc(&parsing->input[parsing->i],
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
 		.in_quote = '\0', .in_operator = {'\0', '\0', '\0'}});

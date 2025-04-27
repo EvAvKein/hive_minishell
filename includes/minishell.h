@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 13:31:03 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/27 09:07:29 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ bool	parse_plusequals(t_shell *shell, t_parsing *parsing);
 
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
+void	execute_pipeline(t_shell *shell);
 int		execute_sys_command(t_shell *shell);
 void	execution(t_shell *shell);
 int		fork_and_execute_sys_command(t_shell *shell);

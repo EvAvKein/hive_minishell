@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/25 10:48:32 by ahavu            ###   ########.fr        #
+#    Updated: 2025/04/27 09:30:10 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,14 +17,15 @@ MAIN := main.c
 SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
-			 execution/execution.c \
+			 execution/builtin_or_sys_command.c \
 			 execution/commands.c \
-			 execution/commands_ms_unset.c \
 			 execution/commands_ms_cd.c \
 			 execution/commands_ms_export.c \
-			 execution/utils.c \
-			 execution/builtin_or_sys_command.c \
+			 execution/commands_ms_unset.c \
+			 execution/execution.c \
+			 execution/pipeline.c \
 			 execution/redirections.c \
+			 execution/utils.c \
 			 parsing/parsing.c \
 			 parsing/traversal.c \
 			 parsing/misc.c \
