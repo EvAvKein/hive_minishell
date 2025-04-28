@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:11:18 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/28 16:02:39 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	update_pwds(t_shell *shell, char *oldpwd)
 	return (0);
 }
 
-void	ms_cd(t_shell *shell)
+int	ms_cd(t_shell *shell)
 {
 	char	*oldpwd;
 	char	*destination;
@@ -49,17 +49,18 @@ void	ms_cd(t_shell *shell)
 	destination = NULL;
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
-		return (perror("cd: getcwd failed!\n"));
+		return (1);
 	if (!shell->nodes->argv[1])
 	{
 		destination = getenv("HOME");
 		if (!destination)
-			return (perror("cd: getenv failed!\n"));
+			return (1);
 	}
 	else
 		destination = shell->nodes->argv[1];
 	if (chdir(destination) != 0)
-		return (perror("cd: chdir failed!\n"));
+		return (1);
 	if (update_pwds(shell, oldpwd) == 1)
-		return (perror("cd: ft_strjoin failed!\n"));
+		return (1);
+	return (0);
 }

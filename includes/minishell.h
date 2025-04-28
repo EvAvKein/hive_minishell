@@ -6,7 +6,11 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/29 11:27:05 by ahavu            ###   ########.fr       */
+=======
+/*   Updated: 2025/04/28 16:06:08 by ahavu            ###   ########.fr       */
+>>>>>>> 12e7dc0 (started implementing a pipeline & made some additions to command execution)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +113,7 @@ t_redirect	redirect_of_c(char *c);
 
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
+void	execute_command(t_shell *shell);
 void	execute_pipeline(t_shell *shell);
 int		execute_sys_command(t_shell *shell);
 void	execution(t_shell *shell);
@@ -117,16 +122,16 @@ void	free_env_array(char **env);
 int		get_env_elements(char **envp);
 char	*get_path_from_arg(t_shell *shell);
 char	*get_path_from_envp(t_shell *shell);
-int		is_builtin(char *cmd);
-void	ms_cd(t_shell *shell);
-void	ms_echo(t_shell *shell);
-void	ms_env(t_shell *shell);
-void	execute_command(t_shell *shell);
 int		handle_appendfile(char *file);
 int		handle_infile(char *file);
 int		handle_outfile(char *file);
+int		is_builtin(char *cmd);
+int		ms_cd(t_shell *shell);
+void	ms_echo(t_shell *shell);
+void	ms_env(t_shell *shell);
 void	ms_exit(t_shell *shell);
-void	ms_export(t_shell *shell);
+int		ms_export(t_shell *shell);
+void	ms_pipe(t_shell *shell);
 void	ms_pwd(void);
 void	ms_unset(t_shell *shell);
 

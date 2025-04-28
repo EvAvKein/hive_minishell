@@ -6,13 +6,91 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/27 09:07:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/28 15:53:20 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2])
+{
+	if (prev_fd > 0)
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
+	}
+	if (current->next && current->next->type == COMMAND)
+	{
+		close(pipe_fd[0]);// close the READ end of the pipe (because it's unused)
+		dup2(pipe_fd[1], STDOUT_FILENO); // redirect the fd
+		close(pipe_fd[1]);
+	}
+	//TODO: apply redirections - overriding pipes if present
+	if (is_builtin(current->argv[0]))
+	{
+		execute_builtin(shell);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		execute_sys_command(shell);
+	//the child process should exit here
+}
+
+static int	pipeline_parent(t_node *current, int prev_fd, int pipe_fd[2])
+{
+	if (prev_fd > 0)
+		close(prev_fd);
+	if (current->next && current->next->type == COMMAND)
+	{
+		close(pipe_fd[1]); // close the WRITE end of the pipe
+		prev_fd = pipe_fd[0];
+	}
+	return (prev_fd);
+}
+
+static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
+{
+	pid_t	pid;
+	
+	if (pipe(pipe_fd) == -1)
+	{
+		perror("pipe failed");
+		return (1);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork failed");
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		return (1);
+	}
+	if (pid == 0)
+		pipeline_child(shell, current, prev_fd, pipe_fd);
+	else
+		prev_fd = pipeline_parent(current, prev_fd, pipe_fd);
+	return (prev_fd);
+}
+
 void	execute_pipeline(t_shell *shell)
 {
-	
+	t_node	*current;
+	int		prev_fd;
+	int		pipe_fd[2];
+
+	current = shell->nodes;
+	prev_fd = -1;
+	while (current)
+	{
+		//if there are redirections, those should take priority over pipes
+		if (current->type == COMMAND)
+		{
+			if (current->next && current->next->type == COMMAND)
+			{
+				prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
+			}
+		}
+		current = current->next;
+	}
+	//wait for all children
 }
