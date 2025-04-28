@@ -6,11 +6,10 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:08:48 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:10:53 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include <fcntl.h>
@@ -139,9 +138,11 @@ int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 char	*get_pwd_from_env(char **envp);
 int		get_env_elements(char **envp);
-int		handle_appendfile(t_node *current);
-int		handle_infile(t_node *current);
-int		handle_outfile(t_node *current);
+char	*get_path_from_arg(t_shell *shell);
+char	*get_path_from_envp(t_shell *shell);
+int		handle_appendfile(char *file);
+int		handle_infile(char *file);
+int		handle_outfile(char *file);
 int		is_builtin(char *cmd);
 int		ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
