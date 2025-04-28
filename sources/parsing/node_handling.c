@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 14:14:28 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:17:41 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,14 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
 	while (input[parsing->i])
 	{
 		skip_spaces(parsing);
-		if (input[parsing->i] == '|')
+		if (skip_pipe(parsing))
 			return (true);
-		if (!handle_operator(shell, parsing))
+		if (!handle_redirect(shell, parsing))
 			return (false);
 		skip_spaces(parsing);
-		if (input[parsing->i] == '|')
+		if (skip_pipe(parsing))
 			return (true);
-		if (cmd_node && input[parsing->i] && !operator_of_c(&input[parsing->i]))
+		if (cmd_node && input[parsing->i] && !redirect_of_c(&input[parsing->i]))
 		{
 			cmd_node->argv[cmd_i] = extract_arg(parsing);
 			if (!cmd_node->argv[cmd_i++])
@@ -107,7 +107,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 	cmd_node = NULL;
 	argc = str_to_argc(&parsing->input[parsing->i],
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
-		.in_quote = '\0', .in_operator = {'\0', '\0', '\0'}});
+		.in_quote = '\0', .in_redirect = {'\0', '\0', '\0'}});
 	if (argc < 0)
 		return (false);
 	if (argc)
@@ -117,6 +117,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 			return (false);
 		parsing->command_node->type = COMMAND;
 	}
+	parsing->piping = false;
 	if (!str_to_nodes(shell, parsing, parsing->command_node))
 		return (false);
 	return (true);
@@ -126,11 +127,9 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
  * 
  * Sorts the newly-added nodes according to data accumulated in the provided `
  * parsing` struct:
- * Moving any infiles and heredocs nodes to the beginning,
- * any command node to the middle,
- * and any outfile and appendfile nodes to the end.
- * 
- * @example The input `echo > outfile hello < infile there` 
+ * Moving any infiles and heredocs nodes to the beginning of the segement,
+ * any command node to the middle of the segement,
+ * and any outfile and appendfile nodes to the end of the segement.
  * 
  * @returns Whether the sorting process (with its necessary memory allocations)
  *          was successful.
@@ -151,11 +150,11 @@ bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing)
 	if (!collect_segment_nodes(&sort))
 		return (false);
 	sort.attach = (t_node_sort_reattach){
-		.prev_node = parsing->last_node_preinput,
+		.prev_node = parsing->node_before_command,
 		.infiles = link_collected_nodes(&sort.infile_arr, 0), .start = NULL,
 		.outfiles = link_collected_nodes(&sort.outfile_arr, 0)};
 	reattach_nodes(parsing, &sort.attach);
-	if (!parsing->last_node_preinput)
+	if (!parsing->node_before_command)
 		shell->nodes = sort.attach.start;
 	return (true);
 }

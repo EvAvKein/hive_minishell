@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 20:22:31 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:45:36 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static inline void	set_start_of_arg(t_str_to_argc_vars *var)
 	if (!var->in_arg)
 	{
 		var->in_arg = true;
-		if (var->in_operator[0])
-			var->in_operator[0] = '\0';
+		if (var->in_redirect[0])
+			var->in_redirect[0] = '\0';
 		else
 			var->argc++;
 	}
@@ -49,15 +49,15 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 		{
 			if (str[var.i] == '|')
 				break ;
-			if (operator_of_c(&str[var.i])
-				&& memorize_and_skip_operator(str, &var.i, var.in_operator))
+			if (redirect_of_c(&str[var.i])
+				&& memorize_and_skip_redirect(str, &var.i, var.in_redirect))
 					continue ;
 		}
 		set_start_of_arg(&var);
 		toggle_quote_by_c(&var.in_quote, str[var.i++]);
 	}
-	if (var.in_operator[0])
-		return (-1); /** TODO: Change into syntax error printout */
+	if (var.in_redirect[0]) /** TODO: Change into syntax error printout */
+		return (ft_dprintf(2, "Ambiguous redirect (PLACEHOLDER TEXT)\n"), -1);
 	return (var.argc);
 }
 
@@ -86,11 +86,11 @@ int	arg_to_len(char *arg)
 		length++;
 		if (is_space(arg[i]))
 		{
-			if (in_quote && ++length && ++i)
+			if (in_quote && ++i)
 				continue ;
 			return (length);
 		}
-		if (operator_of_c(&arg[i]) && length--)
+		if (redirect_of_c(&arg[i]) && length--)
 			break ;
 		if (toggle_quote_by_c(&in_quote, arg[i]))
 			length--;
@@ -127,7 +127,7 @@ void	arg_cpy(char *dest, char *input, size_t *input_i)
 			dest[dest_i++] = input[(*input_i)++];
 			continue ;
 		}
-		if (!in_quote && operator_of_c(&input[(*input_i)]))
+		if (!in_quote && redirect_of_c(&input[(*input_i)]))
 				break ;
 		if (!toggle_quote_by_c(&in_quote, input[*input_i]))
 			dest[dest_i++] = input[(*input_i)++];

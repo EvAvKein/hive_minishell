@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:17:31 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 16:16:42 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:14:39 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
 			sort->infile_count++;
 		if (sort->node->type == OUTFILE || sort->node->type == APPENDFILE)
 			sort->outfile_count++;
-		if (!sort->node->prev)
+		if (!sort->node->prev
+			|| sort->node->prev == parsing->node_before_command)
 			break ;
 		node_i_from_end++;
 		sort->node = sort->node->prev;

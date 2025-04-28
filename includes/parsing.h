@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:04:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 20:32:52 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 09:23:49 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ typedef	struct s_parsing
 {
 	char	*input;
 	size_t	i;
-	t_node	*last_node_preinput;
+	t_node	*node_before_command;
 	t_node	*command_node;
 	size_t	midparse_nodes;
+	bool	piping;
 }			t_parsing;
 
 /**
@@ -38,17 +39,14 @@ typedef	struct s_parsing
  * TODO: Write these docs
  *  
  */
-typedef enum e_operator
+typedef enum e_redirect
 {
-	OPR_NONE = 0,
-	OPR_PIPE,
-	OPR_HEREDOC,
-	OPR_APPENDFILE,
-	OPR_INFILE,
-	OPR_OUTFILE,
-	OPR_EQUALS,
-	OPR_PLUSEQUALS
-}	t_operator;
+	RDR_NONE = 0,
+	RDR_HEREDOC,
+	RDR_APPENDFILE,
+	RDR_INFILE,
+	RDR_OUTFILE,
+}	t_redirect;
 
 /* FUNCTION PARAM STRUCTS *****************************************************/
 
@@ -93,7 +91,7 @@ typedef struct s_str_to_argc_vars
 	int		argc;
 	bool	in_arg;
 	char	in_quote;
-	char	in_operator[3];
+	char	in_redirect[3];
 }			t_str_to_argc_vars;
 
 /**

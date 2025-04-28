@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/26 18:07:32 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:29:44 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,12 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <unistd.h>
-# include <stdio.h>
 # include "libft_plus.h"
 # include "parsing.h"
 
 # define SHELL_NAME "shellGBTQ+"
 
-# define SHELL_PROMPT	"\
+# define SHELL_PROMPT "\
 \001\x1b[1;38;2;162;77;167m\002shell\
 \001\x1b[1;38;2;39;115;255m\002G\
 \001\x1b[1;38;2;32;170;10m\002B\
@@ -91,11 +89,12 @@ void		reattach_nodes(t_parsing *parsing, t_node_sort_reattach *reattach);
 void		skip_spaces(t_parsing *parsing);
 void		set_prev_and_next(t_node *node, t_node *new_prev, t_node *new_next);
 
-int			str_to_argc(char *str, t_str_to_argc_vars var);
-bool		handle_operator(t_shell *shell, t_parsing *parsing);
-bool		memorize_and_skip_operator(char *str, size_t *i, char memory[3]);
-
 bool		toggle_quote_by_c(char *containing_quote, char c);
+
+int			str_to_argc(char *str, t_str_to_argc_vars var);
+bool		skip_pipe(t_parsing *parsing);
+bool		handle_redirect(t_shell *shell, t_parsing *parsing);
+bool		memorize_and_skip_redirect(char *str, size_t *i, char memory[3]);
 
 bool		parse_heredoc(t_shell *shell, t_parsing *parsing);
 bool		parse_appendfile(t_shell *shell, t_parsing *parsing);
@@ -104,7 +103,7 @@ bool		parse_outfile(t_shell *shell, t_parsing *parsing);
 bool		parse_equals(t_shell *shell, t_parsing *parsing);
 bool		parse_plusequals(t_shell *shell, t_parsing *parsing);
 
-t_operator	operator_of_c(char *c);
+t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 

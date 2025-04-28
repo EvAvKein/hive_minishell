@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:23:07 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 16:42:12 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 09:25:47 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,58 +17,46 @@
  * @param c The address of the character to be checked.
  *          If not falsy, assumed to be part of a null-terminated string.
  * 
- * @returns A value corresponding to the type of operator it is (or if it isn't)
+ * @returns A value corresponding to the type of redirect it is (or if it isn't)
  * 
  */
-t_operator operator_of_c(char *c)
+t_redirect redirect_of_c(char *c)
 {
 	if (!c || !*c)
-		return (OPR_NONE);
-	if (*c == '|')
-		return (OPR_PIPE);
+		return (RDR_NONE);
 	if (c[0] == '<' && c[1] == '<')
-		return (OPR_HEREDOC);
+		return (RDR_HEREDOC);
 	if (c[0] == '>' && c[1] == '>')
-		return (OPR_APPENDFILE);
+		return (RDR_APPENDFILE);
 	if (*c == '<')
-		return (OPR_INFILE);
+		return (RDR_INFILE);
 	if (*c == '>')
-		return (OPR_OUTFILE);
-	if (*c == '=')
-		return (OPR_EQUALS);
-	if (c[0] == '+' && c[1] == '=')
-		return (OPR_PLUSEQUALS);
-	return (OPR_NONE);
+		return (RDR_OUTFILE);
+	return (RDR_NONE);
 }
 
 /**
  * 
  * Updates the provided `memory` array based on the character(s) in `
- * str[i]` (wiping the memory if it's no operator),
- * and skips the index past any operator found.
+ * str[i]` (wiping the memory if it's not a redirect),
+ * and skips the index past any redirect found.
  * 
  * @returns `true` (for external line-saving reason, due to Norminette).
  * 
  */
-bool	memorize_and_skip_operator(char *str, size_t *i, char memory[3])
+bool	memorize_and_skip_redirect(char *str, size_t *i, char memory[3])
 {
-	t_operator	operator;
+	t_redirect	redirect;
 
-	operator = operator_of_c(&str[*i]);
-	if (operator == OPR_HEREDOC && ++(*i) && ++(*i))
+	redirect = redirect_of_c(&str[*i]);
+	if (redirect == RDR_HEREDOC && ++(*i) && ++(*i))
 		ft_memcpy(memory, "<<", 2);
-	else if (operator == OPR_APPENDFILE && ++(*i) && ++(*i))
+	else if (redirect == RDR_APPENDFILE && ++(*i) && ++(*i))
 		ft_memcpy(memory, ">>", 2);
-	else if (operator == OPR_INFILE && ++(*i))
+	else if (redirect == RDR_INFILE && ++(*i))
 		ft_memcpy(memory, "<\0", 2);
-	else if (operator == OPR_OUTFILE && ++(*i))
+	else if (redirect == RDR_OUTFILE && ++(*i))
 		ft_memcpy(memory, ">", 2);
-	else if (operator == OPR_EQUALS && ++(*i))
-		ft_memcpy(memory, "=\0", 2);
-	else if (operator == OPR_PLUSEQUALS && ++(*i) && ++(*i))
-		ft_memcpy(memory, "+=", 2);
-	// else if (operator == OPR_PIPE && (*i)++)
-	// 	ft_memcpy(memory, "|\0", 2);
 	else
 		ft_memcpy(memory, "\0\0", 2);
 	return (true);
@@ -76,31 +64,41 @@ bool	memorize_and_skip_operator(char *str, size_t *i, char memory[3])
 
 /**
  * 
- * Checks if the current point in parsing is an operator - if so, calls the
- * appropriate function for parsing that operator.
+ * Checks if the current point in parsing is a redirect - if so, calls the
+ * appropriate function for parsing that redirect.
  * 
- * @returns Whether the operator parsing was successful,
- *          or `true` if the current point in parsing is not an operator.
+ * @returns Whether the redirect parsing was successful,
+ *          or `true` if the current point in parsing is not a redirect.
  * 
  */
-bool	handle_operator(t_shell *shell, t_parsing *parsing)
+bool	handle_redirect(t_shell *shell, t_parsing *parsing)
 {
-	t_operator	operator;
+	t_redirect	redirect;
 
-	operator = operator_of_c(&parsing->input[parsing->i]);
-	if (operator == OPR_HEREDOC)
+	redirect = redirect_of_c(&parsing->input[parsing->i]);
+	if (redirect == RDR_HEREDOC)
 		return (parse_heredoc(shell, parsing));
-	else if (operator == OPR_APPENDFILE)
+	else if (redirect == RDR_APPENDFILE)
 		return (parse_appendfile(shell, parsing));
-	else if (operator == OPR_INFILE)
+	else if (redirect == RDR_INFILE)
 		return (parse_infile(shell, parsing));
-	else if (operator == OPR_OUTFILE)
+	else if (redirect == RDR_OUTFILE)
 		return (parse_outfile(shell, parsing));
-	else if (operator == OPR_EQUALS)
-		return (parse_equals(shell, parsing));
-	else if (operator == OPR_PLUSEQUALS)
-		return (parse_plusequals(shell, parsing));
-	else if (operator == OPR_PIPE)
-		parsing->i++;
 	return (true);
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ */
+bool	skip_pipe(t_parsing *parsing)
+{
+	if (parsing->input[parsing->i] == '|')
+	{
+		parsing->i++;
+		parsing->piping = true;
+		return (true);
+	}
+	return (false);
 }
