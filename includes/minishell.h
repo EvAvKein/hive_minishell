@@ -5,12 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:35:27 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/07 12:36:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include <fcntl.h>
@@ -115,6 +114,7 @@ t_redirect	redirect_of_c(char *c);
 
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
+void	execute_command(t_shell *shell);
 void	execute_pipeline(t_shell *shell);
 int		execute_sys_command(t_shell *shell);
 void	execution(t_shell *shell);
@@ -123,16 +123,16 @@ void	free_env_array(char **env);
 int		get_env_elements(char **envp);
 char	*get_path_from_arg(t_shell *shell);
 char	*get_path_from_envp(t_shell *shell);
-int		is_builtin(char *cmd);
-void	ms_cd(t_shell *shell);
-void	ms_echo(t_shell *shell);
-void	ms_env(t_shell *shell);
-void	execute_command(t_shell *shell);
 int		handle_appendfile(char *file);
 int		handle_infile(char *file);
 int		handle_outfile(char *file);
+int		is_builtin(char *cmd);
+int		ms_cd(t_shell *shell);
+void	ms_echo(t_shell *shell);
+void	ms_env(t_shell *shell);
 void	ms_exit(t_shell *shell);
-void	ms_export(t_shell *shell);
+int		ms_export(t_shell *shell);
+void	ms_pipe(t_shell *shell);
 void	ms_pwd(void);
 void	ms_unset(t_shell *shell);
 

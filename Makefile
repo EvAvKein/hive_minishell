@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/07 12:35:22 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/07 12:36:02 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC_FILES := utils/spaces.c \
 			 execution/commands_ms_export.c \
 			 execution/commands_ms_unset.c \
 			 execution/execution.c \
+			 execution/pipe.c \
 			 execution/pipeline.c \
 			 execution/redirections.c \
 			 execution/utils.c \
