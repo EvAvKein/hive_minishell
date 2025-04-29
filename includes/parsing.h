@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:04:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/28 09:23:49 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/29 09:00:28 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_node t_node;
 
 /**
  * 
- * TODO: Write these docs
+ * The top-level information needed for parsing user input into a list of nodes.
  * 
  */
 typedef	struct s_parsing
@@ -36,7 +36,7 @@ typedef	struct s_parsing
 
 /**
  * 
- * TODO: Write these docs
+ * An enum for improving the readability of flags used in redirection parsing.
  *  
  */
 typedef enum e_redirect
@@ -52,7 +52,8 @@ typedef enum e_redirect
 
 /**
  * 
- * TODO: Write these docs
+ * Variables for reattaching a segment of sorted nodes (organized with `
+ * t_node_sort`) into the primary linked list of nodes.
  * 
  */
 typedef struct s_node_sort_reattach
@@ -65,7 +66,10 @@ typedef struct s_node_sort_reattach
 
 /**
  * 
- * TODO: Write these docs
+ * Variables for sorting a segment of nodes.
+ * 
+ * The initial order is `command -> all redirections`,
+ * and these variables help turn it into `infiles -> command -> outfiles`.
  * 
  */
 typedef struct s_node_sort
@@ -82,7 +86,7 @@ typedef struct s_node_sort
 
 /**
  * 
- * Created solely for Norminette line-saving inside `str_to_argc`
+ * Created solely for Norminette line-saving inside `str_to_argc`.
  * 
  */
 typedef struct s_str_to_argc_vars
@@ -96,7 +100,7 @@ typedef struct s_str_to_argc_vars
 
 /**
  * 
- * Created solely for Norminette line-saving inside `str_to_argv`
+ * Created solely for Norminette line-saving inside `str_to_argv`.
  * 
  */
 typedef struct s_str_to_argv_vars

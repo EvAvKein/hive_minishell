@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:23:07 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/28 09:25:47 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/29 08:49:40 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ bool	handle_redirect(t_shell *shell, t_parsing *parsing)
 
 /**
  * 
- * TODO: Write these docs
+ * If parsing is currently at a pipe operator, skip past it and set the
+ * appropriate flag.
+ * 
+ * @returns Whether a pipe was skipped.
  * 
  */
 bool	skip_pipe(t_parsing *parsing)
