@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:36:19 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:36:37 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
+int		apply_redirections(t_node *current);
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
 void	execute_command(t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/28 15:53:20 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/29 11:15:41 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,22 @@ static void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pip
 		dup2(prev_fd, STDIN_FILENO);
 		close(prev_fd);
 	}
-	if (current->next && current->next->type == COMMAND)
-	{
-		close(pipe_fd[0]);// close the READ end of the pipe (because it's unused)
-		dup2(pipe_fd[1], STDOUT_FILENO); // redirect the fd
-		close(pipe_fd[1]);
-	}
-	//TODO: apply redirections - overriding pipes if present
-	if (is_builtin(current->argv[0]))
-	{
-		execute_builtin(shell);
+	if (apply_redirections(current))
 		exit(EXIT_SUCCESS);
-	}
+	if (current->next && current->next->type == COMMAND)
+		dup2(pipe_fd[1], STDOUT_FILENO); // redirect the fd
+	close(pipe_fd[1]);//close the WRITE end of the pipe because it's been redirected
+	close(pipe_fd[0]);// close the READ end of the pipe (because it's unused)
+	if (is_builtin(current->argv[0]))
+		execute_builtin(shell);
 	else
 		execute_sys_command(shell);
-	//the child process should exit here
+	exit(EXIT_SUCCESS);
 }
 
 static int	pipeline_parent(t_node *current, int prev_fd, int pipe_fd[2])
 {
-	if (prev_fd > 0)
+	if (prev_fd != -1)
 		close(prev_fd);
 	if (current->next && current->next->type == COMMAND)
 	{
@@ -92,5 +88,5 @@ void	execute_pipeline(t_shell *shell)
 		}
 		current = current->next;
 	}
-	//wait for all children
+	//wait for all children - just wait() and compare the pids?
 }
