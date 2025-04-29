@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:31:26 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/23 10:40:08 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/25 20:23:40 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * TODO: Write these docs
  * 
  */
-bool	parse_plusequals(t_shell *shell,t_parsing *parsing)
+bool	parse_plusequals(t_shell *shell, t_parsing *parsing)
 {
 	(void) shell;
 	(void) parsing;
@@ -35,7 +35,7 @@ bool	parse_plusequals(t_shell *shell,t_parsing *parsing)
  * TODO: Write these docs
  * 
  */
-bool	parse_equals(t_shell *shell,t_parsing *parsing)
+bool	parse_equals(t_shell *shell, t_parsing *parsing)
 {
 	(void) shell;
 	(void) parsing;

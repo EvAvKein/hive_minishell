@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 10:40:31 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/25 14:48:38 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	*free_nodes(t_node *node)
 
 /**
  * 
- * Frees all command-specific allocations in the provided `shell`.
+ * Frees all command-specific allocations in the provided `shell`,
+ * resetting their variable values in preperation for new command input.
  * 
  */
 void	command_cleanup(t_shell *shell)

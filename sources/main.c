@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 08:54:38 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/28 18:22:08 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **envp)
 	}
 	while (1)
 	{
-		input = readline("shellGBTQ+ >");
+		input = readline(SHELL_PROMPT);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
 			continue;
 		if (input_was_entirely_spaces(input))

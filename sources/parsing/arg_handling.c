@@ -6,50 +6,23 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 20:18:33 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:45:36 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * 
- * Counts the length of an argument in a given string,
- * omitting quotes that should be parsed away
- * and including spaces within quotes.
- * 
- * @param arg The string for which to calucate the argument length.
- * 
- * @returns The total length, with the aforementioned parsing aspects in mind.
- * 
- */
-int	arg_to_len(char *arg)
+static inline void	set_start_of_arg(t_str_to_argc_vars *var)
 {
-	size_t		i;
-	size_t		length;
-	char		in_quote;
-
-	i = 0;
-	length = 0;
-	in_quote = '\0';
-	while (arg[i])
+	if (!var->in_arg)
 	{
-		length++;
-		if (is_space(arg[i]))
-		{
-			if (in_quote && ++length && ++i)
-				continue ;
-			return (length);
-		}
-		if (operator_of_c(&arg[i]) && length--)
-			break ;
-		if (toggle_quote_by_c(&in_quote, arg[i]))
-			length--;
-		i++;
+		var->in_arg = true;
+		if (var->in_redirect[0])
+			var->in_redirect[0] = '\0';
+		else
+			var->argc++;
 	}
-	return (length);
 }
-
 /**
  * 
  * Counts how many arguments are in the provided string.
@@ -76,24 +49,54 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 		{
 			if (str[var.i] == '|')
 				break ;
-			if (operator_of_c(&str[var.i])
-				&& memorize_and_skip_operator(str, &var.i, var.in_operator))
+			if (redirect_of_c(&str[var.i])
+				&& memorize_and_skip_redirect(str, &var.i, var.in_redirect))
 					continue ;
 		}
-		if (!var.in_arg)
-		{
-			var.in_arg = true;
-			if (var.in_operator[0])
-				var.in_operator[0] = '\0';
-			else
-				var.argc++;
-		}
+		set_start_of_arg(&var);
 		toggle_quote_by_c(&var.in_quote, str[var.i++]);
 	}
-	if (var.in_operator[0])
-		return (-1); /** TODO: Change into syntax error printout */
-	else 
-		return (var.argc);
+	if (var.in_redirect[0]) /** TODO: Change into syntax error printout */
+		return (ft_dprintf(2, "Ambiguous redirect (PLACEHOLDER TEXT)\n"), -1);
+	return (var.argc);
+}
+
+/**
+ * 
+ * Counts the length of an argument in a given string,
+ * omitting quotes that should be parsed away
+ * and including spaces within quotes.
+ * 
+ * @param arg The string for which to calucate the argument length.
+ * 
+ * @returns The total length, with the aforementioned parsing aspects in mind.
+ * 
+ */
+int	arg_to_len(char *arg)
+{
+	size_t		i;
+	size_t		length;
+	char		in_quote;
+
+	i = 0;
+	length = 0;
+	in_quote = '\0';
+	while (arg[i])
+	{
+		length++;
+		if (is_space(arg[i]))
+		{
+			if (in_quote && ++i)
+				continue ;
+			return (length);
+		}
+		if (redirect_of_c(&arg[i]) && length--)
+			break ;
+		if (toggle_quote_by_c(&in_quote, arg[i]))
+			length--;
+		i++;
+	}
+	return (length);
 }
 
 /**
@@ -124,7 +127,7 @@ void	arg_cpy(char *dest, char *input, size_t *input_i)
 			dest[dest_i++] = input[(*input_i)++];
 			continue ;
 		}
-		if (!in_quote && operator_of_c(&input[(*input_i)]))
+		if (!in_quote && redirect_of_c(&input[(*input_i)]))
 				break ;
 		if (!toggle_quote_by_c(&in_quote, input[*input_i]))
 			dest[dest_i++] = input[(*input_i)++];
@@ -136,7 +139,9 @@ void	arg_cpy(char *dest, char *input, size_t *input_i)
 
 /**
  * 
- * TODO: Write these docs
+ * Parses through the next valid argument and creates a copy of it.
+ * 
+ * @returns A copy of the next valid argument (or `NULL` on allocation failure).
  * 
  */
 char	*extract_arg(t_parsing *parsing)

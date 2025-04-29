@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 09:37:52 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:17:41 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,14 @@
 
 /**
  * 
- * TODO: Write these docs
+ * Allocates for a new node with an argument vector
+ * according to the provided `argc`,
+ * appending the node at the end of `shell`'s linked list of nodes.
  * 
- */
-bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
-{
-	int		cmd_i;
-	char	*input;
-
-	cmd_i = 0;
-	input = parsing->input;
-	while (input[parsing->i])
-	{
-		skip_spaces(parsing);
-		if (input[parsing->i] == '|')
-			return (true);
-		if (!handle_operator(shell, parsing))
-			return (false);
-		skip_spaces(parsing);
-		if (input[parsing->i] == '|')
-			return (true);
-		if (cmd_node && input[parsing->i] && !operator_of_c(&input[parsing->i]))
-		{
-			cmd_node->argv[cmd_i] = extract_arg(parsing);
-			if (!cmd_node->argv[cmd_i++])
-				return (false);
-		}
-	}
-	return (true);
-}
-
-/**
+ * @param argc The argument count of this node,
+ *             according to which to allocate an argument vector for the node.
  * 
- * TODO: Write these docs
+ * @returns A pointer to the new node (or `NULL` on memory allocation failure).
  * 
  */
 t_node	*append_new_node(t_shell *shell, int argc)
@@ -78,7 +53,50 @@ t_node	*append_new_node(t_shell *shell, int argc)
 
 /**
  * 
- * TODO: Write these docs
+ * Parses the next 'simple command', adding command arguments (if any)
+ * to the provided command node and appending any redirection nodes at the end.
+ * 
+ * @param cmd_node The command node in which to add command arguments.
+ * Assumes enough space is already allocated in its vector to fit all arguments.
+ * 
+ * @returns Whether all node creations were successful.
+ * 
+ */
+static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
+{
+	int		cmd_i;
+	char	*input;
+
+	cmd_i = 0;
+	input = parsing->input;
+	while (input[parsing->i])
+	{
+		skip_spaces(parsing);
+		if (skip_pipe(parsing))
+			return (true);
+		if (!handle_redirect(shell, parsing))
+			return (false);
+		skip_spaces(parsing);
+		if (skip_pipe(parsing))
+			return (true);
+		if (cmd_node && input[parsing->i] && !redirect_of_c(&input[parsing->i]))
+		{
+			cmd_node->argv[cmd_i] = extract_arg(parsing);
+			if (!cmd_node->argv[cmd_i++])
+				return (false);
+		}
+	}
+	return (true);
+}
+
+/**
+ * 
+ * Parses the next 'simple command' - adding any command to the end
+ * of the `shell`'s linked list of nodes, followed by that command's
+ * redirection nodes (if any).
+ * 
+ * @returns Whether a 'valid simple' was found
+ *          and memory allocations were successful.
  * 
  */
 bool	extract_nodes(t_shell *shell, t_parsing *parsing)
@@ -89,7 +107,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 	cmd_node = NULL;
 	argc = str_to_argc(&parsing->input[parsing->i],
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
-		.in_quote = '\0', .in_operator = {'\0', '\0', '\0'}});
+		.in_quote = '\0', .in_redirect = {'\0', '\0', '\0'}});
 	if (argc < 0)
 		return (false);
 	if (argc)
@@ -99,6 +117,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 			return (false);
 		parsing->command_node->type = COMMAND;
 	}
+	parsing->piping = false;
 	if (!str_to_nodes(shell, parsing, parsing->command_node))
 		return (false);
 	return (true);
@@ -106,7 +125,14 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 
 /**
  * 
- * TODO: Write these docs
+ * Sorts the newly-added nodes according to data accumulated in the provided `
+ * parsing` struct:
+ * Moving any infiles and heredocs nodes to the beginning of the segement,
+ * any command node to the middle of the segement,
+ * and any outfile and appendfile nodes to the end of the segement.
+ * 
+ * @returns Whether the sorting process (with its necessary memory allocations)
+ *          was successful.
  * 
  */
 bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing)
@@ -115,18 +141,20 @@ bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing)
 
 	if (!parsing->midparse_nodes)
 		return (true);
-	sort = (t_node_sort){.node = shell->nodes, .command_node = parsing->command_node,
+	sort = (t_node_sort){.node = shell->nodes,
+		.command_node = parsing->command_node,
 		.infile_count = 0, .infile_arr = NULL,
 		.outfile_count = 0, .outfile_arr = NULL};
 	skip_to_last_node(&sort.node);
 	count_segment_nodes(parsing, &sort);
 	if (!collect_segment_nodes(&sort))
 		return (false);
-	sort.attach = (t_node_sort_reattach){.prev_node = parsing->last_node_preinput,
+	sort.attach = (t_node_sort_reattach){
+		.prev_node = parsing->node_before_command,
 		.infiles = link_collected_nodes(&sort.infile_arr, 0), .start = NULL,
 		.outfiles = link_collected_nodes(&sort.outfile_arr, 0)};
 	reattach_nodes(parsing, &sort.attach);
-	if (!parsing->last_node_preinput)
+	if (!parsing->node_before_command)
 		shell->nodes = sort.attach.start;
 	return (true);
 }
