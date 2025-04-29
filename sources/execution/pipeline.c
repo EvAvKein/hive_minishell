@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/29 11:15:41 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/29 11:44:34 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	execute_pipeline(t_shell *shell)
 	prev_fd = -1;
 	while (current)
 	{
-		//if there are redirections, those should take priority over pipes
 		if (current->type == COMMAND)
 		{
 			if (current->next && current->next->type == COMMAND)

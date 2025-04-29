@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/29 11:26:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/29 11:41:29 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	parsing(t_shell *shell, char *input)
 			return (false);
 		}
 	}
-	print_nodes(STDERR_FILENO, shell->nodes);
+	//print_nodes(STDERR_FILENO, shell->nodes);
 	free(input);
 	if (parsing.piping)
 	{
