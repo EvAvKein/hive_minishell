@@ -6,15 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2025/04/29 11:27:05 by ahavu            ###   ########.fr       */
-=======
-/*   Updated: 2025/04/28 16:06:08 by ahavu            ###   ########.fr       */
->>>>>>> 12e7dc0 (started implementing a pipeline & made some additions to command execution)
-=======
-/*   Updated: 2025/04/29 11:12:17 by ahavu            ###   ########.fr       */
->>>>>>> bb8eb6f (2904)
+/*   Updated: 2025/04/29 11:28:43 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
