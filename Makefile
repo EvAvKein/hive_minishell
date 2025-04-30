@@ -6,7 +6,11 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2025/04/27 09:30:10 by ahavu            ###   ########.fr        #
+=======
+#    Updated: 2025/04/28 10:38:03 by ahavu            ###   ########.fr        #
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +27,10 @@ SRC_FILES := utils/spaces.c \
 			 execution/commands_ms_export.c \
 			 execution/commands_ms_unset.c \
 			 execution/execution.c \
+<<<<<<< HEAD
+=======
+			 execution/pipe.c \
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 			 execution/pipeline.c \
 			 execution/redirections.c \
 			 execution/utils.c \

@@ -6,7 +6,11 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:08:45 by ahavu             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/25 14:15:19 by ahavu            ###   ########.fr       */
+=======
+/*   Updated: 2025/04/28 10:41:13 by ahavu            ###   ########.fr       */
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +28,11 @@
 // int fd[2]
 // int previous_pipe = previous pipe's read end
 
+<<<<<<< HEAD
 static pid_t	left_side(int fd[2])
+=======
+static pid_t	left_side(int fd[2], t_shell *shell)
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 {
 	pid_t	pid;
 
@@ -36,12 +44,15 @@ static pid_t	left_side(int fd[2])
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		//execute
+		if (is_builtin(shell->nodes->argv[0]))
+			execute_builtin(shell);
+		else
+			fork_and_execute_sys_command(shell);
 	}
 	return (pid);
 }
 
-static pid_t	right_side(int fd[2])
+static pid_t	right_side(int fd[2], t_shell *shell)
 {
 	pid_t	pid;
 
@@ -53,13 +64,20 @@ static pid_t	right_side(int fd[2])
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
+<<<<<<< HEAD
 		// if more pipes -> also left side
 		//execute
+=======
+		if (is_builtin(shell->nodes->argv[0]))
+			execute_builtin(shell);
+		else
+			fork_and_execute_sys_command(shell);
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 	}
 	return (pid);
 }
 
-int	ms_pipe(t_shell *shell)
+void	ms_pipe(t_shell *shell)
 {
 	int	fd[2];
 	int	pid_left;
@@ -70,8 +88,8 @@ int	ms_pipe(t_shell *shell)
 	{
 		//TODO: error/cleanup	
 	}
-	pid_left = left_side(fd);
-	pid_right = right_side(fd);
+	pid_left = left_side(fd, shell);
+	pid_right = right_side(fd, shell);
 	waitpid(pid_left, &status, 0);
 	waitpid(pid_right, &status, 0);
 }

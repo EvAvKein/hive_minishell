@@ -6,7 +6,11 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/26 16:27:06 by ahavu            ###   ########.fr       */
+=======
+/*   Updated: 2025/04/28 16:03:28 by ahavu            ###   ########.fr       */
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +91,6 @@ int	execute_sys_command(t_shell *shell)
 		perror("executable or path doesn't exist\n");
 		return (1);
 	}
-	//TODO: if redirection, do it here
 	if (execve(path, shell->nodes->argv, shell->ms_envp) == -1)
 		perror("execve failed");
 	if (path_list)
@@ -108,7 +111,7 @@ int	fork_and_execute_sys_command(t_shell *shell)
 		if (execute_sys_command(shell) == 1)
 		{
 			perror("execution failed");
-			return (1);
+			exit(1);
 		}
 	}
 	else if (pid > 0)
@@ -121,7 +124,7 @@ int	fork_and_execute_sys_command(t_shell *shell)
 		else
 			shell->last_exit_status = WEXITSTATUS(status);
 	}
-	else
+	else if (pid == -1)
 	{
 		perror("fork failed");
 		return (1);
@@ -134,7 +137,8 @@ int	execute_builtin(t_shell *shell)
 	if (!ft_strncmp(shell->nodes->argv[0], "env", 4))
 		ms_env(shell);
 	if (!ft_strncmp(shell->nodes->argv[0], "cd", 3))
-		ms_cd(shell);
+		if (ms_cd(shell) == 1)
+			perror("cd failed");
 	if (!ft_strncmp(shell->nodes->argv[0], "pwd", 4))
 		ms_pwd();
 	if (!ft_strncmp(shell->nodes->argv[0], "export", 7))

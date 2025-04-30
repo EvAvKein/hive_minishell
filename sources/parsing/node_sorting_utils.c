@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:17:31 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/24 21:12:53 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:14:39 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 /**
  * 
- * TODO: Write these docs
+ * Counts how many infile/heredoc nodes and outfile/appendfile nodes are in the
+ * segment being sorted, storing that information back in the provided `
+ * sort`.
  * 
  */
-void count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
+void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
 {
 	size_t	node_i_from_end;
 	
@@ -28,7 +30,8 @@ void count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
 			sort->infile_count++;
 		if (sort->node->type == OUTFILE || sort->node->type == APPENDFILE)
 			sort->outfile_count++;
-		if (!sort->node->prev)
+		if (!sort->node->prev
+			|| sort->node->prev == parsing->node_before_command)
 			break ;
 		node_i_from_end++;
 		sort->node = sort->node->prev;
@@ -37,10 +40,13 @@ void count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
 
 /**
  * 
- * TODO: Write these docs
+ * Collect the current segment's nodes based on the counts in `sort
+ * `, creating redirection arrays in the struct and assigning the command node.
+ * 
+ * @returns Whether the collection (with its array allocations) was successful.
  * 
  */
-bool collect_segment_nodes(t_node_sort *sort)
+bool	collect_segment_nodes(t_node_sort *sort)
 {
 	sort->infile_arr = ft_calloc(sort->infile_count + 1, sizeof(t_node *));
 	if (!sort->infile_arr)
@@ -66,9 +72,13 @@ bool collect_segment_nodes(t_node_sort *sort)
 
 /**
  * 
- * TODO: Write these docs
+ * Converts the provided array of collected nodes: Connecting the nodes,
+ * returning them as a linked list, and resetting the array's pointer to `NULL`.
  *
  * @param nodes_arr A pointer to an array of nodes.
+ * 
+ * @returns A linked list of the nodes,
+ *          or `NULL` if there were no nodes in the array.
  *  
  */
 t_node	*link_collected_nodes(t_node ***nodes_arr, size_t i)
@@ -99,7 +109,10 @@ t_node	*link_collected_nodes(t_node ***nodes_arr, size_t i)
 
 /**
  * 
- * TODO: Write these docs
+ * During the `reattach_node` process, prepends the `reattach` content to
+ * `append` and update `reattach->prev_node` to be the last node in the list.
+ * 
+ * @param append The node(s) to be appended on top of what's in `reattach`.
  * 
  */
 static void	prepend_and_update_prev_node(
@@ -115,7 +128,9 @@ static void	prepend_and_update_prev_node(
 
 /**
  * 
- * TODO: Write these docs
+ * Attaches the infile, command, and outfile nodes (in that order)
+ * in `reattach`, with the starrt of this linked list assigned to `
+ * reattach->start`.
  * 
  */
 void	reattach_nodes(t_parsing *parsing, t_node_sort_reattach *reattach)

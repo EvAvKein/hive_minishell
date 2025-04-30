@@ -6,7 +6,11 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/26 16:48:04 by ahavu            ###   ########.fr       */
+=======
+/*   Updated: 2025/04/28 16:13:47 by ahavu            ###   ########.fr       */
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,26 +97,23 @@ static void	sort_envp(char **envp)
 	print_sorted_envp(envp);
 }
 
-void	ms_export(t_shell *shell)
+int	ms_export(t_shell *shell)
 {
 	char	**add;
 
 	if (shell->nodes->argc > 2 && shell->nodes->argv[1][0] == '-')
-	{
-		perror("no options allowed");
-		return ;
-	}
+		return (1);
 	if (shell->nodes->argc > 1)
 	{
 		add = ft_calloc(shell->nodes->argc
 				+ get_env_elements(shell->ms_envp) + 1, sizeof(char *));
 		if (!add)
-			return (perror("export: Memory allocation failed!\n"));
+			return (1);
 		if (append_envp(shell, add, 0, 1) == 1)
-			return (perror("export: ft_strdup failed!\n"));
+			return (1);
 		free_env_array(shell->ms_envp);
 		shell->ms_envp = add;
-		//TODO: the addition is lost after the function executes
+		//TODO: the addition is lost from env after the function executes - ie. it doesnt work
 	}
 	else if (shell->nodes->argc == 1)
 	{
@@ -120,4 +121,5 @@ void	ms_export(t_shell *shell)
 		sort_envp(add);
 		free_env_array(add);
 	}
+	return (0);
 }

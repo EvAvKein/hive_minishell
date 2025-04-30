@@ -6,7 +6,11 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/27 09:08:47 by ahavu            ###   ########.fr       */
+=======
+/*   Updated: 2025/04/29 11:44:23 by ahavu            ###   ########.fr       */
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +26,7 @@ void	execute_command(t_shell *shell)
 	else
 	{
 		if (fork_and_execute_sys_command(shell) == 1)
-			printf("oops");
-			//TODO: error/cleanup
+			perror("fork failed");
 	}
 }
 
@@ -47,6 +50,7 @@ int	count_commands(t_node *head)
 
 void	execution(t_shell *shell)
 {
+<<<<<<< HEAD
 	if (count_commands(shell->nodes) == 1)
 		execute_command(shell);
 	else
@@ -78,3 +82,13 @@ void	execution(t_shell *shell)
 	// if there's more than one COMMAND, there will assumedly be a PIPE
 }*/
 
+=======
+	int	command_count;
+
+	command_count  = count_commands(shell->nodes);
+	if (command_count == 1)
+		execute_command(shell);
+	else
+		execute_pipeline(shell);
+}
+>>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
