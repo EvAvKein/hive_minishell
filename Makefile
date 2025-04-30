@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/28 10:38:03 by ahavu            ###   ########.fr        #
+#    Updated: 2025/04/30 08:37:47 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ $(LIBFT_LIB):
 	cc $(COMPILE_FLAGS) -c $< -o $@
 
 $(NAME): $(LIBFT_LIB) $(SRC_OBJ) $(MAIN_OBJ) $(HEADERS) $(LIBFT_HEADERS)
-	cc $(COMPILE_FLAGS) $(LIBRARY_FLAGS) $(SRC_OBJ) $(MAIN_OBJ) $(LIBFT_LIB) -o $(NAME)
+	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(MAIN_OBJ) $(LIBFT_LIB) -o $(NAME) $(LIBRARY_FLAGS)
 
 clean:
 	@make -C $(LIBFT_DIR) $@ --no-print-directory
