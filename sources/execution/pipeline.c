@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:16:29 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:21:27 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
 	return (prev_fd);
 }
 
-void	execute_pipeline(t_shell *shell)
+int	execute_pipeline(t_shell *shell)
 {
 	t_node	*current;
 	int		prev_fd;
@@ -107,7 +107,7 @@ void	execute_pipeline(t_shell *shell)
 
 	current = shell->nodes;
 	prev_fd = -1;
-	while (current)
+	while (current) //loop through the first commands
 	{
 		if (current->type == COMMAND)
 		{

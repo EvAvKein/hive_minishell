@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:11:44 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:18:01 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ int	ms_cd(t_shell *shell)
 		return (1);
 	if (update_pwds(shell, oldpwd) == 1)
 		return (1);
+	free(oldpwd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:11:58 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:18:40 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	ms_export(t_shell *shell)
 			return (1);
 		free_env_array(shell->ms_envp);
 		shell->ms_envp = add;
-		//TODO: the addition is lost from env after the function executes - ie. it doesnt work
 	}
 	else if (shell->nodes->argc == 1)
 	{

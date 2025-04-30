@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:16:07 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:20:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	single_command(t_shell *shell)
 		}
 		current = current->next;
 	}
+	return (0);
 }
 
 int	count_commands(t_node *head)
@@ -125,6 +126,7 @@ void	execution(t_shell *shell)
 	t_exec	*exec;
 	int		redirections;
 
+	error = false;
 	command_count  = count_commands(shell->nodes);
 	redirections = count_redirections(shell->nodes);
 	exec = ft_calloc(1, sizeof(t_exec));
