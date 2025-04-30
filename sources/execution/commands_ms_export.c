@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/28 16:13:47 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/30 14:35:32 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,16 +104,17 @@ int	ms_export(t_shell *shell)
 		add = ft_calloc(shell->nodes->argc
 				+ get_env_elements(shell->ms_envp) + 1, sizeof(char *));
 		if (!add)
-			return (1);
+			fatal_error(shell, "export: malloc failed");
 		if (append_envp(shell, add, 0, 1) == 1)
 			return (1);
 		free_env_array(shell->ms_envp);
 		shell->ms_envp = add;
-		//TODO: the addition is lost from env after the function executes - ie. it doesnt work
 	}
 	else if (shell->nodes->argc == 1)
 	{
 		add = dup_envp(shell->ms_envp);
+		if (!add)
+			fatal_error(shell, "export: malloc failed");
 		sort_envp(add);
 		free_env_array(add);
 	}

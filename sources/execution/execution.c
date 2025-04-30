@@ -6,24 +6,32 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/29 11:44:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/30 14:47:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_command(t_shell *shell)
+int	execute_command(t_shell *shell)
 {
 	if (is_builtin(shell->nodes->argv[0]))
 	{
-		execute_builtin(shell);
-		shell->last_exit_status = 0;
+		if (execute_builtin(shell) == 1)
+		{
+			//shell->last_exit_status = ??;
+			return (1);
+		}
+		//shell->last_exit_status == ??;
 	}
 	else
 	{
 		if (fork_and_execute_sys_command(shell) == 1)
+		{
 			perror("fork failed");
+			return (1);
+		}
 	}
+	return (0);
 }
 
 int	count_commands(t_node *head)
@@ -46,11 +54,27 @@ int	count_commands(t_node *head)
 
 void	execution(t_shell *shell)
 {
-	int	command_count;
+	int		command_count;
+	bool	error;
+	t_exec	*exec;
 
+	error = false;
 	command_count  = count_commands(shell->nodes);
+	exec = ft_calloc(1, sizeof(t_exec));
+	if (!exec)
+		fatal_error(shell, "execution: malloc failed");
+	shell->exec = exec;
 	if (command_count == 1)
-		execute_command(shell);
+	{
+		if (execute_command(shell) == 1)
+			error = true;
+	}
 	else
-		execute_pipeline(shell);
+	{
+		if (execute_pipeline(shell) == 1)
+			error = true;
+	}
+	free(exec);
+	if (error)
+		exit(EXIT_FAILURE);
 }
