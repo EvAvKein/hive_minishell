@@ -6,25 +6,32 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/29 11:44:34 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/30 14:47:56 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2])
+void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2])
 {
-	if (prev_fd > 0)
+	if (prev_fd >= 0)
 	{
-		dup2(prev_fd, STDIN_FILENO);
+		if (dup2(prev_fd, STDIN_FILENO) == -1)
+		{
+			perror("pipeline: dup2 failed");
+			exit(EXIT_FAILURE);
+		}
 		close(prev_fd);
 	}
 	if (apply_redirections(current))
 		exit(EXIT_SUCCESS);
 	if (current->next && current->next->type == COMMAND)
-		dup2(pipe_fd[1], STDOUT_FILENO); // redirect the fd
-	close(pipe_fd[1]);//close the WRITE end of the pipe because it's been redirected
-	close(pipe_fd[0]);// close the READ end of the pipe (because it's unused)
+		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1) // redirect the fd
+		{
+			perror("pipeline: dup2 failed");
+			exit(EXIT_FAILURE);
+		}
+	pipe_fd = close_pipe_fds(pipe_fd);
 	if (is_builtin(current->argv[0]))
 		execute_builtin(shell);
 	else
@@ -64,11 +71,14 @@ static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
 	if (pid == 0)
 		pipeline_child(shell, current, prev_fd, pipe_fd);
 	else
+	{
+		shell->exec->pids[shell->exec->pid_count++] = pid;
 		prev_fd = pipeline_parent(current, prev_fd, pipe_fd);
+	}
 	return (prev_fd);
 }
 
-void	execute_pipeline(t_shell *shell)
+int	execute_pipeline(t_shell *shell)
 {
 	t_node	*current;
 	int		prev_fd;
@@ -76,16 +86,19 @@ void	execute_pipeline(t_shell *shell)
 
 	current = shell->nodes;
 	prev_fd = -1;
-	while (current)
+	while (current) //loop through the first commands
 	{
 		if (current->type == COMMAND)
 		{
 			if (current->next && current->next->type == COMMAND)
-			{
 				prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
-			}
+			else
+				break ;
 		}
 		current = current->next;
 	}
-	//wait for all children - just wait() and compare the pids?
+	if (current && current->type == COMMAND) // execute the last command
+		execute_last_pipeline_command(shell, current, prev_fd, pipe_fd);
+	wait_for_all_children(shell);
+	return (0);
 }

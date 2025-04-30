@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/30 08:37:47 by ahavu            ###   ########.fr        #
+#    Updated: 2025/04/30 10:10:16 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ SRC_FILES := utils/spaces.c \
 			 execution/commands_ms_export.c \
 			 execution/commands_ms_unset.c \
 			 execution/execution.c \
-			 execution/pipe.c \
 			 execution/pipeline.c \
+			 execution/pipeline_utils.c \
 			 execution/redirections.c \
 			 execution/utils.c \
 			 parsing/parsing.c \

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:17:01 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/30 14:32:31 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ static char	**set_removables(t_shell *shell)
 	k = 1;
 	ret = ft_calloc(shell->nodes->argc, sizeof(char *));
 	if (!ret)
-	{
-		printf("Error!"); //TODO
-		return (NULL);
-	}
+		fatal_error(shell, "unset: malloc failed");
 	while (shell->nodes->argv[k])
 	{
 		ret[i] = shell->nodes->argv[k];
@@ -66,8 +63,8 @@ void	ms_unset(t_shell *shell)
 	}
 	i = 0;
 	new_env = ft_calloc(get_env_elements(shell->ms_envp) + 1, sizeof(char *));
-	if (!removables || !new_env)
-		printf("Error!"); //TODO
+	if (!new_env)
+		fatal_error(shell, "unset: malloc failed");
 	while (shell->ms_envp[i])
 	{
 		if (!line_is_removable(shell->ms_envp[i], removables))

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:10:46 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/04/30 11:38:53 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ms_env(t_shell *shell)
 {
 	int	i;
-
+	// TODO: there's no OLDPWD?? should there be an exception for that variable
 	i = 0;
 	while (shell->ms_envp[i])
 	{
