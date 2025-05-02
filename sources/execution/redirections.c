@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:37:30 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:15:38 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:24:19 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,8 @@ int	handle_appendfile(t_node *current)
 	return (0);
 }
 
-int	apply_redirections(t_node *current)
+int	handle_outfiles(t_node *current)
 {
-	if (current->type == INFILE)
-	{
-		handle_infile(current->argv[0]);
-		return(1);
-	}
 	if (current->type == OUTFILE)
 	{
 		handle_outfile(current->argv[0]);

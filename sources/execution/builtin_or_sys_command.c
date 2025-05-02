@@ -6,12 +6,11 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:22:36 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:23:47 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 static char	*get_path_from_envp(t_node *current)
 {
 	char	*env_path;
@@ -84,7 +83,7 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 	if (!path)
 		return (1);
 	}
-	if (execve(path, shell->nodes->argv, shell->ms_envp) == -1)
+	if (execve(path, current->argv, shell->ms_envp) == -1)
 		perror("execve failed");
 	if (path_list)
 		free_env_array(path_list);
@@ -101,7 +100,7 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execute_sys_command(shell) == 1)
+		if (execute_sys_command(shell, shell->nodes) == 1)
 		{
 			perror("execution failed");
 			exit(1);
