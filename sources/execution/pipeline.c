@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/30 15:12:28 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/02 15:32:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,20 @@ void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]
 		}
 		close(prev_fd);
 	}
-	if (apply_redirections(current))
-		exit(EXIT_SUCCESS);
 	if (current->next && current->next->type == COMMAND)
-		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1) // redirect the fd
+	{
+		if (dup2(pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
 			perror("pipeline: dup2 failed");
 			exit(EXIT_FAILURE);
 		}
-	pipe_fd = close_pipe_fds(pipe_fd);
+	}
 	if (is_builtin(current->argv[0]))
 		execute_builtin(shell);
 	else
-		execute_sys_command(shell);
+		execute_sys_command(shell, current);
+	close(pipe_fd[READ]);
+	close(pipe_fd[WRITE]);
 	exit(EXIT_SUCCESS);
 }
 
@@ -45,8 +46,8 @@ static int	pipeline_parent(t_node *current, int prev_fd, int pipe_fd[2])
 		close(prev_fd);
 	if (current->next && current->next->type == COMMAND)
 	{
-		close(pipe_fd[1]); // close the WRITE end of the pipe
-		prev_fd = pipe_fd[0];
+		close(pipe_fd[WRITE]); // close the WRITE end of the pipe
+		prev_fd = pipe_fd[READ];
 	}
 	return (prev_fd);
 }
@@ -58,15 +59,15 @@ static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
 	if (pipe(pipe_fd) == -1)
 	{
 		perror("pipe failed");
-		return (1);
+		return (-1);
 	}
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork failed");
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		return (1);
+		close(pipe_fd[READ]);
+		close(pipe_fd[WRITE]);
+		return (-1);
 	}
 	if (pid == 0)
 		pipeline_child(shell, current, prev_fd, pipe_fd);
@@ -78,7 +79,7 @@ static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
 	return (prev_fd);
 }
 
-int	execute_pipeline(t_shell *shell)
+void	execute_pipeline(t_shell *shell)
 {
 	t_node	*current;
 	int		prev_fd;
@@ -86,19 +87,31 @@ int	execute_pipeline(t_shell *shell)
 
 	current = shell->nodes;
 	prev_fd = -1;
-	while (current) //loop through the first commands
+	while (current)
 	{
+		if (current->type == INFILE)
+			if (handle_infile(current->argv[0]) == 1)
+				return ;
 		if (current->type == COMMAND)
 		{
 			if (current->next && current->next->type == COMMAND)
+			{
 				prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
+				if (prev_fd == -1)
+					return ;
+			}
 			else
 				break ;
 		}
 		current = current->next;
 	}
-	if (current && current->type == COMMAND) // execute the last command
-		execute_last_pipeline_command(shell, current, prev_fd, pipe_fd);
+	if (current && current->type == COMMAND)
+	{
+		if (current->next && (current->next->type == OUTFILE
+		|| current->next->type == APPENDFILE))
+			if (handle_outfiles(current) == 1)
+				return ;
+		execute_last_pipeline_command(shell, current, prev_fd, pipe_fd);	
+	}
 	wait_for_all_children(shell);
-	return (0);
 }

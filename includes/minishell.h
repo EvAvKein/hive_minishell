@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/30 14:30:30 by ahavu            ###   ########.fr       */    */
+/*   Updated: 2025/05/02 15:34:58 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@
 \001\x1b[1;38;2;110;110;110m\002\
 \001\x1b[0m\002"
 
-# define MAX_CMDS 256
+# define MAX_CMDS	256
+# define READ		0
+# define WRITE		1
 
 /* SETTINGS *******************************************************************/
 
@@ -116,24 +118,22 @@ t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
-int		apply_redirections(t_node *current);
 int 	*close_pipe_fds(int pipe_fd[2]);
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
 int		execute_command(t_shell *shell);
 void    execute_last_pipeline_command(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
-int		execute_pipeline(t_shell *shell);
-int		execute_sys_command(t_shell *shell);
+void	execute_pipeline(t_shell *shell);
+int		execute_sys_command(t_shell *shell, t_node *current);
 void	execution(t_shell *shell);
 void	fatal_error(t_shell *shell, char *msg);
 int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 int		get_env_elements(char **envp);
-char	*get_path_from_arg(t_shell *shell);
-char	*get_path_from_envp(t_shell *shell);
 int		handle_appendfile(char *file);
 int		handle_infile(char *file);
 int		handle_outfile(char *file);
+int		handle_outfiles(t_node *current);
 int		is_builtin(char *cmd);
 int		ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);

@@ -6,11 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/04/27 09:06:04 by ahavu            ###   ########.fr       */
-=======
-/*   Updated: 2025/04/29 11:41:29 by ahavu            ###   ########.fr       */
->>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
+/*   Updated: 2025/05/02 14:31:52 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +54,13 @@ bool	parsing(t_shell *shell, char *input)
 			return (false);
 		}
 	}
-<<<<<<< HEAD
-	print_nodes(STDERR_FILENO, shell->nodes);
-=======
 	//print_nodes(STDERR_FILENO, shell->nodes);
->>>>>>> f7602ed4ea5edb3304f3a2c207a04b2441fd9d0e
 	free(input);
 	if (parsing.piping)
 	{
 		ft_dprintf(2, "ambiguous pipe (PLACEHOLDER ERROR)\n");
 		return (false);
 	}
-	print_nodes(STDERR_FILENO, shell->nodes);
+	//print_nodes(STDERR_FILENO, shell->nodes);
 	return (true);
 }

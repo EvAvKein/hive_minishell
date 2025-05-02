@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/30 15:12:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/02 14:13:39 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ void	execution(t_shell *shell)
 			error = true;
 	}
 	else
-	{
-		if (execute_pipeline(shell) == 1)
-			error = true;
-	}
+		execute_pipeline(shell);
 	free(exec);
-	if (error)
-		exit(EXIT_FAILURE);
 }
