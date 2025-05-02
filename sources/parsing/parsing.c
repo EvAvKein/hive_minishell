@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:39:11 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:44:22 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ bool	parsing(t_shell *shell, char *input)
 		ft_dprintf(2, "ambiguous pipe (PLACEHOLDER ERROR)\n");
 		return (false);
 	}
-	print_nodes(STDERR_FILENO, shell->nodes);
+	//print_nodes(STDERR_FILENO, shell->nodes);
 	return (true);
 }

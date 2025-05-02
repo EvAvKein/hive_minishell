@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/30 10:51:51 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/02 10:01:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void    execute_last_pipeline_command(t_shell *shell, t_node *current,
 	if (pid == -1)
 	{
 		perror("fork failed");
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		close(pipe_fd[READ]);
+		close(pipe_fd[WRITE]);
 		exit(EXIT_FAILURE);
 	}
 	if (pid == 0)
@@ -57,9 +57,9 @@ void    execute_last_pipeline_command(t_shell *shell, t_node *current,
 
 int *close_pipe_fds(int pipe_fd[2])
 {
-    if (pipe_fd[1] != -1)
-        close(pipe_fd[1]);//close the WRITE end of the pipe because it's been redirected
-    if (pipe_fd[0] != -1)
-        close(pipe_fd[0]);// close the READ end of the pipe (because it's unused)
+    if (pipe_fd[WRITE] != -1)
+        close(pipe_fd[WRITE]);//close the WRITE end of the pipe because it's been redirected
+    if (pipe_fd[READ] != -1)
+        close(pipe_fd[READ]);// close the READ end of the pipe (because it's unused)
     return(pipe_fd);
 }

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/07 12:43:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:44:00 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,7 @@ void	execution(t_shell *shell)
 			error = true;
 	}
 	else
-	{
-		if (execute_pipeline(shell) == 1)
-			error = true;
-	}
+		execute_pipeline(shell);
 	free(exec);
 	if (error)
 		exit(EXIT_FAILURE);
