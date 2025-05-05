@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/07 12:44:00 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:44:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,17 @@ int	count_commands(t_node *head)
 void	execution(t_shell *shell)
 {
 	int		command_count;
-	bool	error;
 	t_exec	*exec;
+	int		redirections;
 
-	error = false;
 	command_count  = count_commands(shell->nodes);
+	redirections = count_redirections(shell->nodes);
 	exec = ft_calloc(1, sizeof(t_exec));
 	if (!exec)
 		fatal_error(shell, "execution: malloc failed");
 	shell->exec = exec;
-	if (command_count == 1)
-	{
-		if (execute_command(shell) == 1)
-			error = true;
-	}
+	if (command_count == 1 && !redirections)
+		execute_command(shell);
 	else
 		execute_pipeline(shell);
 	free(exec);
