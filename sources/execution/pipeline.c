@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/02 15:32:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/05 16:43:27 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,24 @@
 
 void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2])
 {
-	if (prev_fd >= 0)
+	if (current->prev && current->prev->type == INFILE)
+	{
+		if (handle_infile(current->prev->argv[0]) == 1)
+		{
+			perror("infile failed");
+			return ;
+		}
+	}
+	if (current->next && (current->next->type == OUTFILE
+		|| current->next->type == APPENDFILE))
+	{
+		if (handle_outfiles(current) == 1)
+		{
+			perror("outfile failed");
+			return ;
+		}
+	}
+	else if (prev_fd >= 0)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
 		{
@@ -89,12 +106,10 @@ void	execute_pipeline(t_shell *shell)
 	prev_fd = -1;
 	while (current)
 	{
-		if (current->type == INFILE)
-			if (handle_infile(current->argv[0]) == 1)
-				return ;
 		if (current->type == COMMAND)
 		{
-			if (current->next && current->next->type == COMMAND)
+			if (current->next && (current->next->type == COMMAND
+			|| current->next->type == OUTFILE || current->next->type == APPENDFILE))
 			{
 				prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
 				if (prev_fd == -1)
@@ -106,12 +121,6 @@ void	execute_pipeline(t_shell *shell)
 		current = current->next;
 	}
 	if (current && current->type == COMMAND)
-	{
-		if (current->next && (current->next->type == OUTFILE
-		|| current->next->type == APPENDFILE))
-			if (handle_outfiles(current) == 1)
-				return ;
 		execute_last_pipeline_command(shell, current, prev_fd, pipe_fd);	
-	}
 	wait_for_all_children(shell);
 }

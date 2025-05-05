@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/02 15:35:30 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/05 16:38:46 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static char	*get_path_from_envp(t_node *current)
 	}
 	free_env_array(path_list);
 	if (!ret_path)
+	{
+		printf("current: %s\n", current->argv[0]);
 		perror("command not found/invalid path");
+	}
 	return (ret_path);
 }
 

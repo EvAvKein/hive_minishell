@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/02 14:13:39 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/05 11:14:15 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,38 @@ int	count_commands(t_node *head)
 	return (count);
 }
 
+int	count_redirections(t_node *head)
+{
+	t_node	*tmp;
+	int		count;
+	
+	tmp = head;
+	count = 0;
+	while (tmp->next && tmp->next != head)
+	{
+		if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
+			count++;
+		tmp = tmp->next;
+	}
+	if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
+		count++;
+	return (count);
+}
+
 void	execution(t_shell *shell)
 {
 	int		command_count;
-	bool	error;
 	t_exec	*exec;
+	int		redirections;
 
-	error = false;
 	command_count  = count_commands(shell->nodes);
+	redirections = count_redirections(shell->nodes);
 	exec = ft_calloc(1, sizeof(t_exec));
 	if (!exec)
 		fatal_error(shell, "execution: malloc failed");
 	shell->exec = exec;
-	if (command_count == 1)
-	{
-		if (execute_command(shell) == 1)
-			error = true;
-	}
+	if (command_count == 1 && !redirections)
+		execute_command(shell);
 	else
 		execute_pipeline(shell);
 	free(exec);
