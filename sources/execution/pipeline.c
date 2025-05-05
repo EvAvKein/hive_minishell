@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:24:15 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:25:37 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,6 @@ void	execute_pipeline(t_shell *shell)
 	prev_fd = -1;
 	while (current)
 	{
-		if (current->type == INFILE)
-			if (handle_infile(current->argv[0]) == 1)
-				return ;
 		if (current->type == COMMAND)
 		{
 			prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);

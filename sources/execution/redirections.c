@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:37:30 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:24:19 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:25:41 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,56 @@ int	handle_appendfile(t_node *current)
 
 int	handle_outfiles(t_node *current)
 {
-	if (current->type == OUTFILE)
+	if (current->next->type == OUTFILE)
 	{
-		handle_outfile(current->argv[0]);
-		return (1);
+		if (handle_outfile(current->next->argv[0]) == 1)
+			return (1);
 	}
-	if (current->type == APPENDFILE)
+	if (current->next->type == APPENDFILE)
 	{
-		handle_appendfile(current->argv[0]);
-		return (1);
+		if (handle_appendfile(current->next->argv[0]) == 1)
+			return (1);
 	}
 	return (0);
 }
+
+/*int	handle_infile(char *file, t_shell *shell)
+{
+	int	fd;
+	int	pid;
+	int	status;
+
+	pid = fork();
+	fd = open(file, O_RDONLY);
+	if (pid == -1)
+	{
+		perror("fork failed");
+		return (-1);
+	}
+	if (fd == -1)
+	{
+		perror("fd failed");
+		return (-1);
+	}
+	if (pid == 0)
+	{
+		if (dup2(fd, STDIN_FILENO) == -1)
+		{
+			perror("dup2 failed");
+			return (-1);
+		}
+	}
+	else if (pid > 0)
+	{
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			perror("waitpid failed");
+			shell->last_exit_status = 1;
+		}
+		else
+			shell->last_exit_status = WEXITSTATUS(status);
+	}
+	printf("je\n");
+	close(fd);
+	return (3);
+}*/
