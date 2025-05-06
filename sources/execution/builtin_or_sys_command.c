@@ -6,12 +6,12 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/05 16:38:46 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 11:44:06 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//set follow-fork-mode child
+
 static char	*get_path_from_envp(t_node *current)
 {
 	char	*env_path;
@@ -38,7 +38,7 @@ static char	*get_path_from_envp(t_node *current)
 		temp = ft_strjoin(path_list[i], "/");
 		if (!temp)
 		{
-			perror("executable: ft_strjoin failed");
+			perror("ft_strjoin failed");
 			return (NULL);
 		}
 		ret_path = ft_strjoin(temp, current->argv[0]);
@@ -53,10 +53,7 @@ static char	*get_path_from_envp(t_node *current)
 	}
 	free_env_array(path_list);
 	if (!ret_path)
-	{
-		printf("current: %s\n", current->argv[0]);
 		perror("command not found/invalid path");
-	}
 	return (ret_path);
 }
 
@@ -137,7 +134,7 @@ int	execute_builtin(t_shell *shell)
 		if (ms_cd(shell) == 1)
 			perror("cd failed");
 	if (!ft_strncmp(shell->nodes->argv[0], "pwd", 4))
-		ms_pwd();
+		ms_pwd(shell->ms_envp);
 	if (!ft_strncmp(shell->nodes->argv[0], "export", 7))
 		ms_export(shell);
 	if (!ft_strncmp(shell->nodes->argv[0], "unset", 6))

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/05 11:53:12 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 11:40:42 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	execution(t_shell *shell);
 void	fatal_error(t_shell *shell, char *msg);
 int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
+char	*get_pwd_from_env(char **envp);
 int		get_env_elements(char **envp);
 int		handle_appendfile(char *file);
 int		handle_infile(char *file);
@@ -141,7 +142,7 @@ void	ms_env(t_shell *shell);
 void	ms_exit(t_shell *shell);
 int		ms_export(t_shell *shell);
 void	ms_pipe(t_shell *shell);
-void	ms_pwd(void);
+void	ms_pwd(char **envp);
 void	ms_unset(t_shell *shell);
 void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
 void	wait_for_all_children(t_shell *shell);
