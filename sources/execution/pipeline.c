@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/06 11:44:18 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 15:16:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,15 @@ void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]
 	if (current->prev && current->prev->type == INFILE)
 	{
 		if (handle_infile(current->prev->argv[0]) == 1)
-		{
-			perror("infile failed");
 			return ;
-		}
 	}
 	if (current->next && (current->next->type == OUTFILE
 		|| current->next->type == APPENDFILE))
 	{
 		if (handle_outfiles(current) == 1)
-		{
-			perror("outfile failed");
 			return ;
-		}
 	}
-	else if (prev_fd >= 0)
+	if (prev_fd >= 0)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
 		{
@@ -63,7 +57,7 @@ static int	pipeline_parent(t_node *current, int prev_fd, int pipe_fd[2])
 		close(prev_fd);
 	if (current->next && current->next->type == COMMAND)
 	{
-		close(pipe_fd[WRITE]); // close the WRITE end of the pipe
+		close(pipe_fd[WRITE]);
 		prev_fd = pipe_fd[READ];
 	}
 	return (prev_fd);
@@ -115,7 +109,7 @@ void	execute_pipeline(t_shell *shell)
 				prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
 				if (prev_fd == -1)
 					return ;
-			}
+			}//TODO: what if there are redirections in the middle of a pipeline?
 			else
 				break ;
 		}

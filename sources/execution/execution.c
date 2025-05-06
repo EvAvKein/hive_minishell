@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/05 11:14:15 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 15:53:52 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ int	execute_command(t_shell *shell)
 	else
 	{
 		if (fork_and_execute_sys_command(shell) == 1)
-		{
-			perror("fork failed");
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -86,5 +83,6 @@ void	execution(t_shell *shell)
 		execute_command(shell);
 	else
 		execute_pipeline(shell);
+	
 	free(exec);
 }

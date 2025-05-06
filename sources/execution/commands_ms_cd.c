@@ -6,12 +6,13 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/06 11:35:44 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 14:16:08 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+//TODO: repeated cd/pwd calls somehow screw everything up if there's a removed directory
+//try to figure it out by printf debugging
 static int	update_oldpwd(t_shell *shell, char *oldpwd, int i)
 {
 	char	*new_oldpwd;
