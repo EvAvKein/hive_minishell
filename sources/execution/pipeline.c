@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:25:37 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:26:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	pipeline_parent(t_node *current, int prev_fd, int pipe_fd[2])
 
 static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
 {
+	//set follow-fork-mode child
 	pid_t	pid;
 	
 	if (pipe(pipe_fd) == -1)
