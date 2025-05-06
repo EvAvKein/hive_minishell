@@ -6,7 +6,11 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/07 12:44:48 by ekeinan          ###   ########.fr       */
+=======
+/*   Updated: 2025/05/06 15:53:52 by ahavu            ###   ########.fr       */
+>>>>>>> f9bc468 (0605 cleaned up the multiple error messages and tried to continue fixing that one cd edge case)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +30,7 @@ int	execute_command(t_shell *shell)
 	else
 	{
 		if (fork_and_execute_sys_command(shell) == 1)
-		{
-			perror("fork failed");
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -86,6 +87,7 @@ void	execution(t_shell *shell)
 		execute_command(shell);
 	else
 		execute_pipeline(shell);
+	
 	free(exec);
 	if (error)
 		exit(EXIT_FAILURE);

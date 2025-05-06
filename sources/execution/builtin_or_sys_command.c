@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/07 12:45:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:45:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,7 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 	else
 		path = get_path_from_envp(current);
 	if (!path)
-	{
-		perror("executable or path doesn't exist\n");
 		return (1);
-	}
 	if (execve(path, current->argv, shell->ms_envp) == -1)
 		perror("execve failed");
 	if (path_list)
@@ -103,10 +100,7 @@ int	fork_and_execute_sys_command(t_shell *shell)
 	if (pid == 0)
 	{
 		if (execute_sys_command(shell, shell->nodes) == 1)
-		{
-			perror("execution failed");
 			exit(1);
-		}
 	}
 	else if (pid > 0)
 	{
@@ -117,6 +111,7 @@ int	fork_and_execute_sys_command(t_shell *shell)
 		}
 		else
 			shell->last_exit_status = WEXITSTATUS(status);
+			//TODO: store all the other exit statuses as well!! from all COMMANDS
 	}
 	else if (pid == -1)
 	{
