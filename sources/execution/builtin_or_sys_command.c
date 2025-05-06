@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:26:10 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:26:43 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 		path = get_path_from_envp(current);
 	if (!path)
 		return (1);
-	}
 	if (execve(path, current->argv, shell->ms_envp) == -1)
 		perror("execve failed");
 	if (path_list)
@@ -101,10 +100,7 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 	if (pid == 0)
 	{
 		if (execute_sys_command(shell, shell->nodes) == 1)
-		{
-			perror("execution failed");
 			exit(1);
-		}
 	}
 	else if (pid > 0)
 	{
