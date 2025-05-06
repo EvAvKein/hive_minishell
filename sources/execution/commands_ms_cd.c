@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/30 11:31:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 11:35:44 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,20 @@ static int	update_pwds(t_shell *shell, char *oldpwd)
 	return (0);
 }
 
+char	*get_pwd_from_env(char **envp)
+{
+	int		i;
+	
+	i = 0;
+	while(envp[i])
+	{
+		if (!ft_strncmp(envp[i], "PWD=", 4))
+			return(envp[i]);
+		i++;
+	}
+	return (NULL);
+}
+
 int	ms_cd(t_shell *shell)
 {
 	char	*oldpwd;
@@ -66,7 +80,11 @@ int	ms_cd(t_shell *shell)
 	destination = NULL;
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
-		return (1);
+	{
+		oldpwd = get_pwd_from_env(shell->ms_envp);
+		if (!oldpwd)
+			return (1);
+	}
 	if (!shell->nodes->argv[1])
 	{
 		destination = getenv("HOME");
@@ -79,6 +97,5 @@ int	ms_cd(t_shell *shell)
 		return (1);
 	if (update_pwds(shell, oldpwd) == 1)
 		return (1);
-	free(oldpwd);
 	return (0);
 }
