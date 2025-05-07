@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:27:24 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/02 09:33:17 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,31 +93,30 @@ static void	sort_envp(char **envp)
 	print_sorted_envp(envp);
 }
 
-void	ms_export(t_shell *shell)
+int	ms_export(t_shell *shell)
 {
 	char	**add;
 
 	if (shell->nodes->argc > 2 && shell->nodes->argv[1][0] == '-')
-	{
-		perror("no options allowed");
-		return ;
-	}
+		return (1);
 	if (shell->nodes->argc > 1)
 	{
 		add = ft_calloc(shell->nodes->argc
 				+ get_env_elements(shell->ms_envp) + 1, sizeof(char *));
 		if (!add)
-			return (perror("export: Memory allocation failed!\n"));
+			fatal_error(shell, "export: malloc failed");
 		if (append_envp(shell, add, 0, 1) == 1)
-			return (perror("export: ft_strdup failed!\n"));
+			return (1);
 		free_env_array(shell->ms_envp);
 		shell->ms_envp = add;
-		//TODO: the addition is lost after the function executes
 	}
 	else if (shell->nodes->argc == 1)
 	{
 		add = dup_envp(shell->ms_envp);
+		if (!add)
+			fatal_error(shell, "export: malloc failed");
 		sort_envp(add);
 		free_env_array(add);
 	}
+	return (0);
 }

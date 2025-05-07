@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/25 10:48:32 by ahavu            ###   ########.fr        #
+#    Updated: 2025/04/30 15:09:14 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,14 +17,16 @@ MAIN := main.c
 SRC_FILES := utils/spaces.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
-			 execution/execution.c \
+			 execution/builtin_or_sys_command.c \
 			 execution/commands.c \
-			 execution/commands_ms_unset.c \
 			 execution/commands_ms_cd.c \
 			 execution/commands_ms_export.c \
-			 execution/utils.c \
-			 execution/builtin_or_sys_command.c \
+			 execution/commands_ms_unset.c \
+			 execution/execution.c \
+			 execution/pipeline.c \
+			 execution/pipeline_utils.c \
 			 execution/redirections.c \
+			 execution/utils.c \
 			 parsing/parsing.c \
 			 parsing/traversal.c \
 			 parsing/misc.c \
@@ -59,7 +61,7 @@ $(LIBFT_LIB):
 	cc $(COMPILE_FLAGS) -c $< -o $@
 
 $(NAME): $(LIBFT_LIB) $(SRC_OBJ) $(MAIN_OBJ) $(HEADERS) $(LIBFT_HEADERS)
-	cc $(COMPILE_FLAGS) $(LIBRARY_FLAGS) $(SRC_OBJ) $(MAIN_OBJ) $(LIBFT_LIB) -o $(NAME)
+	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(MAIN_OBJ) $(LIBFT_LIB) -o $(NAME) $(LIBRARY_FLAGS)
 
 clean:
 	@make -C $(LIBFT_DIR) $@ --no-print-directory

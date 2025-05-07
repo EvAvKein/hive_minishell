@@ -6,13 +6,13 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:20:11 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 15:56:45 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_path_from_envp(t_shell *shell)
+static char	*get_path_from_envp(t_node *current)
 {
 	char	*env_path;
 	char	*ret_path;
@@ -38,10 +38,10 @@ char	*get_path_from_envp(t_shell *shell)
 		temp = ft_strjoin(path_list[i], "/");
 		if (!temp)
 		{
-			perror("executable: ft_strjoin failed");
+			perror("ft_strjoin failed");
 			return (NULL);
 		}
-		ret_path = ft_strjoin(temp, shell->nodes->argv[0]);
+		ret_path = ft_strjoin(temp, current->argv[0]);
 		free(temp);
 		if (!ret_path)
 			break ;
@@ -57,11 +57,11 @@ char	*get_path_from_envp(t_shell *shell)
 	return (ret_path);
 }
 
-char	*get_path_from_arg(t_shell *shell)
+static char	*get_path_from_arg(char *command)
 {
 	char	*path;
 
-	path = shell->nodes->argv[0];
+	path = command;
 	if (access(path, F_OK) != 0)
 	{
 		perror("invalid path");
@@ -70,29 +70,23 @@ char	*get_path_from_arg(t_shell *shell)
 	return (path);
 }
 
-int	execute_sys_command(t_shell *shell)
+int	execute_sys_command(t_shell *shell, t_node *current)
 {
 	char	*path;
 	char	**path_list;
-	int		i;
 
-	i = 0;
 	path_list = NULL;
-	if (ft_strchr(shell->nodes->argv[0], '/'))
-		path = get_path_from_arg(shell);
+	if (ft_strchr(current->argv[0], '/'))
+		path = get_path_from_arg(current->argv[0]);
 	else
-		path = get_path_from_envp(shell);
+		path = get_path_from_envp(current);
 	if (!path)
-	{
-		perror("executable or path doesn't exist\n");
 		return (1);
-	}
-	//TODO: if redirection, do it here
-	if (execve(path, shell->nodes->argv, shell->ms_envp) == -1)
+	if (execve(path, current->argv, shell->ms_envp) == -1)
 		perror("execve failed");
 	if (path_list)
 		free_env_array(path_list);
-	if (path && path != shell->nodes->argv[0])
+	if (path && path != current->argv[0])
 		free(path);
 	return (0);
 }
@@ -105,11 +99,8 @@ int	fork_and_execute_sys_command(t_shell *shell)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execute_sys_command(shell) == 1)
-		{
-			perror("execution failed");
-			return (1);
-		}
+		if (execute_sys_command(shell, shell->nodes) == 1)
+			exit(1);
 	}
 	else if (pid > 0)
 	{
@@ -120,8 +111,9 @@ int	fork_and_execute_sys_command(t_shell *shell)
 		}
 		else
 			shell->last_exit_status = WEXITSTATUS(status);
+			//TODO: store all the other exit statuses as well!! from all COMMANDS
 	}
-	else
+	else if (pid == -1)
 	{
 		perror("fork failed");
 		return (1);
@@ -134,9 +126,10 @@ int	execute_builtin(t_shell *shell)
 	if (!ft_strncmp(shell->nodes->argv[0], "env", 4))
 		ms_env(shell);
 	if (!ft_strncmp(shell->nodes->argv[0], "cd", 3))
-		ms_cd(shell);
+		if (ms_cd(shell) == 1)
+			perror("cd failed");
 	if (!ft_strncmp(shell->nodes->argv[0], "pwd", 4))
-		ms_pwd();
+		ms_pwd(shell->ms_envp);
 	if (!ft_strncmp(shell->nodes->argv[0], "export", 7))
 		ms_export(shell);
 	if (!ft_strncmp(shell->nodes->argv[0], "unset", 6))

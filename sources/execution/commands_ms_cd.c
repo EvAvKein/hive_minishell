@@ -6,42 +6,74 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:11:18 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 14:16:08 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+//TODO: repeated cd/pwd calls somehow screw everything up if there's a removed directory
+//try to figure it out by printf debugging
+static int	update_oldpwd(t_shell *shell, char *oldpwd, int i)
+{
+	char	*new_oldpwd;
+	
+	new_oldpwd = ft_strjoin("OLDPWD=", oldpwd);
+	if (!new_oldpwd)
+		return (1);
+	free(shell->ms_envp[i]);
+	shell->ms_envp[i] = new_oldpwd;
+	return (0);
+}
 
-int	update_pwds(t_shell *shell, char *oldpwd)
+static int	update_current_wd(t_shell *shell, int i)
+{
+	char	*cwd;
+	char	*new_pwd;
+	
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (1);
+	new_pwd = ft_strjoin("PWD=", cwd);
+	if (!new_pwd)
+		return (1);
+	free(shell->ms_envp[i]);
+	shell->ms_envp[i] = new_pwd;
+	return (0);
+}
+
+static int	update_pwds(t_shell *shell, char *oldpwd)
 {
 	int		i;
-	char	*cwd;
 
 	i = 0;
 	while (shell->ms_envp[i])
 	{
-		if (!ft_strncmp(shell->ms_envp[i], "OLDPWD=", 7))
-		{
-			free(shell->ms_envp[i]);
-			shell->ms_envp[i] = ft_strjoin("OLDPWD=", oldpwd);
-			if (!shell->ms_envp[i])
+		if (!ft_strncmp(shell->ms_envp[i], "OLDPWD", 6))
+			if (update_oldpwd(shell, oldpwd, i) == 1)
 				return (1);
-		}
 		if (!ft_strncmp(shell->ms_envp[i], "PWD=", 4))
-		{
-			cwd = getcwd(NULL, 0);
-			free(shell->ms_envp[i]);
-			shell->ms_envp[i] = ft_strjoin("PWD=", cwd);
-			if (!shell->ms_envp[i])
+			if (update_current_wd(shell, i) == 1)
 				return (1);
-		}
 		i++;
 	}
-	free(cwd);
 	return (0);
 }
 
-void	ms_cd(t_shell *shell)
+char	*get_pwd_from_env(char **envp)
+{
+	int		i;
+	
+	i = 0;
+	while(envp[i])
+	{
+		if (!ft_strncmp(envp[i], "PWD=", 4))
+			return(envp[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+int	ms_cd(t_shell *shell)
 {
 	char	*oldpwd;
 	char	*destination;
@@ -49,17 +81,22 @@ void	ms_cd(t_shell *shell)
 	destination = NULL;
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
-		return (perror("cd: getcwd failed!\n"));
+	{
+		oldpwd = get_pwd_from_env(shell->ms_envp);
+		if (!oldpwd)
+			return (1);
+	}
 	if (!shell->nodes->argv[1])
 	{
 		destination = getenv("HOME");
 		if (!destination)
-			return (perror("cd: getenv failed!\n"));
+			return (1);
 	}
 	else
 		destination = shell->nodes->argv[1];
 	if (chdir(destination) != 0)
-		return (perror("cd: chdir failed!\n"));
+		return (1);
 	if (update_pwds(shell, oldpwd) == 1)
-		return (perror("cd: ft_strjoin failed!\n"));
+		return (1);
+	return (0);
 }

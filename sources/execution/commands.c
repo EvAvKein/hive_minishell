@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/24 14:10:46 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/06 14:49:45 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ms_env(t_shell *shell)
 {
 	int	i;
-
 	i = 0;
 	while (shell->ms_envp[i])
 	{
@@ -25,15 +24,19 @@ void	ms_env(t_shell *shell)
 	}
 }
 
-void	ms_pwd(void)
+void	ms_pwd(char **envp)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	if (!path)
 	{
-		perror("pwd: getcwd failed!");
-		return ;
+		path = get_pwd_from_env(envp);
+		if (!path)
+		{
+			perror("pwd: getcwd failed!");
+			return ;
+		}
 	}
 	printf("%s\n", path);
 	free(path);

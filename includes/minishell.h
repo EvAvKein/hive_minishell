@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/28 18:29:44 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:40:42 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,13 @@
 \001\x1b[1;38;2;32;170;10m\002B\
 \001\x1b[1;38;2;220;202;0m\002T\
 \001\x1b[1;38;2;240;115;0m\002Q\
-\001\x1b[1;38;2;228;3;3m\002+\
-\001\x1b[1;38;2;110;110;110m\002 >\
+\001\x1b[1;38;2;228;3;3m\002 + \
+\001\x1b[1;38;2;110;110;110m\002\
 \001\x1b[0m\002"
+
+# define MAX_CMDS	256
+# define READ		0
+# define WRITE		1
 
 /* SETTINGS *******************************************************************/
 
@@ -61,12 +65,19 @@ typedef struct s_node
 	struct s_node	*next;	
 }					t_node;
 
+typedef struct s_exec
+{
+	pid_t	pids[MAX_CMDS];
+	int		pid_count;
+}			t_exec;
+
 typedef struct s_shell
 {
 	char		**envp;
 	char		**ms_envp;
 	int			last_exit_status;
 	t_node		*nodes;
+	t_exec		*exec;
 }				t_shell;
 
 /* PARSING FUNCTIONS **********************************************************/
@@ -107,27 +118,34 @@ t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
-char		**dup_envp(char **envp);
-int			execute_builtin(t_shell *shell);
-int			execute_sys_command(t_shell *shell);
-void		execution(t_shell *shell);
-int			fork_and_execute_sys_command(t_shell *shell);
-void		free_env_array(char **env);
-int			get_env_elements(char **envp);
-char		*get_path_from_arg(t_shell *shell);
-char		*get_path_from_envp(t_shell *shell);
-int			is_builtin(char *cmd);
-void		ms_cd(t_shell *shell);
-void		ms_echo(t_shell *shell);
-void		ms_env(t_shell *shell);
-void		execute_command(t_shell *shell);
-int			handle_appendfile(char *file);
-int			handle_infile(char *file);
-int			handle_outfile(char *file);
-void		ms_exit(t_shell *shell);
-void		ms_export(t_shell *shell);
-void		ms_pwd(void);
-void		ms_unset(t_shell *shell);
+int 	*close_pipe_fds(int pipe_fd[2]);
+char	**dup_envp(char **envp);
+int		execute_builtin(t_shell *shell);
+int		execute_command(t_shell *shell);
+void    execute_last_pipeline_command(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
+void	execute_pipeline(t_shell *shell);
+int		execute_sys_command(t_shell *shell, t_node *current);
+void	execution(t_shell *shell);
+void	fatal_error(t_shell *shell, char *msg);
+int		fork_and_execute_sys_command(t_shell *shell);
+void	free_env_array(char **env);
+char	*get_pwd_from_env(char **envp);
+int		get_env_elements(char **envp);
+int		handle_appendfile(char *file);
+int		handle_infile(char *file);
+int		handle_outfile(char *file);
+int		handle_outfiles(t_node *current);
+int		is_builtin(char *cmd);
+int		ms_cd(t_shell *shell);
+void	ms_echo(t_shell *shell);
+void	ms_env(t_shell *shell);
+void	ms_exit(t_shell *shell);
+int		ms_export(t_shell *shell);
+void	ms_pipe(t_shell *shell);
+void	ms_pwd(char **envp);
+void	ms_unset(t_shell *shell);
+void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
+void	wait_for_all_children(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
