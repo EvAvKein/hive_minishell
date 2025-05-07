@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:44:18 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:48:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
 			return (true);
 		if (cmd_node && input[parsing->i] && !redirect_of_c(&input[parsing->i]))
 		{
-			cmd_node->argv[cmd_i] = extract_arg(parsing);
+			cmd_node->argv[cmd_i] = extract_arg(shell, parsing);
 			if (!cmd_node->argv[cmd_i++])
 				return (false);
 		}
