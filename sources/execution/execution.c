@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:28:18 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:30:09 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,5 @@ void    execution(t_shell *shell)
 		single_command(shell); //maybe doesnt matter
 	else
 		execute_pipeline(shell);
-	
 	free(exec);
 }
