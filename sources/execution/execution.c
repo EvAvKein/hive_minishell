@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:27:12 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:28:18 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,47 +102,47 @@ void	single_command(t_shell *shell)
 	return (0);
 }
 
-int	count_commands(t_node *head)
+int    count_commands(t_node *head)
 {
-	t_node	*tmp;
-	int		count;
-	
-	tmp = head;
-	count = 0;
-	while (tmp->next && tmp->next != head)
-	{
-		if (tmp->type == COMMAND)
-			count++;
-		tmp = tmp->next;
-	}
-	if (tmp->type == COMMAND)
-		count++;
-	return (count);
+    t_node    *tmp;
+    int        count;
+    
+    tmp = head;
+    count = 0;
+    while (tmp->next && tmp->next != head)
+    {
+        if (tmp->type == COMMAND)
+            count++;
+        tmp = tmp->next;
+    }
+    if (tmp->type == COMMAND)
+        count++;
+    return (count);
 }
 
-int	count_commands(t_node *head)
+int    count_redirections(t_node *head)
 {
-	t_node	*tmp;
-	int		count;
-	
-	tmp = head;
-	count = 0;
-	while (tmp->next && tmp->next != head)
-	{
-		if (tmp->type == COMMAND)
-			count++;
-		tmp = tmp->next;
-	}
-	if (tmp->type == COMMAND)
-		count++;
-	return (count);
+    t_node    *tmp;
+    int        count;
+    
+    tmp = head;
+    count = 0;
+    while (tmp->next && tmp->next != head)
+    {
+        if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
+            count++;
+        tmp = tmp->next;
+    }
+    if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
+        count++;
+    return (count);
 }
 
-void	execution(t_shell *shell)
+void    execution(t_shell *shell)
 {
-	int		command_count;
-	t_exec	*exec;
-	int		redirections;
+    int        command_count;
+    t_exec    *exec;
+    int        redirections;
 
 	command_count  = count_commands(shell->nodes);
 	redirections = count_redirections(shell->nodes);
