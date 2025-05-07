@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/28 18:22:08 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/04/28 19:45:26 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv, char **envp)
 			command_cleanup(&shell);
 			continue ;
 		}
-		execution(&shell);
+		// execution(&shell);
 		command_cleanup(&shell);
 	}
 	free_env_array(shell.ms_envp);

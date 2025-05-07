@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:04:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/29 09:00:28 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:29:33 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 /* TYPES **********************************************************************/
 
 typedef struct s_node t_node;
+typedef struct s_shell t_shell;
 
 /**
  * 
@@ -83,6 +84,34 @@ typedef struct s_node_sort
 	t_node					**outfile_arr;
 	t_node_sort_reattach	attach;
 }							t_node_sort;
+
+/**
+ * 
+ * Created solely for Norminette line-saving inside `expand_into_dest_args`.
+ * 
+ */
+typedef struct s_expand_into_dest_args
+{
+	t_shell		*shell;
+	char		*input;
+	size_t		*input_i;
+	char		in_quote;
+	char		*dest;
+	size_t		*dest_i;
+}			t_expand_into_dest_args;
+
+
+/**
+ * 
+ * Created solely for Norminette line-saving inside `arg_to_len`.
+ * 
+ */
+typedef struct s_arg_to_len_vars
+{
+	size_t	i;
+	size_t	length;
+	char	in_quote;
+}			t_arg_to_len_vars;
 
 /**
  * 
