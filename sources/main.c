@@ -44,7 +44,7 @@ int main(int argc, char **argv, char **envp)
 			command_cleanup(&shell);
 			continue ;
 		}
-		// execution(&shell);
+		execution(&shell);
 		command_cleanup(&shell);
 	}
 	free_env_array(shell.ms_envp);

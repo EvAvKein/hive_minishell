@@ -88,7 +88,8 @@ int	arg_to_len(t_shell *shell, char *arg)
 		}
 		if (arg[var.i] == '$' && var.in_quote != '\'')
 		{
-			var.i += expanded_len(shell, &arg[var.i]) + 1;
+			var.length += expanded_len(shell, &arg[var.i]);
+			var.i += env_name_len(&arg[++var.i], false);
 			continue ;
 		}
 		if (redirect_of_c(&arg[var.i]) && var.length--)
