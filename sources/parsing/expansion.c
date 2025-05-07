@@ -82,7 +82,7 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 	}
 	expansion_value = env_value(var.shell, &var.input[++(*var.input_i)]);
 	if (expansion_value)
-		ft_strlcpy(var.dest, expansion_value, ft_strlen(expansion_value));
+		ft_strlcpy(var.dest, expansion_value, ft_strlen(expansion_value) + 1);
 	*var.input_i += env_name_len(&var.input[*var.input_i], false);
 	return (true);
 }

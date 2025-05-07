@@ -106,6 +106,8 @@ char	*env_value(t_shell *shell, char *var_start)
 			i = 0;
 			while (is_envname_char(var_found[i], true))
 				i++;
+			if (var_found[i] == '=')
+				i++;
 			return (&var_found[i]);
 		}
 		i++;
