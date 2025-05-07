@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/09 10:13:16 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:06:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,13 @@ void		skip_to_first_node(t_node **node);
 void		skip_to_last_node(t_node **node);
 t_node		*append_new_node(t_shell *shell, int argc);
 
-char		*extract_arg(t_parsing *parsing);
+bool		envncmp(char *env_str, char *name_str, size_t cmp);
+char		*env_value(t_shell *shell, char *var_name);
+size_t		env_name_len(char *var_name, bool equal_ends);
+size_t		expanded_len(t_shell *shell, char *expand_start);
+bool		expand_into_dest(t_expand_into_dest_args var);
+
+char		*extract_arg(t_shell *shell, t_parsing *parsing);
 bool		extract_nodes(t_shell *shell, t_parsing *parsing);
 bool		sort_nodes_segment(t_shell *shell, t_parsing *parsing);
 
