@@ -17,6 +17,62 @@
  * TODO: Write these docs
  * 
  */
+size_t	exit_digits_len(t_shell *shell)
+{
+	unsigned int	status;
+	size_t			length;
+
+	status = shell->last_exit_status;
+	length = 0;
+	if (status == 0)
+		return (1);
+	while (status % 10 || status / 10)
+	{
+		length++;
+		status /= 10;
+	}
+	return (length);
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ * @returns `true` (for a line-saving conditional chain)
+ * 
+ */
+static bool	expand_exit_status(
+	t_shell *shell, char *dest, size_t *dest_i, size_t *input_i)
+{
+	unsigned int	status;
+	size_t			length;
+	size_t			i;
+
+	*input_i += 2;
+	status = shell->last_exit_status;
+	if (status == 0)
+	{
+		dest[(*dest_i)++] = '0';
+		return (true);
+	}
+	length = exit_digits_len(shell);
+	i = length - 1;
+	while (i >= 0)
+	{
+		dest[(*dest_i) + i--] = (status % 10) + '0';
+		if (status < 10)
+			break ;
+		status /= 10;
+	}
+	*dest_i += length;
+	return (true);
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ */
 static	bool is_invalid_identifier(char c)
 {
 	const char	identifiers[] = {'\'', '"', '<', '>', '|', '$', '\0'};
@@ -46,10 +102,7 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
 		is_space(expand_start[1]) || is_invalid_identifier(expand_start[1]))
 		return (1);
 	if (expand_start[1] == '?')
-	{
-		/** TODO: Handle exit code char counting */
-		return (1);
-	}
+		return (exit_digits_len(shell));
 	expansion_value = env_value(shell, expand_start + 1);
 	if (expansion_value)
 		return (ft_strlen(expansion_value));
@@ -75,14 +128,16 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 		(*var.input_i)++;
 		return (true);
 	}
-	if (var.input[*var.input_i + 1] == '?')
-	{
-		/** TODO: Handle exit code expansion (mallocless itoa into dest) */
+	if (var.input[*var.input_i + 1] == '?'
+		&& expand_exit_status(var.shell, var.dest, var.dest_i, var.input_i))
 		return (true);
-	}
 	expansion_value = env_value(var.shell, &var.input[++(*var.input_i)]);
 	if (expansion_value)
-		ft_strlcpy(var.dest, expansion_value, ft_strlen(expansion_value) + 1);
+	{
+		ft_strlcpy(&var.dest[*var.dest_i],
+			expansion_value, ft_strlen(expansion_value) + 1);
+		*var.dest_i += ft_strlen(expansion_value);
+	}
 	*var.input_i += env_name_len(&var.input[*var.input_i], false);
 	return (true);
 }
