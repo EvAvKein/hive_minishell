@@ -19,8 +19,7 @@ int main(int argc, char **argv, char **envp)
 	
 	(void) argc;
 	(void) argv;
-
-	int i = 0;
+	// int i = 0;
 
 	ft_bzero(&shell, sizeof(t_shell));
 	shell.envp = envp;
@@ -29,11 +28,10 @@ int main(int argc, char **argv, char **envp)
 		fatal_error(&shell, "envp duplication failed");
 	while (1)
 	{
-		i++;
+		shell.last_exit_status = 127;
 		input = readline(SHELL_PROMPT);
-		//printf("%s\n", input);
-		if (i == 10)
-			exit(1);
+		// if (i++ == 10)
+		// 	exit(1);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
 			continue;
 		if (input_was_entirely_spaces(input))
