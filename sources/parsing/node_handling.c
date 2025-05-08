@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   node_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
 /*   Updated: 2025/05/07 12:48:48 by ekeinan          ###   ########.fr       */

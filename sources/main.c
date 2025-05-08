@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
 /*   Updated: 2025/05/07 12:46:28 by ekeinan          ###   ########.fr       */
@@ -28,10 +28,9 @@ int main(int argc, char **argv, char **envp)
 		fatal_error(&shell, "envp duplication failed");
 	while (1)
 	{
-		shell.last_exit_status = 127;
-		input = readline(SHELL_PROMPT);
 		// if (i++ == 10)
 		// 	exit(1);
+    input = readline(SHELL_PROMPT);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
 			continue;
 		if (input_was_entirely_spaces(input))
