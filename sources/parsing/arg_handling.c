@@ -64,8 +64,7 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 /**
  * 
  * Counts the length of an argument in a given string,
- * omitting quotes that should be parsed away
- * and including spaces within quotes.
+ * accounting for quotes and env expansions.
  * 
  * @param arg The string for which to calucate the argument length.
  * 
@@ -103,13 +102,13 @@ int	arg_to_len(t_shell *shell, char *arg)
 
 /**
  * 
- * Copies from `src` to `dest` until the end of the provided arg.
+ * Copies the argument at the current point in input parsing into `dest`.
  * 
  * @param dest    The destination for copying.
  *
- * @param src     The source for copying.
+ * @param input   The input being parsed.
  * 
- * @param input_i An address to an external index
+ * @param input_i An address to the current parsing index for the input,
  *                to be incremented past the arg being copied.
  * 
  */
