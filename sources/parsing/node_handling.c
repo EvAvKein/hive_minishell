@@ -101,10 +101,8 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
  */
 bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 {
-	//t_node	*cmd_node; these were giving me a compiling error so i commented them out
 	int		argc;
 
-	//cmd_node = NULL;
 	argc = str_to_argc(&parsing->input[parsing->i],
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
 		.in_quote = '\0', .in_redirect = {'\0', '\0', '\0'}});
