@@ -14,7 +14,7 @@
 
 /**
  * 
- * TODO: Write these docs
+ * @returns The digit length of the exit code stored at `shell`.
  * 
  */
 size_t	exit_digits_len(t_shell *shell)
@@ -36,7 +36,17 @@ size_t	exit_digits_len(t_shell *shell)
 
 /**
  * 
- * TODO: Write these docs
+ * Write the digits of exit status stored in `shell`
+ * into `dest`, incrementing `dest_i` accordingly
+ * and skipping `input_i` past the expansion.
+ * 
+ * @param dest    The destination for writing the digits.
+ * 
+ * @param dest_i  The first index in `dest` from which to write the digits,
+ *                gets incremented past the digits.
+ * 
+ * @param input_i The input index,
+ *                to be incremented past the exist status expansion.
  * 
  * @returns `true` (for a line-saving conditional chain)
  * 
@@ -70,10 +80,11 @@ static bool	expand_exit_status(
 
 /**
  * 
- * TODO: Write these docs
+ * @returns Whether the provided character is an invalid identifier
+ *          (e.g. whether it serves as a terminator for expansion names).
  * 
  */
-static	bool is_invalid_identifier(char c)
+static bool	is_invalid_identifier(char c)
 {
 	const char	identifiers[] = {'\'', '"', '<', '>', '|', '$', '\0'};
 	size_t		i;
@@ -87,9 +98,11 @@ static	bool is_invalid_identifier(char c)
 
 /**
  * 
- * TODO: Write these docs
+ * @returns The length of the expanded value for the expansion
+ *          starting with the '$' at `expand_start`.
  * 
- * Rejecting in-single-quote expansions is the responsibility of the calling func.
+ * Rejecting in-single-quote expansions is
+ * the responsibility of the calling func.
  * 
  */
 size_t	expanded_len(t_shell *shell, char *expand_start)
@@ -111,7 +124,12 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
 
 /**
  * 
- * TODO: Write these docs
+ * Writes the content of provided expansion in the input's current input index,
+ * into the provided destination string at the current destination index.
+ * 
+ * Increments the values of both indexes past the expansion.
+ * 
+ * @returns `true` (for a line-saving conditional chain)
  * 
  */
 bool	expand_into_dest(t_expand_into_dest_args var)

@@ -13,7 +13,12 @@
 #include "minishell.h"
 
 /**
+ *
+ * Checks whether the provided character is a valid character
+ * for an environment variable name.
  * 
+ * @param c          The provided character.
+ *  
  * @param equal_ends Whether to treat '=' as a null terminator.
  * 
  * @returns Whether the provided character a valid variable name character.
@@ -27,10 +32,16 @@ bool	is_envname_char(char c, bool equal_ends)
 
 /**
  * 
- * TODO: Write these docs
- * 
+ * Counts and returns the length
+ * of a valid environment variable from `var_start`.
+ *
+ * @param var_start  The beginning of the string from which to count.
+ *  
  * @param equal_ends Whether to treat '=' as a null terminator
  *                   for the `var_start` variable.
+ * 
+ * @returns The length of the valid environment variable name
+ *          which starts at `var_start`.
  * 
  */
 size_t	env_name_len(char *var_start, bool equal_ends)
@@ -52,7 +63,7 @@ size_t	env_name_len(char *var_start, bool equal_ends)
  * @param var_start The start of the variable name
  *                  with which to check for a match.
  * 
- * @param cmp       The amount of characters from `var_start` to compare.
+ * @param cmp       The maximum amount of characters to compare.
  * 
  * @returns Whether `var_name` is the same as the name in the given `env_str`.
  * 
