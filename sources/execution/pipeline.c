@@ -6,25 +6,24 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/07 14:47:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/08 15:53:55 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_redirections(t_node *current)
+int	check_redirections(t_node *current)
 {
-	if (current->type == INFILE)
-		return (handle_infile(current->argv[0]));
-	if (current->type == OUTFILE)
-		return (handle_outfile(current->argv[0]));
-	if (current->type == APPENDFILE)
-		return (handle_appendfile(current->argv[0]));
+	int	ret;
+
+	ret = 0;
+	if (current->prev && current->prev->type == INFILE)
+		ret = handle_infile(current->argv[0]);
 	if (current->next && current->next->type == OUTFILE)
-		return (handle_outfile(current->next->argv[0]));
+		ret = handle_outfile(current->next->argv[0]);
 	if (current->next && current->next->type == APPENDFILE)
-		return (handle_appendfile(current->next->argv[0]));
-	return (0);
+		ret = handle_appendfile(current->next->argv[0]);
+	return (ret);
 }
 
 void	pipeline_child(t_shell *shell, t_node *current,
@@ -111,10 +110,15 @@ void	execute_pipeline(t_shell *shell)
 	prev_fd = -1;
 	while (current)
 	{
-		prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
-		if (prev_fd == -1)
-			return ;
+		if (current->type == COMMAND)
+		{
+			prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
+			if (prev_fd == -1)
+				return ;
+		}
 		current = current->next;
-	}	
+	}
+	//if (current)
+	//	execute_last_pipeline_element(shell, current, prev_fd, pipe_fd);
 	wait_for_all_children(shell);
 }

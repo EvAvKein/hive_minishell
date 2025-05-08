@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/06 15:56:45 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/08 13:29:40 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 	return (0);
 }
 
-int	fork_and_execute_sys_command(t_shell *shell)
+/*int	fork_and_execute_sys_command(t_shell *shell)
 {
 	int	pid;
 	int	status;
@@ -119,7 +119,7 @@ int	fork_and_execute_sys_command(t_shell *shell)
 		return (1);
 	}
 	return (0);
-}
+}*/
 
 int	execute_builtin(t_shell *shell)
 {
