@@ -17,8 +17,8 @@ static inline void	set_start_of_arg(t_str_to_argc_vars *var)
 	if (!var->in_arg)
 	{
 		var->in_arg = true;
-		if (var->in_redirect[0])
-			var->in_redirect[0] = '\0';
+		if (var->redirect[0])
+			var->redirect[0] = '\0';
 		else
 			var->argc++;
 	}
@@ -50,14 +50,14 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 			if (str[var.i] == '|')
 				break ;
 			if (redirect_of_c(&str[var.i])
-				&& memorize_and_skip_redirect(str, &var.i, var.in_redirect))
+				&& memorize_and_skip_redirect(str, &var.i, var.redirect))
 					continue ;
 		}
 		set_start_of_arg(&var);
 		toggle_quote_by_c(&var.in_quote, str[var.i++]);
 	}
-	if (var.in_redirect[0]) /** TODO: Change into syntax error printout */
-		return (ft_dprintf(2, "Ambiguous redirect (PLACEHOLDER TEXT)\n"), -1);
+	if (var.redirect[0])
+		return (print_err("syntax error: ambiguous ", var.redirect), -1);
 	return (var.argc);
 }
 
@@ -154,7 +154,10 @@ char	*extract_arg(t_shell *shell, t_parsing *parsing)
 	arg_len = arg_to_len(shell, &parsing->input[parsing->i]);
 	arg = ft_calloc(1, (arg_len + 1) * (sizeof(char)));
 	if (!arg)
+	{
+		print_err("parsing: ", strerror(ENOMEM));
 		return (NULL);
+	}
 	arg_cpy(shell, arg, parsing->input, &parsing->i);
 	return (arg);
 }

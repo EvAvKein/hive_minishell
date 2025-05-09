@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <fcntl.h>
+# include <errno.h>
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -61,6 +62,7 @@ typedef struct s_node
 	t_node_type		type;
 	int				argc;
 	char			**argv;
+	int				fd;
 	struct s_node	*next;	
 }					t_node;
 
@@ -154,6 +156,7 @@ void	wait_for_all_children(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
+size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
 void		print_node_type(int fd, t_node_type type);
 

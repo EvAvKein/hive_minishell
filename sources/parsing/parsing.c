@@ -54,13 +54,12 @@ bool	parsing(t_shell *shell, char *input)
 			return (false);
 		}
 	}
-	//print_nodes(STDERR_FILENO, shell->nodes);
+	// print_nodes(STDERR_FILENO, shell->nodes);
 	free(input);
 	if (parsing.piping)
 	{
-		ft_dprintf(2, "ambiguous pipe (PLACEHOLDER ERROR)\n");
+		print_err("syntax error: ambiguous pipe", "");
 		return (false);
 	}
-	//print_nodes(STDERR_FILENO, shell->nodes);
 	return (true);
 }

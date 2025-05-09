@@ -29,12 +29,12 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		// if (i++ == 10)
-		// 	exit(1);
-    input = readline(SHELL_PROMPT);
+		//	exit(1);
+		input = readline(SHELL_PROMPT);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
-			continue;
+			continue ;
 		if (input_was_entirely_spaces(input))
-			continue;
+			continue ;
 		add_history(input);
 		if (!parsing(&shell, input))
 		{

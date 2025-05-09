@@ -124,7 +124,7 @@ typedef struct s_str_to_argc_vars
 	int		argc;
 	bool	in_arg;
 	char	in_quote;
-	char	in_redirect[3];
+	char	redirect[3];
 }			t_str_to_argc_vars;
 
 /**

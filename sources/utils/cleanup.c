@@ -45,11 +45,15 @@ void	*free_2d_arr(void *arr, size_t length)
 void	*free_nodes(t_node *node)
 {
 	t_node	*next;
+	int		fd;
 
 	while (node)
 	{
 		next = node->next;
 		free_2d_arr(node->argv, node->argc);
+		fd = node->fd;
+		if (fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
+			close(node->fd);
 		free(node);
 		node = next;
 	}
