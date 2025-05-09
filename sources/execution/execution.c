@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/08 14:40:43 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/09 10:55:10 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,16 @@ void	single_command_child(t_shell *shell, t_node *current)
 {
 	if (check_redirections(current) == 1)
 		exit(EXIT_FAILURE);
-	if (is_builtin(current->argv[0])) //TODO: a single builtin should not be in child process
-	{
-		if (execute_builtin(shell) == 1)
-		{
-			//shell->last_exit_status = ??;
-			exit(EXIT_FAILURE);
-		}
-		//shell->last_exit_status == ??;
-	}
 	else if (current->type == COMMAND)
 	{
 		if (execute_sys_command(shell, current) == 1)
+		{
 			exit(EXIT_FAILURE);
+			shell->last_exit_status = 1;
+		}
 	}
-	exit(EXIT_SUCCESS);//TODO: KAIKKI REDIRECTIONIT TAPAHTUU AMASSA LAPSESSA
+	shell->last_exit_status == 0;
+	exit(EXIT_SUCCESS);
 }
 
 int	execute_command(t_shell *shell, t_node *current)
@@ -38,6 +33,16 @@ int	execute_command(t_shell *shell, t_node *current)
 	int		pid;
 	int		status;
 
+	if (is_builtin(current->argv[0]))
+	{
+		if (execute_builtin(shell) == 1)
+		{
+			shell->last_exit_status = 1;
+			return (1);
+		}
+		shell->last_exit_status == 0;
+		return (0);
+	}
 	pid = fork();
 	if (pid == 0)
 		single_command_child(shell, current);
@@ -50,7 +55,6 @@ int	execute_command(t_shell *shell, t_node *current)
 		}
 		else
 			shell->last_exit_status = WEXITSTATUS(status);
-			//TODO: store all the other exit statuses as well!! from all COMMANDS
 	}
 	else if (pid == -1)
 	{
@@ -103,7 +107,14 @@ void	single_command(t_shell *shell)
 	current = shell->nodes;
 	while(current)
 	{
-		execute_command(shell, current);
+		if (current->type == COMMAND)
+		{
+			if (execute_command(shell, current) == 1)
+			{
+				perror("system comand failed");
+				return ;
+			}
+		}
 		current = current->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/08 13:57:08 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/09 10:13:16 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ typedef struct s_node
 	t_node_type		type;
 	int				argc;
 	char			**argv;
-	struct s_node	*next;	
+	int				fd;
+	struct s_node	*next;
 }					t_node;
 
 typedef struct s_exec
@@ -132,10 +133,9 @@ int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 char	*get_pwd_from_env(char **envp);
 int		get_env_elements(char **envp);
-int		handle_appendfile(char *file);
-int		handle_infile(char *file);
-int		handle_outfile(char *file);
-int		handle_outfiles(t_node *current);
+int		handle_appendfile(t_node *current);
+int		handle_infile(t_node *current);
+int		handle_outfile(t_node *current);
 int		is_builtin(char *cmd);
 int		ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
