@@ -52,7 +52,8 @@ void	*free_nodes(t_node *node)
 		next = node->next;
 		free_2d_arr(node->argv, node->argc);
 		fd = node->fd;
-		if (fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
+		if (fd > 0 &&
+			fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
 			close(node->fd);
 		free(node);
 		node = next;
