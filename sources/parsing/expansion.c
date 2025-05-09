@@ -24,8 +24,6 @@ size_t	exit_digits_len(t_shell *shell)
 
 	status = shell->last_exit_status;
 	length = 0;
-	if (status == 0)
-		return (1);
 	while (status % 10 || status / 10)
 	{
 		length++;

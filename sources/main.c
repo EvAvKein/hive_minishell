@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:27:41 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:28:51 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int main(int argc, char **argv, char **envp)
 		// if (i++ == 10)
 		// 	exit(1);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
-			continue;
+			continue ;
 		if (input_was_entirely_spaces(input))
-			continue;
+			continue ;
 		add_history(input);
 		if (!parsing(&shell, input))
 		{

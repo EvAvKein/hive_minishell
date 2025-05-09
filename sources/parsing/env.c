@@ -110,8 +110,7 @@ char	*env_value(t_shell *shell, char *var_start)
 		return (NULL);
 	while (env[i])
 	{
-		if (envncmp(env[i], var_start,
-			env_name_len(var_start, false)))
+		if (envncmp(env[i], var_start, env_name_len(var_start, false)))
 		{
 			var_found = env[i];
 			i = 0;

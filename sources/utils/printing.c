@@ -14,6 +14,20 @@
 
 /**
  * 
+ * Prints SHELL_NAME, a colon and space, the two provided strings,
+ * and a newline, to STDERR.
+ * 
+ * @returns The return value of `ft_dprintf`
+ *          (amount of characters written, or -1 on write error).
+ * 
+ */
+size_t	print_err(char *part1, char *part2)
+{
+	return (ft_dprintf(STDERR_FILENO, SHELL_NAME ": %s%s\n", part1, part2));
+}
+
+/**
+ * 
  * Prints the name of the provided node type
  * (which would otherwise be printed as its enum value).
  *  

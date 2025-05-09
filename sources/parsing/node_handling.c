@@ -30,15 +30,17 @@ t_node	*append_new_node(t_shell *shell, int argc)
 	t_node	*node_for_append;
 	
 	new_node = ft_calloc(1, sizeof(t_node));
-	if (!new_node)
-		return (NULL); /** TODO: Print ENOMEM */
+	if (!new_node && print_err("parsing: ", strerror(ENOMEM)))
+		return (NULL);
 	new_node->argc = argc;
 	new_node->argv = ft_calloc(argc + 1, sizeof(char *));
 	if (!new_node->argv)
 	{
+		print_err("parsing: ", strerror(ENOMEM));
 		free(new_node);
-		return (NULL); /** TODO: Print ENOMEM */
+		return (NULL);
 	}
+	new_node->fd = -1;
 	if (!shell->nodes)
 	{
 		shell->nodes = new_node;
@@ -105,7 +107,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 
 	argc = str_to_argc(&parsing->input[parsing->i],
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
-		.in_quote = '\0', .in_redirect = {'\0', '\0', '\0'}});
+		.in_quote = '\0', .redirect = {'\0', '\0', '\0'}});
 	if (argc < 0)
 		return (false);
 	if (argc)

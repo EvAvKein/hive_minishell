@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:27:59 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:28:45 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <fcntl.h>
+# include <errno.h>
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -156,6 +157,7 @@ void	wait_for_all_children(t_shell *shell);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
+size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
 void		print_node_type(int fd, t_node_type type);
 
