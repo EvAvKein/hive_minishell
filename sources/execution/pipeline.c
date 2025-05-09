@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:32:09 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:33:07 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ void	execute_pipeline(t_shell *shell)
 	prev_fd = -1;
 	while (current)
 	{
+		//if prev_fd > 2 -> close it
+		//if current == INFILE -> that's the prev_fd
 		if (current->type == COMMAND)
 		{
 			prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
