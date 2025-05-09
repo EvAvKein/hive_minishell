@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
+#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/04/30 15:09:14 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/07 12:46:19 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,8 @@ SRC_FILES := utils/spaces.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
 			 parsing/traversal.c \
+			 parsing/env.c \
+			 parsing/expansion.c \
 			 parsing/misc.c \
 			 parsing/arg_handling.c \
 			 parsing/node_handling.c \

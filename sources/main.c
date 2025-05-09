@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/06 10:45:55 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/07 12:46:28 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int main(int argc, char **argv, char **envp)
 	
 	(void) argc;
 	(void) argv;
-
-	int i = 0;
+	// int i = 0;
 
 	ft_bzero(&shell, sizeof(t_shell));
 	shell.envp = envp;
@@ -29,11 +28,9 @@ int main(int argc, char **argv, char **envp)
 		fatal_error(&shell, "envp duplication failed");
 	while (1)
 	{
-		i++;
-		input = readline(SHELL_PROMPT);
-		//printf("%s\n", input);
-		if (i == 10)
-			exit(1);
+		// if (i++ == 10)
+		// 	exit(1);
+    input = readline(SHELL_PROMPT);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
 			continue;
 		if (input_was_entirely_spaces(input))

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/06 11:40:42 by ahavu            ###   ########.fr       */
+/*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/07 12:48:27 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 \001\x1b[1;38;2;220;202;0m\002T\
 \001\x1b[1;38;2;240;115;0m\002Q\
 \001\x1b[1;38;2;228;3;3m\002 + \
-\001\x1b[1;38;2;110;110;110m\002\
 \001\x1b[0m\002"
 
 # define MAX_CMDS	256
@@ -88,7 +87,13 @@ void		skip_to_first_node(t_node **node);
 void		skip_to_last_node(t_node **node);
 t_node		*append_new_node(t_shell *shell, int argc);
 
-char		*extract_arg(t_parsing *parsing);
+bool		envncmp(char *env_str, char *name_str, size_t cmp);
+char		*env_value(t_shell *shell, char *var_name);
+size_t		env_name_len(char *var_name, bool equal_ends);
+size_t		expanded_len(t_shell *shell, char *expand_start);
+bool		expand_into_dest(t_expand_into_dest_args var);
+
+char		*extract_arg(t_shell *shell, t_parsing *parsing);
 bool		extract_nodes(t_shell *shell, t_parsing *parsing);
 bool		sort_nodes_segment(t_shell *shell, t_parsing *parsing);
 

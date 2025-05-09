@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/02 09:27:52 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/07 12:48:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
 			return (true);
 		if (cmd_node && input[parsing->i] && !redirect_of_c(&input[parsing->i]))
 		{
-			cmd_node->argv[cmd_i] = extract_arg(parsing);
+			cmd_node->argv[cmd_i] = extract_arg(shell, parsing);
 			if (!cmd_node->argv[cmd_i++])
 				return (false);
 		}
@@ -101,10 +101,8 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
  */
 bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 {
-	//t_node	*cmd_node; these were giving me a compiling error so i commented them out
 	int		argc;
 
-	//cmd_node = NULL;
 	argc = str_to_argc(&parsing->input[parsing->i],
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
 		.in_quote = '\0', .in_redirect = {'\0', '\0', '\0'}});

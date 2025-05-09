@@ -35,7 +35,7 @@ static t_node	*parse_redirection(
 	if (!new_node)
 		return (NULL);
 	skip_spaces(parsing);
-	new_node->argv[0] = extract_arg(parsing);
+	new_node->argv[0] = extract_arg(shell, parsing);
 	if (!new_node->argv[0])
 		return (NULL);
 	if (!new_node->argv[0][0])

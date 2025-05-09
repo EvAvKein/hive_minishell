@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/28 18:45:36 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/07 12:30:42 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,54 +64,55 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 /**
  * 
  * Counts the length of an argument in a given string,
- * omitting quotes that should be parsed away
- * and including spaces within quotes.
+ * accounting for quotes and env expansions.
  * 
  * @param arg The string for which to calucate the argument length.
  * 
  * @returns The total length, with the aforementioned parsing aspects in mind.
  * 
  */
-int	arg_to_len(char *arg)
+int	arg_to_len(t_shell *shell, char *arg)
 {
-	size_t		i;
-	size_t		length;
-	char		in_quote;
-
-	i = 0;
-	length = 0;
-	in_quote = '\0';
-	while (arg[i])
+	t_arg_to_len_vars var;
+	
+	var = (t_arg_to_len_vars){.i = 0, .length = 0, .in_quote = '\0'};
+	while (arg[var.i])
 	{
-		length++;
-		if (is_space(arg[i]))
+		var.length++;
+		if (is_space(arg[var.i]))
 		{
-			if (in_quote && ++i)
+			if (var.in_quote && ++var.i)
 				continue ;
-			return (length);
+			return (var.length);
 		}
-		if (redirect_of_c(&arg[i]) && length--)
+		if (arg[var.i] == '$' && var.in_quote != '\'')
+		{
+			var.length += expanded_len(shell, &arg[var.i]);
+			var.i += env_name_len(&arg[++var.i], false);
+			continue ;
+		}
+		if (redirect_of_c(&arg[var.i]) && var.length--)
 			break ;
-		if (toggle_quote_by_c(&in_quote, arg[i]))
-			length--;
-		i++;
+		if (toggle_quote_by_c(&var.in_quote, arg[var.i]))
+			var.length--;
+		var.i++;
 	}
-	return (length);
+	return (var.length);
 }
 
 /**
  * 
- * Copies from `src` to `dest` until the end of the provided arg.
+ * Copies the argument at the current point in input parsing into `dest`.
  * 
- * @param dest       The destination for copying.
+ * @param dest    The destination for copying.
  *
- * @param src        The source for copying.
+ * @param input   The input being parsed.
  * 
- * @param external_i An address to an external index
- *                   to be incremented past the arg being copied.
+ * @param input_i An address to the current parsing index for the input,
+ *                to be incremented past the arg being copied.
  * 
  */
-void	arg_cpy(char *dest, char *input, size_t *input_i)
+void	arg_cpy(t_shell *shell, char *dest, char *input, size_t *input_i)
 {
 	size_t		dest_i;
 	char		in_quote;
@@ -127,12 +128,13 @@ void	arg_cpy(char *dest, char *input, size_t *input_i)
 			dest[dest_i++] = input[(*input_i)++];
 			continue ;
 		}
+		if (expand_into_dest((t_expand_into_dest_args){shell, input, input_i,
+				in_quote, dest, &dest_i}))
+			continue ;
 		if (!in_quote && redirect_of_c(&input[(*input_i)]))
 				break ;
-		if (!toggle_quote_by_c(&in_quote, input[*input_i]))
-			dest[dest_i++] = input[(*input_i)++];
-		else
-			(*input_i)++;
+		if (!toggle_quote_by_c(&in_quote, input[(*input_i)++]))
+			dest[dest_i++] = input[(*input_i) - 1];
 	}
 	return ;
 }
@@ -144,15 +146,15 @@ void	arg_cpy(char *dest, char *input, size_t *input_i)
  * @returns A copy of the next valid argument (or `NULL` on allocation failure).
  * 
  */
-char	*extract_arg(t_parsing *parsing)
+char	*extract_arg(t_shell *shell, t_parsing *parsing)
 {
 	size_t	arg_len;
 	char	*arg;
 
-	arg_len = arg_to_len(&parsing->input[parsing->i]);
+	arg_len = arg_to_len(shell, &parsing->input[parsing->i]);
 	arg = ft_calloc(1, (arg_len + 1) * (sizeof(char)));
 	if (!arg)
 		return (NULL);
-	arg_cpy(arg, parsing->input, &parsing->i);
+	arg_cpy(shell, arg, parsing->input, &parsing->i);
 	return (arg);
 }
