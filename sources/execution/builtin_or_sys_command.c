@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/08 13:29:40 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/09 14:56:46 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 {
 	char	*path;
 	char	**path_list;
-
+	char	**args;
+	
 	path_list = NULL;
 	if (ft_strchr(current->argv[0], '/'))
 		path = get_path_from_arg(current->argv[0]);
@@ -82,11 +83,14 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 		path = get_path_from_envp(current);
 	if (!path)
 		return (1);
-	if (execve(path, current->argv, shell->ms_envp) == -1)
+	args = current->argv;
+	current->argv = NULL;
+	//free everything and close the open fd's -> node_cleaner()
+	if (execve(path, args, shell->ms_envp) == -1)
 		perror("execve failed");
 	if (path_list)
 		free_env_array(path_list);
-	if (path && path != current->argv[0])
+	if (path && path != args[0])
 		free(path);
 	return (0);
 }

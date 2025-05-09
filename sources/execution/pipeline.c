@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/09 10:13:02 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/09 15:07:31 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_redirections(t_node *current)
 {
 	int	ret;
-
+//  this should probably happen in a while loop in case of several infiles/outfiles
 	ret = 0;
 	if (current->prev && current->prev->type == INFILE)
 		ret = handle_infile(current);
@@ -29,6 +29,8 @@ int	check_redirections(t_node *current)
 void	pipeline_child(t_shell *shell, t_node *current,
 		int prev_fd, int pipe_fd[2])
 {
+	//if (check_redirections(current) == 1)
+	//	exit(EXIT_FAILURE);
 	if (prev_fd >= 0)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
@@ -48,8 +50,6 @@ void	pipeline_child(t_shell *shell, t_node *current,
 	}
 	close(pipe_fd[READ]);
 	close(pipe_fd[WRITE]);
-	if (check_redirections(current) == 1)
-		exit(EXIT_FAILURE);
 	if (current->type == COMMAND)
 	{
 		if (is_builtin(current->argv[0]))
@@ -110,6 +110,8 @@ void	execute_pipeline(t_shell *shell)
 	prev_fd = -1;
 	while (current)
 	{
+		//if prev_fd > 2 -> close it
+		//if current == INFILE -> that's the prev_fd
 		if (current->type == COMMAND)
 		{
 			prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
@@ -118,7 +120,5 @@ void	execute_pipeline(t_shell *shell)
 		}
 		current = current->next;
 	}
-	//if (current)
-	//	execute_last_pipeline_element(shell, current, prev_fd, pipe_fd);
 	wait_for_all_children(shell);
 }
