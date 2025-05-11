@@ -6,31 +6,11 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:33:04 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/11 12:13:43 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * 
- * @returns The digit length of the exit code stored at `shell`.
- * 
- */
-size_t	exit_digits_len(t_shell *shell)
-{
-	unsigned int	status;
-	size_t			length;
-
-	status = shell->last_exit_status;
-	length = 0;
-	while (status % 10 || status / 10)
-	{
-		length++;
-		status /= 10;
-	}
-	return (length);
-}
 
 /**
  * 
@@ -52,26 +32,13 @@ size_t	exit_digits_len(t_shell *shell)
 static bool	expand_exit_status(
 	t_shell *shell, char *dest, size_t *dest_i, size_t *input_i)
 {
-	unsigned int	status;
+	int	status;
 	size_t			length;
-	size_t			i;
 
 	*input_i += 2;
 	status = shell->last_exit_status;
-	if (status == 0)
-	{
-		dest[(*dest_i)++] = '0';
-		return (true);
-	}
-	length = exit_digits_len(shell);
-	i = length - 1;
-	while (i >= 0)
-	{
-		dest[(*dest_i) + i--] = (status % 10) + '0';
-		if (status < 10)
-			break ;
-		status /= 10;
-	}
+	length = count_digits(status);
+	itoa_to_buf(status, &dest[*dest_i]);
 	*dest_i += length;
 	return (true);
 }
@@ -113,7 +80,7 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
 		is_space(expand_start[1]) || is_invalid_identifier(expand_start[1]))
 		return (1);
 	if (expand_start[1] == '?')
-		return (exit_digits_len(shell));
+		return (count_digits(shell->last_exit_status));
 	expansion_value = env_value(shell, expand_start + 1);
 	if (expansion_value)
 		return (ft_strlen(expansion_value));
