@@ -6,11 +6,36 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/11 12:13:43 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/11 19:42:45 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * 
+ * Write the process ID stored in `shell`
+ * into `dest`, incrementing `dest_i` accordingly
+ * and skipping `input_i` past the expansion.
+ * 
+ * @param dest    The destination for writing the PID.
+ * 
+ * @param dest_i  The first index in `dest` from which to write the PID,
+ *                gets incremented past the PID.
+ * 
+ * @param input_i The input index,
+ *                to be incremented past the PID exapnsion.
+ * 
+ * @returns `true` (for a line-saving conditional chain).
+ * 
+ */
+bool	expand_pid(t_shell *shell, char *dest, size_t *dest_i, size_t *input_i)
+{
+	*input_i += 2;
+	ft_strlcpy(&dest[*dest_i], shell->pid, 20);
+	*dest_i += ft_strlen(shell->pid);
+	return (true);
+}
 
 /**
  * 
@@ -26,14 +51,14 @@
  * @param input_i The input index,
  *                to be incremented past the exist status expansion.
  * 
- * @returns `true` (for a line-saving conditional chain)
+ * @returns `true` (for a line-saving conditional chain).
  * 
  */
 static bool	expand_exit_status(
 	t_shell *shell, char *dest, size_t *dest_i, size_t *input_i)
 {
-	int	status;
-	size_t			length;
+	int		status;
+	size_t	length;
 
 	*input_i += 2;
 	status = shell->last_exit_status;
@@ -51,7 +76,7 @@ static bool	expand_exit_status(
  */
 static bool	is_invalid_identifier(char c)
 {
-	const char	identifiers[] = {'\'', '"', '<', '>', '|', '$', '\0'};
+	const char	identifiers[] = {'\'', '"', '<', '>', '|', '\0'};
 	size_t		i;
 
 	i = 0;
@@ -79,6 +104,8 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
 	if (!expand_start[1] ||
 		is_space(expand_start[1]) || is_invalid_identifier(expand_start[1]))
 		return (1);
+	if (expand_start[1] == '$')
+		return (ft_strlen(shell->pid));
 	if (expand_start[1] == '?')
 		return (count_digits(shell->last_exit_status));
 	expansion_value = env_value(shell, expand_start + 1);
@@ -94,15 +121,14 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
  * 
  * Increments the values of both indexes past the expansion.
  * 
- * @returns `true` (for a line-saving conditional chain)
+ * @returns `true` (for a line-saving conditional chain).
  * 
  */
 bool	expand_into_dest(t_expand_into_dest_args var)
 {
 	char	*expansion_value;
 
-	if (!var.input[*var.input_i] ||
-		(var.input[*var.input_i] != '$' || var.in_quote == '\''))
+	if ((var.input[*var.input_i] != '$' || var.in_quote == '\''))
 		return (false);
 	if (!var.input[*var.input_i + 1] || is_space(var.input[*var.input_i + 1])
 		|| is_invalid_identifier(var.input[*var.input_i + 1]))
@@ -111,15 +137,17 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 		(*var.input_i)++;
 		return (true);
 	}
+	if (var.input[*var.input_i + 1] == '$'
+		&& expand_pid(var.shell, var.dest, var.dest_i, var.input_i))
+		return (true);
 	if (var.input[*var.input_i + 1] == '?'
 		&& expand_exit_status(var.shell, var.dest, var.dest_i, var.input_i))
 		return (true);
 	expansion_value = env_value(var.shell, &var.input[++(*var.input_i)]);
 	if (expansion_value)
 	{
-		ft_strlcpy(&var.dest[*var.dest_i],
+		*var.dest_i += ft_strlcpy(&var.dest[*var.dest_i],
 			expansion_value, ft_strlen(expansion_value) + 1);
-		*var.dest_i += ft_strlen(expansion_value);
 	}
 	*var.input_i += env_name_len(&var.input[*var.input_i], false);
 	return (true);
