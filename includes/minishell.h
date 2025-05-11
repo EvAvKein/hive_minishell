@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:29:15 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:29:33 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_shell
 	char		**envp;
 	char		**ms_envp;
 	int			last_exit_status;
+	char		pid[20];
 	t_node		*nodes;
 	t_exec		*exec;
 }				t_shell;
@@ -175,6 +176,7 @@ void		print_node_type(int fd, t_node_type type);
 size_t		count_digits(int num);
 char		*itoa_to_buf(int integer, char *buf);
 char		*pid_to_buf(char buf[20]);
+
 bool		is_space(char c);
 bool		is_entirely_spaces(char *string);
 bool		input_was_entirely_spaces(char *input);

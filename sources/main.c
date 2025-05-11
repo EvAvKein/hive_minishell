@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:29:21 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:29:29 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int main(int argc, char **argv, char **envp)
 	
 	init_signal_handlers();
 	
+	pid_to_buf(shell->pid);
 	shell->envp = envp;
 	shell->ms_envp = dup_envp(shell->envp);
 	if(!shell->ms_envp)
