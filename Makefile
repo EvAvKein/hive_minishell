@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/12 13:27:34 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/12 13:29:09 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,9 @@ NAME := minishell
 
 SRC_DIR := sources
 MAIN := main.c
-SRC_FILES := utils/spaces.c \
+SRC_FILES := signal_handlers.c \
+			 utils/spaces.c \
+			 utils/misc.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
 			 execution/builtin_or_sys_command.c \
