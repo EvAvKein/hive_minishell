@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:37 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:34:51 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int main(int argc, char **argv, char **envp)
 		fatal_error(shell, "envp duplication failed");
 	while (1)
 	{
-		shell.last_exit_status = 127;
 		input = readline(SHELL_PROMPT);
 		// if (i++ == 10)
 		// 	exit(1);
