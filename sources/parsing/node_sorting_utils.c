@@ -49,12 +49,14 @@ void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
 bool	collect_segment_nodes(t_node_sort *sort)
 {
 	sort->infile_arr = ft_calloc(sort->infile_count + 1, sizeof(t_node *));
-	if (!sort->infile_arr)
-		return (false); /** TODO: Print ENOMEM ERROR */
+	if (!sort->infile_arr
+		&& print_err("parsing: ", strerror(ENOMEM)))
+		return (false);
 	sort->outfile_arr = ft_calloc(sort->outfile_count + 1, sizeof(t_node *));
 	if (!sort->outfile_arr)
 	{
-		free(sort->infile_arr); /** TODO: Print ENOMEM ERROR */
+		print_err("parsing: ", strerror(ENOMEM));
+		free(sort->infile_arr);
 		return (false);
 	}
 	while (sort->node)

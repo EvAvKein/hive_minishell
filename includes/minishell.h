@@ -3,17 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:48:27 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/11 19:44:25 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define _XOPEN_SOURCE 700 // fixes vscode issue with struct sigaction
+
 # include <fcntl.h>
+# include <errno.h>
+# include <signal.h>
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -61,6 +65,7 @@ typedef struct s_node
 	t_node_type		type;
 	int				argc;
 	char			**argv;
+	int				fd;
 	struct s_node	*next;	
 }					t_node;
 
@@ -75,6 +80,7 @@ typedef struct s_shell
 	char		**envp;
 	char		**ms_envp;
 	int			last_exit_status;
+	char		pid[20];
 	t_node		*nodes;
 	t_exec		*exec;
 }				t_shell;
@@ -152,10 +158,23 @@ void	ms_unset(t_shell *shell);
 void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
 void	wait_for_all_children(t_shell *shell);
 
+/* SIGNAL FUNCTIONS ***********************************************************/
+
+void 		init_signal_handlers();
+void		sigint_handler(int sig, siginfo_t *info, void *prevact);
+void		sigpipe_handler(int sig, siginfo_t *info, void *prevact);
+
 /* UTILITY FUNCTIONS **********************************************************/
 
+t_shell		*get_shell();
+
+size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
 void		print_node_type(int fd, t_node_type type);
+
+size_t		count_digits(int num);
+char		*itoa_to_buf(int integer, char *buf);
+char		*pid_to_buf(char buf[20]);
 
 bool		is_space(char c);
 bool		is_entirely_spaces(char *string);

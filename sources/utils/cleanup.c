@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/30 14:21:51 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/11 13:56:12 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,16 @@ void	*free_2d_arr(void *arr, size_t length)
 void	*free_nodes(t_node *node)
 {
 	t_node	*next;
+	int		fd;
 
 	while (node)
 	{
 		next = node->next;
 		free_2d_arr(node->argv, node->argc);
+		fd = node->fd;
+		if (fd > 0 &&
+			fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
+			close(node->fd);
 		free(node);
 		node = next;
 	}
@@ -75,6 +80,7 @@ void	command_cleanup(t_shell *shell)
  */
 void	shell_cleanup(t_shell *shell)
 {
+	free_env_array(shell->ms_envp);
 	command_cleanup(shell);
 }
 

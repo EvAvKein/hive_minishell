@@ -5,15 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 21:21:54 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 14:48:41 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/11 17:32:38 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/11 17:52:11 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/**
- * @file We don't need a file just for space-related functions.
- *       Combine into larger utils file when we have other utils.
- */
 
 #include "minishell.h"
 
@@ -21,7 +16,7 @@
  * 
  * @returns Whether the provided `c` is a space character
  * (an actual space, or horizontal/vertical tab, or newline,
- * or form feed, or carriage return)
+ * or form feed, or carriage return).
  * 
  */
 bool	is_space(char c)
