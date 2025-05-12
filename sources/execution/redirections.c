@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:37:30 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:33:22 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,7 @@
 
 int	handle_infile(t_node *current)
 {
-	current->fd = open(current->argv[0], O_RDONLY);
-	if (current->fd == -1)
-	{
-		perror("fd failed");
-		return (1);
-	}
-	else if (dup2(current->fd, STDIN_FILENO) == -1)
+	if (dup2(current->fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2 failed");
 		return (1);

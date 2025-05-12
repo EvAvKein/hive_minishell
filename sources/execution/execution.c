@@ -6,29 +6,13 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:02 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:33:53 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	single_command_child(t_shell *shell, t_node *current)
-{
-	//if (check_redirections(current) == 1)
-	//	exit(EXIT_FAILURE);
-	if (current->type == COMMAND)
-	{
-		if (execute_sys_command(shell, current) == 1)
-		{
-			exit(EXIT_FAILURE);
-			shell->last_exit_status = 1;
-		}
-	}
-	shell->last_exit_status = 0;
-	exit(EXIT_SUCCESS);
-}
-
-int	execute_command(t_shell *shell, t_node *current)
+/*int	execute_command(t_shell *shell, t_node *current)
 {
 	int		pid;
 	int		status;
@@ -62,7 +46,7 @@ int	execute_command(t_shell *shell, t_node *current)
 		return (1);
 	}
 	return (0);
-}
+}*/
 
 int	count_commands(t_node *head)
 {
@@ -82,22 +66,50 @@ int	count_commands(t_node *head)
 	return (count);
 }
 
-void	single_command(t_shell *shell)
+int	open_redirections(t_shell *shell)
 {
-	t_node *current;
+	t_node *node;
 
-	current = shell->nodes;
-	while(current)
+	node = shell->nodes;
+	while (node)
 	{
-		if (current->type == COMMAND)
+		if (node->type == INFILE
+			|| node->type == OUTFILE || node->type == APPENDFILE)
 		{
-			if (execute_command(shell, current) == 1)
+			if (access(node->argv[0], F_OK) == -1)
 			{
-				perror("system comand failed");
-				return ;
+				shell->last_exit_status = 2;
+				print_err(node->argv[0], " file doesn't exist");
+				return (1);
+			}
+			node->fd = open(node->argv[0], O_RDONLY);
+			if (node->fd == -1)
+			{
+				print_err(node->argv[0], " couldn't be read.");
+				return (1);
 			}
 		}
-		current = current->next;
+		node = node->next;
+	}
+	return (0);
+}
+
+void	fd_cleanup(int *prev_fd, int pipe_fd[2])
+{
+	if (*prev_fd != -1)
+	{
+		close(*prev_fd);
+		*prev_fd = -1;
+	}
+	if (pipe_fd[READ] != -1)
+	{
+		close(pipe_fd[READ]);
+		pipe_fd[READ] = -1;
+	}
+	if (pipe_fd[WRITE] != -1)
+	{
+		close(pipe_fd[WRITE]);
+		pipe_fd[WRITE] = -1;
 	}
 	return (0);
 }
@@ -144,16 +156,9 @@ void    execution(t_shell *shell)
     t_exec    *exec;
     int        redirections;
 
-	command_count  = count_commands(shell->nodes);
-	redirections = count_redirections(shell->nodes);
-	exec = ft_calloc(1, sizeof(t_exec));
-	if (!exec)
-		fatal_error(shell, "execution: malloc failed");
-	shell->exec = exec;
-	//open_redirections() -> dont dup them yet
-	if (command_count == 1)
-		single_command(shell); //maybe doesnt matter
-	else
-		execute_pipeline(shell);
-	free(exec);
+	ft_bzero(&exec, sizeof(t_exec));
+	shell->exec = &exec;
+	if (open_redirections(shell) == 1)
+		return ;
+	execute_command_line(shell);
 }

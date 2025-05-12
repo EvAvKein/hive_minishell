@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:07 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:33:57 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,55 +26,61 @@ int	check_redirections(t_node *current)
 	return (ret);
 }
 
-void	pipeline_child(t_shell *shell, t_node *current,
+// EXIT CODE 126: 
+
+void	pipeline_child(t_shell *shell, t_node *command,
 		int prev_fd, int pipe_fd[2])
 {
-	//if (check_redirections(current) == 1)
-	//	exit(EXIT_FAILURE);
-	if (prev_fd >= 0)
+	if (prev_fd != -1)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
 		{
-			perror("pipeline: dup2 failed");
+			print_err("execution: ", "dup2 failed.");
 			exit(EXIT_FAILURE);
 		}
-		close(prev_fd);
+		//close(prev_fd);
 	}
-	if (current->next)
+	if (command)
 	{
 		if (dup2(pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
-			perror("pipeline: dup2 failed");
+			print_err("execution: ", "dup2 failed.");
 			exit(EXIT_FAILURE);
 		}
 	}
 	close(pipe_fd[READ]);
 	close(pipe_fd[WRITE]);
-	if (current->type == COMMAND)
+	if (command->type == COMMAND)
 	{
-		if (is_builtin(current->argv[0]))
-			execute_builtin(shell);
+		if (is_builtin(command->argv[0]))
+			exit(execute_builtin(shell));
 		else
-			execute_sys_command(shell, current);
+			exit(execute_sys_command(shell, command));
 	}
 	exit(EXIT_SUCCESS);
 }
 
-static int	pipeline_parent(t_node *current, int prev_fd, int pipe_fd[2])
+static void	pipeline_parent(int *prev_fd, int pipe_fd[2])
 {
-	if (prev_fd != -1)
-		close(prev_fd);
-	if (current->next)
+	if (*prev_fd != -1)
+	{
+		close(*prev_fd);
+		*prev_fd = -1;
+	}
+	if (pipe_fd[WRITE] != -1)
 	{
 		close(pipe_fd[WRITE]);
-		prev_fd = pipe_fd[READ];
+		pipe_fd[WRITE] = -1;
 	}
-	return (prev_fd);
+	if (pipe_fd[READ] != -1)
+	{
+		*prev_fd = pipe_fd[READ];
+		pipe_fd[READ] = -1;
+	}
 }
 
-static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
+/*static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
 {
-	//set follow-fork-mode child
 	pid_t	pid;
 	
 	if (pipe(pipe_fd) == -1)
@@ -98,26 +104,91 @@ static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
 		prev_fd = pipeline_parent(current, prev_fd, pipe_fd);
 	}
 	return (prev_fd);
+}*/
+
+int		ready_to_execute(t_node *current)
+{
+	if (!current)
+		return (1);
+	if (current->type == INFILE && current->prev
+		&& (current->prev->type == COMMAND
+			|| current->prev->type == OUTFILE
+			|| current->prev->type == APPENDFILE))
+		return (1);
+	if (current->type == COMMAND && current->prev
+		&& (current->prev->type != INFILE))
+		return (1);
+	return (0);
 }
 
-void	execute_pipeline(t_shell *shell)
+int	execute(int *prev_fd, t_node *command, int pipe_fd[2], t_node *out)
+{
+	t_shell *shell;
+	pid_t	pid;
+
+	shell = get_shell();
+	if (out)
+		pipe_fd[WRITE] = out->fd;
+	else if (pipe(pipe_fd) == -1)
+	{
+		print_err("execution:", " pipe failed.");
+		return (1);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		print_err("execution:", " fork failed.");
+		fd_cleanup(prev_fd, pipe_fd);
+		return (1);
+	}
+	if (pid == 0)
+		pipeline_child(shell, command, *prev_fd, pipe_fd);
+	else
+	{
+		shell->exec->pids[shell->exec->pid_count++] = pid;
+		pipeline_parent(prev_fd, pipe_fd);
+	}
+	return (0);
+}
+
+void	execute_command_line(t_shell *shell)
 {
 	t_node	*current;
 	int		prev_fd;
 	int		pipe_fd[2];
+	t_node 	*command;
+	t_node	*out;
 
+	command = NULL;
+	out = NULL;
 	current = shell->nodes;
 	prev_fd = -1;
-	while (current)
+	while (1)
 	{
-		//if prev_fd > 2 -> close it
-		//if current == INFILE -> that's the prev_fd
-		if (current->type == COMMAND)
+		if (ready_to_execute(current))
 		{
-			prev_fd = do_pipe(pipe_fd, prev_fd, current, shell);
-			if (prev_fd == -1)
-				return ;
+			if (execute(&prev_fd, command, pipe_fd, out) == 1)
+			{
+				command = NULL;
+				out = NULL;
+				break ;
+			}
+			command = NULL;
+			out = NULL;
 		}
+		if (!current)
+			break ;
+		if (current->type == INFILE)
+		{
+			if (prev_fd != -1)
+				close(prev_fd);
+			prev_fd = current->fd;
+			current->fd = -1;
+		}
+		if (current->type == COMMAND)
+			command = current;
+		if (current->type == OUTFILE || current->type == APPENDFILE)
+			out = current;
 		current = current->next;
 	}
 	wait_for_all_children(shell);

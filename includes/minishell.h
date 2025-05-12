@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:31:52 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/12 13:33:32 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,12 @@ int 	*close_pipe_fds(int pipe_fd[2]);
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
 int		execute_command(t_shell *shell, t_node *current);
+void	execute_command_line(t_shell *shell);
 void    execute_last_pipeline_element(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
-void	execute_pipeline(t_shell *shell);
 int		execute_sys_command(t_shell *shell, t_node *current);
 void	execution(t_shell *shell);
 void	fatal_error(t_shell *shell, char *msg);
+void	fd_cleanup(int *prev_fd, int pipe_fd[2]);
 int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 char	*get_pwd_from_env(char **envp);
