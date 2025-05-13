@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/11 13:56:12 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/13 10:48:50 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@
 void	*free_2d_arr(void *arr, size_t length)
 {
 	char **array;
-
+	
+	if (!arr)
+		return (NULL);
 	array = arr;
 	while (length)
 		free(array[--length]);

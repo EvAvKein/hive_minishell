@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/11 19:44:25 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/13 10:26:05 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_node
 	int				argc;
 	char			**argv;
 	int				fd;
-	struct s_node	*next;	
+	struct s_node	*next;
 }					t_node;
 
 typedef struct s_exec
@@ -74,6 +74,13 @@ typedef struct s_exec
 	pid_t	pids[MAX_CMDS];
 	int		pid_count;
 }			t_exec;
+
+typedef struct s_fd
+{
+	int	pipe_fd[2];
+	int	prev_fd;
+}			t_fd;
+
 
 typedef struct s_shell
 {
@@ -129,23 +136,24 @@ t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
+int		check_redirections(t_node *current);
 int 	*close_pipe_fds(int pipe_fd[2]);
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
-int		execute_command(t_shell *shell);
-void    execute_last_pipeline_command(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
-void	execute_pipeline(t_shell *shell);
+int		execute_command(t_shell *shell, t_node *current);
+void	execute_command_line(t_shell *shell);
+void    execute_last_pipeline_element(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
 int		execute_sys_command(t_shell *shell, t_node *current);
 void	execution(t_shell *shell);
 void	fatal_error(t_shell *shell, char *msg);
+void	fd_cleanup(t_fd *fd);
 int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 char	*get_pwd_from_env(char **envp);
 int		get_env_elements(char **envp);
-int		handle_appendfile(char *file);
-int		handle_infile(char *file);
-int		handle_outfile(char *file);
-int		handle_outfiles(t_node *current);
+int		handle_appendfile(t_node *current);
+int		handle_infile(t_node *current);
+int		handle_outfile(t_node *current);
 int		is_builtin(char *cmd);
 int		ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
@@ -155,7 +163,7 @@ int		ms_export(t_shell *shell);
 void	ms_pipe(t_shell *shell);
 void	ms_pwd(char **envp);
 void	ms_unset(t_shell *shell);
-void	pipeline_child(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
+void	pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
 void	wait_for_all_children(t_shell *shell);
 
 /* SIGNAL FUNCTIONS ***********************************************************/
