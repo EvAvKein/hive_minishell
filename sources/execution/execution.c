@@ -6,64 +6,52 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/13 10:25:42 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/13 15:12:41 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*int	execute_command(t_shell *shell, t_node *current)
+static int	open_infile(t_shell *shell, t_node *node)
 {
-	int		pid;
-	int		status;
-
-	if (is_builtin(current->argv[0]))
+	if (access(node->argv[0], F_OK) == -1)
 	{
-		if (execute_builtin(shell) == 1)
-		{
-			shell->last_exit_status = 1;
-			return (1);
-		}
-		shell->last_exit_status = 0;
-		return (0);
+		shell->last_exit_status = 2;
+		print_err(node->argv[0], " file doesn't exist");
+		return (1);
 	}
-	pid = fork();
-	if (pid == 0)
-		single_command_child(shell, current);
-	else if (pid > 0)
+	node->fd = open(node->argv[0], O_RDONLY);
+	if (node->fd == -1)
 	{
-		if (waitpid(pid, &status, 0) == -1)
-		{
-			perror("waitpid failed");
-			shell->last_exit_status = 1;
-		}
-		else
-			shell->last_exit_status = WEXITSTATUS(status);
-	}
-	else if (pid == -1)
-	{
-		perror("fork failed");
+		print_err(node->argv[0], " couldn't be read.");
 		return (1);
 	}
 	return (0);
-}*/
+}
 
-int	count_commands(t_node *head)
+static int	open_outfile_or_appendfile(t_node *node)
 {
-	t_node	*tmp;
-	int		count;
-	
-	tmp = head;
-	count = 0;
-	while (tmp->next && tmp->next != head)
+	if (node->type == OUTFILE)
 	{
-		if (tmp->type == COMMAND)
-			count++;
-		tmp = tmp->next;
+		node->fd = open(node->argv[0], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (node->fd == -1)
+		{
+			//last exit status?
+			print_err(node->argv[0], " couldn't be read.");
+			return (1);
+		}
 	}
-	if (tmp->type == COMMAND)
-		count++;
-	return (count);
+	if (node->type == APPENDFILE)
+	{
+		node->fd = open(node->argv[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (node->fd == -1)
+		{
+			//last exit status?
+			print_err(node->argv[0], " couldn't be read.");
+			return (1);
+		}
+	}
+	return (0);
 }
 
 int	open_redirections(t_shell *shell)
@@ -73,24 +61,19 @@ int	open_redirections(t_shell *shell)
 	node = shell->nodes;
 	while (node)
 	{
-		if (node->type == INFILE
-			|| node->type == OUTFILE || node->type == APPENDFILE)
+		if (node->type == INFILE)
 		{
-			if (access(node->argv[0], F_OK) == -1)
-			{
-				shell->last_exit_status = 2;
-				print_err(node->argv[0], " file doesn't exist");
+			if (open_infile(shell, node) == 1)
 				return (1);
-			}
-			node->fd = open(node->argv[0], O_RDONLY);
-			if (node->fd == -1)
-			{
-				print_err(node->argv[0], " couldn't be read.");
+		}
+		if (node->type == OUTFILE || node->type == APPENDFILE)
+		{
+			if (open_outfile_or_appendfile(node) == 1)
 				return (1);
-			}
 		}
 		node = node->next;
 	}
+	
 	return (0);
 }
 

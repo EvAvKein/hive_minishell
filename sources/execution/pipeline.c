@@ -6,27 +6,11 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/13 10:43:55 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/13 14:55:35 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_redirections(t_node *current)
-{
-	int	ret;
-//  this should probably happen in a while loop in case of several infiles/outfiles
-	ret = 0;
-	if (current->prev && current->prev->type == INFILE)
-		ret = handle_infile(current);
-	if (current->next && current->next->type == OUTFILE)
-		ret = handle_outfile(current);
-	if (current->next && current->next->type == APPENDFILE)
-		ret = handle_appendfile(current);
-	return (ret);
-}
-
-// EXIT CODE 126: 
 
 void	pipeline_child(t_shell *shell, t_node *command,
 		t_fd *fd, t_node *current)
@@ -36,11 +20,10 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
-			exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);//shell_exit
 		}
-		//close(prev_fd);
 	}
-	if (command && current)
+	if (command && (current || fd->pipe_fd[WRITE] != -1))
 	{
 		if (dup2(fd->pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
@@ -57,7 +40,6 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		else
 			exit(execute_sys_command(shell, command));
 	}
-	exit(EXIT_SUCCESS);
 }
 
 static void	pipeline_parent(t_fd *fd)
@@ -78,33 +60,11 @@ static void	pipeline_parent(t_fd *fd)
 		fd->pipe_fd[READ] = -1;
 	}
 }
-
-/*static int	do_pipe(int pipe_fd[2], int prev_fd, t_node *current, t_shell *shell)
-{
-	pid_t	pid;
-	
-	if (pipe(pipe_fd) == -1)
-	{
-		perror("pipe failed");
-		return (-1);
-	}
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork failed");
-		close(pipe_fd[READ]);
-		close(pipe_fd[WRITE]);
-		return (-1);
-	}
-	if (pid == 0)
-		pipeline_child(shell, current, prev_fd, pipe_fd);
-	else
-	{
-		shell->exec->pids[shell->exec->pid_count++] = pid;
-		prev_fd = pipeline_parent(current, prev_fd, pipe_fd);
-	}
-	return (prev_fd);
-}*/
+/** The conditions on which the command line is ready to be executed:
+ * the command line is given as a linked list in "sequences", where INFILE node/s
+ * are at the beginning, COMMAND node/s in the middle, and OUTFILE/APPENDFILE node/s at the end.
+ * The "sequence" is ready to be executed when it reaches the end, ie. NULL, or the start of a new "sequence".
+ */
 
 int		ready_to_execute(t_node *current)
 {
@@ -127,15 +87,19 @@ int	execute(t_node *command, t_node *out, t_fd *fd, t_node *current)
 	pid_t	pid;
 
 	shell = get_shell();
-	if (out)
-		fd->pipe_fd[WRITE] = out->fd;
-	else if (current) 
+	if (current)
 	{
 		if (pipe(fd->pipe_fd) == -1)
 		{
 			print_err("execution:", " pipe failed.");
 			return (1);
 		}
+	}
+	if (out)
+	{
+		if (fd->pipe_fd[WRITE] != 1)
+			close(fd->pipe_fd[WRITE]);
+		fd->pipe_fd[WRITE] = out->fd;
 	}
 	pid = fork();
 	if (pid == -1)

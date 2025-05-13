@@ -6,11 +6,12 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:43 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/13 15:18:46 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 static char	*get_path_from_envp(t_node *current)
 {
 	char	*env_path;
@@ -98,36 +99,6 @@ int	execute_sys_command(t_shell *shell, t_node *current)
 	return (126);
 }
 
-/*int	fork_and_execute_sys_command(t_shell *shell)
-{
-	int	pid;
-	int	status;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		if (execute_sys_command(shell, shell->nodes) == 1)
-			exit(1);
-	}
-	else if (pid > 0)
-	{
-		if (waitpid(pid, &status, 0) == -1)
-		{
-			perror("waitpid failed");
-			shell->last_exit_status = 1;
-		}
-		else
-			shell->last_exit_status = WEXITSTATUS(status);
-			//TODO: store all the other exit statuses as well!! from all COMMANDS
-	}
-	else if (pid == -1)
-	{
-		perror("fork failed");
-		return (1);
-	}
-	return (0);
-}*/
-
 int	execute_builtin(t_shell *shell)
 {
 	if (!ft_strncmp(shell->nodes->argv[0], "env", 4))
@@ -147,3 +118,5 @@ int	execute_builtin(t_shell *shell)
 		ms_exit(shell);
 	return (0);
 }
+//TODO: massive todo: builtins
+//TODO; cd doesn't work
