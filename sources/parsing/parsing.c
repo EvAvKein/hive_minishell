@@ -5,7 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
+/*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             *
 /*   Updated: 2025/05/13 10:49:22 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -54,12 +54,12 @@ bool	parsing(t_shell *shell, char *input)
 			return (false);
 		}
 	}
+	// print_nodes(STDERR_FILENO, shell->nodes);
 	free(input);
 	if (parsing.piping)
 	{
 		print_err("syntax error: ambiguous pipe", "");
 		return (false);
 	}
-	//print_nodes(STDERR_FILENO, shell->nodes);
 	return (true);
 }

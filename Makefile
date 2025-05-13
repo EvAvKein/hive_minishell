@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
+#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
 #    Updated: 2025/05/12 13:32:45 by ahavu            ###   ########.fr        #
