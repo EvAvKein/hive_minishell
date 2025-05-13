@@ -73,6 +73,7 @@ int	open_redirections(t_shell *shell)
 		}
 		node = node->next;
 	}
+	
 	return (0);
 }
 
