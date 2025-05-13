@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/11 17:33:31 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/13 10:51:17 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,9 @@ SRC_FILES := signal_handlers.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
 			 parsing/traversal.c \
-			 parsing/env.c \
-			 parsing/expansion.c \
+			 parsing/expansion/env.c \
+			 parsing/expansion/expansion.c \
+			 parsing/expansion/delete_void_expansions.c \
 			 parsing/misc.c \
 			 parsing/arg_handling.c \
 			 parsing/node_handling.c \
