@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:34:51 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/13 10:41:26 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	
-	// int i = 0;
+	int i = 0;
 
 	shell = get_shell();
 	ft_bzero(shell, sizeof(t_shell));
@@ -41,8 +41,8 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		input = readline(SHELL_PROMPT);
-		// if (i++ == 10)
-		// 	exit(1);
+		if (i++ == 10)
+			exit(1);
 		if (!input) // replace with EOF (ctrl-D) signal-handler
 			continue ;
 		if (input_was_entirely_spaces(input))

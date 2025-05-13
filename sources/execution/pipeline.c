@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:57 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/13 10:43:55 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,27 @@ int	check_redirections(t_node *current)
 // EXIT CODE 126: 
 
 void	pipeline_child(t_shell *shell, t_node *command,
-		int prev_fd, int pipe_fd[2])
+		t_fd *fd, t_node *current)
 {
-	if (prev_fd != -1)
+	if (fd->prev_fd != -1)
 	{
-		if (dup2(prev_fd, STDIN_FILENO) == -1)
+		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
 			exit(EXIT_FAILURE);
 		}
 		//close(prev_fd);
 	}
-	if (command)
+	if (command && current)
 	{
-		if (dup2(pipe_fd[WRITE], STDOUT_FILENO) == -1)
+		if (dup2(fd->pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
 			exit(EXIT_FAILURE);
 		}
 	}
-	close(pipe_fd[READ]);
-	close(pipe_fd[WRITE]);
+	close(fd->pipe_fd[READ]);
+	close(fd->pipe_fd[WRITE]);
 	if (command->type == COMMAND)
 	{
 		if (is_builtin(command->argv[0]))
@@ -60,22 +60,22 @@ void	pipeline_child(t_shell *shell, t_node *command,
 	exit(EXIT_SUCCESS);
 }
 
-static void	pipeline_parent(int *prev_fd, int pipe_fd[2])
+static void	pipeline_parent(t_fd *fd)
 {
-	if (*prev_fd != -1)
+	if (fd->prev_fd != -1)
 	{
-		close(*prev_fd);
-		*prev_fd = -1;
+		close(fd->prev_fd);
+		fd->prev_fd = -1;
 	}
-	if (pipe_fd[WRITE] != -1)
+	if (fd->pipe_fd[WRITE] != -1)
 	{
-		close(pipe_fd[WRITE]);
-		pipe_fd[WRITE] = -1;
+		close(fd->pipe_fd[WRITE]);
+		fd->pipe_fd[WRITE] = -1;
 	}
-	if (pipe_fd[READ] != -1)
+	if (fd->pipe_fd[READ] != -1)
 	{
-		*prev_fd = pipe_fd[READ];
-		pipe_fd[READ] = -1;
+		fd->prev_fd = fd->pipe_fd[READ];
+		fd->pipe_fd[READ] = -1;
 	}
 }
 
@@ -121,32 +121,35 @@ int		ready_to_execute(t_node *current)
 	return (0);
 }
 
-int	execute(int *prev_fd, t_node *command, int pipe_fd[2], t_node *out)
+int	execute(t_node *command, t_node *out, t_fd *fd, t_node *current)
 {
 	t_shell *shell;
 	pid_t	pid;
 
 	shell = get_shell();
 	if (out)
-		pipe_fd[WRITE] = out->fd;
-	else if (pipe(pipe_fd) == -1)
+		fd->pipe_fd[WRITE] = out->fd;
+	else if (current) 
 	{
-		print_err("execution:", " pipe failed.");
-		return (1);
+		if (pipe(fd->pipe_fd) == -1)
+		{
+			print_err("execution:", " pipe failed.");
+			return (1);
+		}
 	}
 	pid = fork();
 	if (pid == -1)
 	{
 		print_err("execution:", " fork failed.");
-		fd_cleanup(prev_fd, pipe_fd);
+		fd_cleanup(fd);
 		return (1);
 	}
 	if (pid == 0)
-		pipeline_child(shell, command, *prev_fd, pipe_fd);
+		pipeline_child(shell, command, fd, current);
 	else
 	{
 		shell->exec->pids[shell->exec->pid_count++] = pid;
-		pipeline_parent(prev_fd, pipe_fd);
+		pipeline_parent(fd);
 	}
 	return (0);
 }
@@ -154,20 +157,21 @@ int	execute(int *prev_fd, t_node *command, int pipe_fd[2], t_node *out)
 void	execute_command_line(t_shell *shell)
 {
 	t_node	*current;
-	int		prev_fd;
-	int		pipe_fd[2];
+	t_fd	fd;
 	t_node 	*command;
 	t_node	*out;
 
 	command = NULL;
 	out = NULL;
 	current = shell->nodes;
-	prev_fd = -1;
+	fd.prev_fd = -1;
+	fd.pipe_fd[0] = -1;
+	fd.pipe_fd[1] = -1;
 	while (1)
 	{
 		if (ready_to_execute(current))
 		{
-			if (execute(&prev_fd, command, pipe_fd, out) == 1)
+			if (execute(command, out, &fd, current) == 1)
 			{
 				command = NULL;
 				out = NULL;
@@ -180,9 +184,9 @@ void	execute_command_line(t_shell *shell)
 			break ;
 		if (current->type == INFILE)
 		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			prev_fd = current->fd;
+			if (fd.prev_fd != -1)
+				close(fd.prev_fd);
+			fd.prev_fd = current->fd;
 			current->fd = -1;
 		}
 		if (current->type == COMMAND)

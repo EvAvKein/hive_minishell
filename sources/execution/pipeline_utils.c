@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:30:16 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/13 10:34:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	wait_for_all_children(t_shell *shell)
 	}
 }
 
-void    execute_last_pipeline_element(t_shell *shell, t_node *current,
+/*void    execute_last_pipeline_element(t_shell *shell, t_node *current,
         int prev_fd, int pipe_fd[2])
 {
     pid_t   pid;
@@ -53,7 +53,7 @@ void    execute_last_pipeline_element(t_shell *shell, t_node *current,
         if (prev_fd != -1)
 			close(prev_fd);
     }
-}
+}*/
 
 int *close_pipe_fds(int pipe_fd[2])
 {

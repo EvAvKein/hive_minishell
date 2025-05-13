@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:53 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/13 10:25:42 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,70 +94,31 @@ int	open_redirections(t_shell *shell)
 	return (0);
 }
 
-void	fd_cleanup(int *prev_fd, int pipe_fd[2])
+void	fd_cleanup(t_fd *fd)
 {
-	if (*prev_fd != -1)
+	if (fd->prev_fd != -1)
 	{
-		close(*prev_fd);
-		*prev_fd = -1;
+		close(fd->prev_fd);
+		fd->prev_fd = -1;
 	}
-	if (pipe_fd[READ] != -1)
+	if (fd->pipe_fd[READ] != -1)
 	{
-		close(pipe_fd[READ]);
-		pipe_fd[READ] = -1;
+		close(fd->pipe_fd[READ]);
+		fd->pipe_fd[READ] = -1;
 	}
-	if (pipe_fd[WRITE] != -1)
+	if (fd->pipe_fd[WRITE] != -1)
 	{
-		close(pipe_fd[WRITE]);
-		pipe_fd[WRITE] = -1;
+		close(fd->pipe_fd[WRITE]);
+		fd->pipe_fd[WRITE] = -1;
 	}
-	return (0);
-}
-
-int    count_commands(t_node *head)
-{
-    t_node    *tmp;
-    int        count;
-    
-    tmp = head;
-    count = 0;
-    while (tmp->next && tmp->next != head)
-    {
-        if (tmp->type == COMMAND)
-            count++;
-        tmp = tmp->next;
-    }
-    if (tmp->type == COMMAND)
-        count++;
-    return (count);
-}
-
-int    count_redirections(t_node *head)
-{
-    t_node    *tmp;
-    int        count;
-    
-    tmp = head;
-    count = 0;
-    while (tmp->next && tmp->next != head)
-    {
-        if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
-            count++;
-        tmp = tmp->next;
-    }
-    if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
-        count++;
-    return (count);
 }
 
 void    execution(t_shell *shell)
 {
-    int        command_count;
     t_exec    *exec;
-    int        redirections;
 
-	ft_bzero(&exec, sizeof(t_exec));
-	shell->exec = &exec;
+	exec = ft_calloc(1, sizeof(t_exec));
+	shell->exec = exec;
 	if (open_redirections(shell) == 1)
 		return ;
 	execute_command_line(shell);
