@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             *
-/*   Updated: 2025/05/13 10:49:22 by ahavu            ###   ########.fr       */
+/*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/13 15:22:07 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static inline void reset_parsing_for_next_segment(
 	t_shell *shell, t_parsing *parsing)
 {
+	skip_spaces(parsing);
 	parsing->node_before_command = shell->nodes;
 	skip_to_last_node(&parsing->node_before_command);
 	parsing->midparse_nodes = 0;
@@ -39,13 +40,12 @@ bool	parsing(t_shell *shell, char *input)
 
 	parsing = (t_parsing){.i = 0, .input = input, .node_before_command = NULL,
 		.command_node = NULL, .midparse_nodes = 0, .piping = false};
+	delete_void_expansions(shell, input);
 	while (input[parsing.i])
 	{
 		reset_parsing_for_next_segment(shell, &parsing);
-		skip_spaces(&parsing);
-		if (parsing.piping && input[parsing.i] == '|')
-			break ;
-		if (!parsing.input[parsing.i])
+		if (!parsing.input[parsing.i]
+			|| (parsing.piping && input[parsing.i] == '|'))
 			break ;
 		if (!extract_nodes(shell, &parsing)
 			|| !sort_nodes_segment(shell, &parsing))
@@ -54,7 +54,6 @@ bool	parsing(t_shell *shell, char *input)
 			return (false);
 		}
 	}
-	// print_nodes(STDERR_FILENO, shell->nodes);
 	free(input);
 	if (parsing.piping)
 	{

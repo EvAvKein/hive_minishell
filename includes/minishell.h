@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 10:26:05 by ahavu            ###   ########.fr       */
+/*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/13 15:21:58 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct s_shell
 
 bool		parsing(t_shell *shell, char *input);
 
+void		delete_void_expansions(t_shell *shell, char *input);
+
 void		skip_to_first_node(t_node **node);
 void		skip_to_last_node(t_node **node);
 t_node		*append_new_node(t_shell *shell, int argc);
@@ -183,6 +185,7 @@ void		print_node_type(int fd, t_node_type type);
 size_t		count_digits(int num);
 char		*itoa_to_buf(int integer, char *buf);
 char		*pid_to_buf(char buf[20]);
+bool		is_invalid_identifier(char c);
 
 bool		is_space(char c);
 bool		is_entirely_spaces(char *string);
