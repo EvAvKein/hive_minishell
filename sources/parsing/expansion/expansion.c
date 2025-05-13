@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/11 19:42:45 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/12 09:12:40 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static bool	expand_exit_status(
  *          (e.g. whether it serves as a terminator for expansion names).
  * 
  */
-static bool	is_invalid_identifier(char c)
+bool	is_invalid_identifier(char c)
 {
 	const char	identifiers[] = {'\'', '"', '<', '>', '|', '\0'};
 	size_t		i;
@@ -99,7 +99,7 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
 {
 	char	*expansion_value;
 
-	if (!expand_start[0] || expand_start[0] != '$')
+	if (expand_start[0] != '$')
 		return (0);
 	if (!expand_start[1] ||
 		is_space(expand_start[1]) || is_invalid_identifier(expand_start[1]))
