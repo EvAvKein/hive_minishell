@@ -1,16 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   spaces.c                                           :+:      :+:    :+:   */
+/*   tiny_checks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:32:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/11 17:52:11 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:37:04 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * 
+ * @returns Whether the provided `c` is a quote
+ *          (single-quote or double-quote).
+ * 
+ */
+inline bool	is_quote(char c)
+{
+	return (c == '\'' || c == '"');
+}
+
+/**
+ * 
+ * @returns Whether the provided `c` is a supported control-flow character
+ *          (redirection or pipe).
+ * 
+ */
+inline bool	is_control_flow(char c)
+{
+	return (c == '<' || c == '>' || c == '|');	
+}
 
 /**
  * 
@@ -19,7 +41,7 @@
  * or form feed, or carriage return).
  * 
  */
-bool	is_space(char c)
+inline bool	is_space(char c)
 {
 	return (c == ' ' || (c <= '\r' && c >= '\t'));
 }

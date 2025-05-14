@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 15:21:58 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 12:35:51 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_node		*append_new_node(t_shell *shell, int argc);
 
 bool		envncmp(char *env_str, char *name_str, size_t cmp);
 char		*env_value(t_shell *shell, char *var_name);
-size_t		env_name_len(char *var_name, bool equal_ends);
+size_t		env_name_len(char *var_name);
 size_t		expanded_len(t_shell *shell, char *expand_start);
 bool		expand_into_dest(t_expand_into_dest_args var);
 
@@ -187,6 +187,8 @@ char		*itoa_to_buf(int integer, char *buf);
 char		*pid_to_buf(char buf[20]);
 bool		is_invalid_identifier(char c);
 
+bool		is_quote(char c);
+bool		is_control_flow(char c);
 bool		is_space(char c);
 bool		is_entirely_spaces(char *string);
 bool		input_was_entirely_spaces(char *input);

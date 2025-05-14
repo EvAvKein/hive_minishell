@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/13 15:20:33 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/14 17:24:10 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 MAIN := main.c
 SRC_FILES := signal_handlers.c \
-			 utils/spaces.c \
+			 utils/tiny_checks.c \
 			 utils/misc.c \
 			 utils/cleanup.c \
 			 utils/printing.c \

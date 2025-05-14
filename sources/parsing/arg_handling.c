@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 09:06:56 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:49:12 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ int	arg_to_len(t_shell *shell, char *arg)
 		if (arg[var.i] == '$' && var.in_quote != '\'')
 		{
 			var.length += expanded_len(shell, &arg[var.i]);
-			var.i += env_name_len(&arg[++var.i], false);
+			var.i += env_name_len(&arg[++var.i]);
 			continue ;
 		}
-		if (redirect_of_c(&arg[var.i]) && var.length--)
+		if (!var.in_quote && is_control_flow(arg[var.i]) && var.length--)
 			break ;
 		if (toggle_quote_by_c(&var.in_quote, arg[var.i]))
 			var.length--;
