@@ -15,7 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 MAIN := main.c
 SRC_FILES := signal_handlers.c \
-			 utils/spaces.c \
+			 utils/tiny_checks.c \
 			 utils/misc.c \
 			 utils/cleanup.c \
 			 utils/printing.c \

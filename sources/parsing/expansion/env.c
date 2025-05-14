@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:03:34 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/01 14:46:57by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:16:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,14 @@
  * Checks whether the provided character is a valid character
  * for an environment variable name.
  * 
- * @param c          The provided character.
+ * @param c The provided character.
  *  
- * @param equal_ends Whether to treat '=' as a null terminator.
- * 
  * @returns Whether the provided character a valid variable name character.
  * 
  */
-bool	is_envname_char(char c, bool equal_ends)
+static inline bool	is_envname_char(char c)
 {
-	return (c && !is_space(c) &&  c != '$' && c != '\'' && c != '"'
-			&& (!equal_ends || c != '='));
+	return (ft_isalnum(c) || c == '_');
 }
 
 /**
@@ -36,20 +33,17 @@ bool	is_envname_char(char c, bool equal_ends)
  * of a valid environment variable from `var_start`.
  *
  * @param var_start  The beginning of the string from which to count.
- *  
- * @param equal_ends Whether to treat '=' as a null terminator
- *                   for the `var_start` variable.
  * 
  * @returns The length of the valid environment variable name
  *          which starts at `var_start`.
  * 
  */
-size_t	env_name_len(char *var_start, bool equal_ends)
+size_t	env_name_len(char *var_start)
 {
 	size_t	i;
 
 	i = 0;
-	while (is_envname_char(var_start[i], equal_ends))
+	while (is_envname_char(var_start[i]))
 		i++;
 	return (i);
 }
@@ -82,7 +76,7 @@ bool	envncmp(char *env_str, char *var_start, size_t cmp)
 		i++;
 	}
 	if (!i || (env_str[i] && env_str[i] != '=')
-		|| is_envname_char(var_start[i], false))
+		|| is_envname_char(var_start[i]))
 		return (false);
 	return (true);
 }
@@ -110,11 +104,11 @@ char	*env_value(t_shell *shell, char *var_start)
 		return (NULL);
 	while (env[i])
 	{
-		if (envncmp(env[i], var_start, env_name_len(var_start, false)))
+		if (envncmp(env[i], var_start, env_name_len(var_start)))
 		{
 			var_found = env[i];
 			i = 0;
-			while (is_envname_char(var_found[i], true))
+			while (is_envname_char(var_found[i]))
 				i++;
 			if (var_found[i] == '=')
 				i++;

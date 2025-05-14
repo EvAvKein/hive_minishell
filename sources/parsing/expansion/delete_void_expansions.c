@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:32:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 15:02:32 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:55:54 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * 
  * @file These could've been two functions which would fit in expansion.c ,
- * but I've created this file to split things up for readability.
+ * but I created this file to split things up for readability - hope it helps!
  * 
  */
 
@@ -32,8 +32,7 @@
 static inline bool	has_prefixed_content(char *expansion, char *input)
 {
 	return ((expansion != input && !is_space(expansion[-1])
-		&& (expansion[-1] == '\'' || expansion[-1] == '"'
-			|| !is_invalid_identifier(expansion[-1]))));
+		&& !is_control_flow(expansion[-1])));
 }
 
 /**
@@ -46,13 +45,10 @@ static inline bool	has_prefixed_content(char *expansion, char *input)
  *                  which starts ('$') with the expansion.
  * 
  */
-static inline bool	has_postfixed_content(
-	char *expansion, char *in_quote, size_t exp_len)
+static inline bool	has_postfixed_content(char *expansion, size_t exp_len)
 {
-	return (
-		expansion[exp_len] && !is_space(expansion[exp_len])
-		&& !*in_quote
-		&& (expansion[exp_len] == '"' || expansion[exp_len] == '\''));
+	return (expansion[exp_len] && !is_control_flow(expansion[exp_len])
+		&& !is_space(expansion[exp_len]) && !is_quote(expansion[exp_len]));
 }
 
 /**
@@ -70,7 +66,7 @@ static inline bool	has_postfixed_content(
  * 
  */
 static inline bool	skipped_expansion(
-	char **expansion, char *input, char *in_quote, size_t *exp_len)
+	char **expansion, char *input, size_t *exp_len)
 {
 	if (!(*expansion)[1])
 	{
@@ -82,9 +78,9 @@ static inline bool	skipped_expansion(
 		*expansion += 2;
 		return (true);
 	}
-	*exp_len = env_name_len(&((*expansion)[1]), false) + 1;
+	*exp_len = env_name_len(&((*expansion)[1])) + 1;
 	if (has_prefixed_content(*expansion, input)
-		|| has_postfixed_content(*expansion, in_quote, *exp_len))
+		|| has_postfixed_content(*expansion, *exp_len))
 	{
 		*expansion += *exp_len;
 		return (true);
@@ -117,14 +113,16 @@ void	delete_void_expansions(t_shell *shell, char *input)
 	{
 		if (!expansion)
 			break ;
-		if ((toggle_quote_by_c(&in_quote, *expansion) || in_quote)
-			|| *expansion != '$')
+		if (*expansion != '$' || in_quote
+			|| toggle_quote_by_c(&in_quote, *expansion))
 		{
 			expansion += 1;
 			continue ;
 		}
-		if (skipped_expansion(&expansion, input, &in_quote, &exp_len))
+		if (skipped_expansion(&expansion, input, &exp_len))
+		{
 			continue ;
+		}
 		if (env_value(shell, &expansion[1]))
 			expansion += exp_len;
 		else

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 09:12:40 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:06:34 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,6 @@ static bool	expand_exit_status(
 
 /**
  * 
- * @returns Whether the provided character is an invalid identifier
- *          (e.g. whether it serves as a terminator for expansion names).
- * 
- */
-bool	is_invalid_identifier(char c)
-{
-	const char	identifiers[] = {'\'', '"', '<', '>', '|', '\0'};
-	size_t		i;
-
-	i = 0;
-	while (identifiers[i])
-		if (identifiers[i++] == c)
-			return (true);
-	return (false);	
-}
-
-/**
- * 
  * @returns The length of the expanded value for the expansion
  *          starting with the '$' at `expand_start`.
  * 
@@ -101,8 +83,8 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
 
 	if (expand_start[0] != '$')
 		return (0);
-	if (!expand_start[1] ||
-		is_space(expand_start[1]) || is_invalid_identifier(expand_start[1]))
+	if (!expand_start[1] || is_space(expand_start[1])
+		|| is_quote(expand_start[1]) || is_control_flow(expand_start[1]))
 		return (1);
 	if (expand_start[1] == '$')
 		return (ft_strlen(shell->pid));
@@ -130,11 +112,11 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 
 	if ((var.input[*var.input_i] != '$' || var.in_quote == '\''))
 		return (false);
-	if (!var.input[*var.input_i + 1] || is_space(var.input[*var.input_i + 1])
-		|| is_invalid_identifier(var.input[*var.input_i + 1]))
+	if ((!var.input[*var.input_i + 1] || is_space(var.input[*var.input_i + 1])
+		|| is_quote(var.input[*var.input_i + 1])
+		|| is_control_flow(var.input[*var.input_i + 1])) && ++(*var.input_i))
 	{
 		var.dest[(*var.dest_i)++] = '$';
-		(*var.input_i)++;
 		return (true);
 	}
 	if (var.input[*var.input_i + 1] == '$'
@@ -149,6 +131,6 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 		*var.dest_i += ft_strlcpy(&var.dest[*var.dest_i],
 			expansion_value, ft_strlen(expansion_value) + 1);
 	}
-	*var.input_i += env_name_len(&var.input[*var.input_i], false);
+	*var.input_i += env_name_len(&var.input[*var.input_i]);
 	return (true);
 }
