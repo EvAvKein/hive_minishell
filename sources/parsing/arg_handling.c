@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:30:42 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 09:06:56 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 	{
 		if (is_space(str[var.i]))
 		{
-			if (var.in_arg && !var.in_quote)
-				var.in_arg = false;
-			if (!var.in_arg && var.in_quote)
+			if (!(var.in_arg && !var.in_quote && var.in_arg--)
+				&& !var.in_arg && var.in_quote)
 				var.in_quote = '\0';
 			var.i++;
 			continue ;
@@ -56,8 +55,9 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 		set_start_of_arg(&var);
 		toggle_quote_by_c(&var.in_quote, str[var.i++]);
 	}
-	if (var.redirect[0])
-		return (print_err("syntax error: ambiguous ", var.redirect), -1);
+	if (var.redirect[0]
+		&& print_err("syntax error: ambiguous redirect: ", var.redirect))
+		return (-1);
 	return (var.argc);
 }
 
