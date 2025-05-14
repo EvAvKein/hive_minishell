@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 17:49:12 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:54:51 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static inline void	set_start_of_arg(t_str_to_argc_vars *var)
  */
 int	str_to_argc(char *str, t_str_to_argc_vars var)
 {
-	while (str[var.i])
+	while (str[var.i] && (var.in_quote || str[var.i] != '|'))
 	{
 		if (is_space(str[var.i]))
 		{
@@ -46,11 +46,11 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
 		}
 		if (!var.in_quote)
 		{
-			if (str[var.i] == '|')
+			if (is_control_flow(str[var.i]) && *var.redirect)
 				break ;
-			if (redirect_of_c(&str[var.i])
+			if (is_control_flow(str[var.i]) && (!var.in_arg || var.in_arg--)
 				&& memorize_and_skip_redirect(str, &var.i, var.redirect))
-					continue ;
+				continue ;
 		}
 		set_start_of_arg(&var);
 		toggle_quote_by_c(&var.in_quote, str[var.i++]);
@@ -131,7 +131,7 @@ void	arg_cpy(t_shell *shell, char *dest, char *input, size_t *input_i)
 		if (expand_into_dest((t_expand_into_dest_args){shell, input, input_i,
 				in_quote, dest, &dest_i}))
 			continue ;
-		if (!in_quote && redirect_of_c(&input[(*input_i)]))
+		if (!in_quote && is_control_flow(input[(*input_i)]))
 				break ;
 		if (!toggle_quote_by_c(&in_quote, input[(*input_i)++]))
 			dest[dest_i++] = input[(*input_i) - 1];
