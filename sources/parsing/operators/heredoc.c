@@ -94,7 +94,7 @@ char	*get_available_file_name(char **dest)
 		increment_postfixed_num(name);
 	*dest = ft_strdup(name);
 	if (!*dest)
-		print_err("heredoc: ", ENOMEM);
+		print_err("heredoc: ", strerror(ENOMEM));
 	return (*dest);
 }
 
