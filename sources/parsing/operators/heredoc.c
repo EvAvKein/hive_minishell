@@ -84,6 +84,8 @@ char	*get_available_file_name(char **dest)
 	ft_bzero(name, 35);
 	if (!access("/tmp", O_DIRECTORY))
 	{
+		print_err("\"/tmp\" directory is inaccessible for heredoc: ",
+			strerror(errno));
 		*dest = NULL;
 		return (NULL);
 	}
@@ -91,6 +93,8 @@ char	*get_available_file_name(char **dest)
 	while (!access(name, F_OK))
 		increment_postfixed_num(name);
 	*dest = ft_strdup(name);
+	if (!*dest)
+		print_err("heredoc: ", ENOMEM);
 	return (*dest);
 }
 
@@ -131,6 +135,10 @@ void	heredoc_write(int fd, char *input, bool expand)
 /**
  * 
  * Executes the heredoc for the provided `node`.
+ * If successful, replaces `node->argv[0]` from the delimiter to the contents'
+ * file path.
+ * 
+ * @returns Whether heredoc execution was successful.
  * 
  */
 bool	execute_heredoc(t_node *node)
@@ -142,7 +150,7 @@ bool	execute_heredoc(t_node *node)
 	if (!get_available_file_name(&file_name))
 		return (false);
 	fd = open(file_name, O_CREAT | O_WRONLY, 0644);
-	if (fd < 0)
+	if (fd < 0 && print_err("heredoc: ", strerror(errno)))
 		return (free(file_name), false);
 	while (1)
 	{
