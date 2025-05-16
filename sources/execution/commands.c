@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:26:56 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 12:56:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ms_env(t_shell *shell)
 {
 	int	i;
 	i = 0;
+	//TODO: if first item in array is NULL, we might need to export something (Laura & Anton are exporting SHLVL and "_")
 	while (shell->ms_envp[i])
 	{
 		if (ft_strchr(shell->ms_envp[i], '='))
@@ -73,6 +74,7 @@ void	ms_echo(t_shell *shell)
 void	ms_exit(t_shell *shell)
 {
 	free_env_array(shell->ms_envp);
+	ft_putstr_fd("exit\n", 1);
 	(void)shell;
 	exit(EXIT_SUCCESS);
 }

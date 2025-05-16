@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 10:26:05 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 12:48:08 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,31 +136,23 @@ t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
-int		check_redirections(t_node *current);
-int 	*close_pipe_fds(int pipe_fd[2]);
+int		count_commands(t_shell *shell);
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
-int		execute_command(t_shell *shell, t_node *current);
-void	execute_command_line(t_shell *shell);
-void    execute_last_pipeline_element(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
+void	execute_command_line(t_shell *shell, t_fd *fd);
 int		execute_sys_command(t_shell *shell, t_node *current);
 void	execution(t_shell *shell);
 void	fatal_error(t_shell *shell, char *msg);
 void	fd_cleanup(t_fd *fd);
-int		fork_and_execute_sys_command(t_shell *shell);
 void	free_env_array(char **env);
 char	*get_pwd_from_env(char **envp);
 int		get_env_elements(char **envp);
-int		handle_appendfile(t_node *current);
-int		handle_infile(t_node *current);
-int		handle_outfile(t_node *current);
 int		is_builtin(char *cmd);
 int		ms_cd(t_shell *shell);
 void	ms_echo(t_shell *shell);
 void	ms_env(t_shell *shell);
 void	ms_exit(t_shell *shell);
 int		ms_export(t_shell *shell);
-void	ms_pipe(t_shell *shell);
 void	ms_pwd(char **envp);
 void	ms_unset(t_shell *shell);
 void	pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);

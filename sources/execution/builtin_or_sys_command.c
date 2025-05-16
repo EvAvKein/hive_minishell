@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/13 15:18:46 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 12:43:02 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,3 @@ int	execute_builtin(t_shell *shell)
 		ms_exit(shell);
 	return (0);
 }
-//TODO: massive todo: builtins
-//TODO; cd doesn't work

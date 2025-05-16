@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/30 14:39:01 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 10:53:52 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,20 @@ int	is_builtin(char *cmd)
 		return (1);
 	else
 		return (0);
+}
+
+int	count_commands(t_shell *shell)
+{
+	int		i;
+	t_node	*tmp;
+
+	i = 0;
+	tmp = shell->nodes;
+	while(tmp)
+	{
+		if (tmp->type == COMMAND)
+			i++;
+		tmp = tmp->next;
+	}
+	return (i);
 }

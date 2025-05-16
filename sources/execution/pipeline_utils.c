@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/13 10:34:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 12:37:20 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,34 +32,3 @@ void	wait_for_all_children(t_shell *shell)
 	}
 }
 
-/*void    execute_last_pipeline_element(t_shell *shell, t_node *current,
-        int prev_fd, int pipe_fd[2])
-{
-    pid_t   pid;
-
-    pid = fork();
-	if (pid == -1)
-	{
-		perror("fork failed");
-		close(pipe_fd[READ]);
-		close(pipe_fd[WRITE]);
-		exit(EXIT_FAILURE);
-	}
-	if (pid == 0)
-		pipeline_child(shell, current, prev_fd, pipe_fd);
-	else
-	{
-		shell->exec->pids[shell->exec->pid_count++] = pid;
-        if (prev_fd != -1)
-			close(prev_fd);
-    }
-}*/
-
-int *close_pipe_fds(int pipe_fd[2])
-{
-    if (pipe_fd[WRITE] != -1)
-        close(pipe_fd[WRITE]);//close the WRITE end of the pipe because it's been redirected
-    if (pipe_fd[READ] != -1)
-        close(pipe_fd[READ]);// close the READ end of the pipe (because it's unused)
-    return(pipe_fd);
-}

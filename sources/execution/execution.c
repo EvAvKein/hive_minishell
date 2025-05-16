@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/13 15:12:41 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 12:53:43 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static int	open_infile(t_shell *shell, t_node *node)
 	return (0);
 }
 
-static int	open_outfile_or_appendfile(t_node *node)
+static int	open_outfile_or_appendfile(t_node *node, t_shell *shell)
 {
 	if (node->type == OUTFILE)
 	{
 		node->fd = open(node->argv[0], O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (node->fd == -1)
 		{
-			//last exit status?
+			shell->last_exit_status = 2;
 			print_err(node->argv[0], " couldn't be read.");
 			return (1);
 		}
@@ -46,7 +46,7 @@ static int	open_outfile_or_appendfile(t_node *node)
 		node->fd = open(node->argv[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (node->fd == -1)
 		{
-			//last exit status?
+			shell->last_exit_status = 2;
 			print_err(node->argv[0], " couldn't be read.");
 			return (1);
 		}
@@ -68,12 +68,11 @@ int	open_redirections(t_shell *shell)
 		}
 		if (node->type == OUTFILE || node->type == APPENDFILE)
 		{
-			if (open_outfile_or_appendfile(node) == 1)
+			if (open_outfile_or_appendfile(node, shell) == 1)
 				return (1);
 		}
 		node = node->next;
 	}
-	
 	return (0);
 }
 
@@ -98,11 +97,22 @@ void	fd_cleanup(t_fd *fd)
 
 void    execution(t_shell *shell)
 {
-    t_exec    *exec;
+    t_exec		*exec;
+	int			command_count;
+	t_fd		fd;
 
+	fd.prev_fd = -1;
+	fd.pipe_fd[0] = -1;
+	fd.pipe_fd[1] = -1;
 	exec = ft_calloc(1, sizeof(t_exec));
 	shell->exec = exec;
+	command_count = count_commands(shell);
 	if (open_redirections(shell) == 1)
 		return ;
-	execute_command_line(shell);
+	if (command_count == 1 && is_builtin(shell->nodes->argv[0]))
+	{
+		execute_builtin(shell);
+		return ;
+	}
+	execute_command_line(shell, &fd);
 }

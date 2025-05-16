@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/13 14:55:35 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 12:55:14 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
-			exit(EXIT_FAILURE);//shell_exit
+			shell_exit(shell, 1);
 		}
 	}
 	if (command && (current || fd->pipe_fd[WRITE] != -1))
@@ -28,7 +28,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (dup2(fd->pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
-			exit(EXIT_FAILURE);
+			shell_exit(shell, 1);
 		}
 	}
 	close(fd->pipe_fd[READ]);
@@ -60,13 +60,14 @@ static void	pipeline_parent(t_fd *fd)
 		fd->pipe_fd[READ] = -1;
 	}
 }
+
 /** The conditions on which the command line is ready to be executed:
  * the command line is given as a linked list in "sequences", where INFILE node/s
  * are at the beginning, COMMAND node/s in the middle, and OUTFILE/APPENDFILE node/s at the end.
  * The "sequence" is ready to be executed when it reaches the end, ie. NULL, or the start of a new "sequence".
  */
 
-int		ready_to_execute(t_node *current)
+static int		ready_to_execute(t_node *current)
 {
 	if (!current)
 		return (1);
@@ -118,24 +119,20 @@ int	execute(t_node *command, t_node *out, t_fd *fd, t_node *current)
 	return (0);
 }
 
-void	execute_command_line(t_shell *shell)
+void	execute_command_line(t_shell *shell, t_fd *fd)
 {
 	t_node	*current;
-	t_fd	fd;
 	t_node 	*command;
 	t_node	*out;
 
 	command = NULL;
 	out = NULL;
 	current = shell->nodes;
-	fd.prev_fd = -1;
-	fd.pipe_fd[0] = -1;
-	fd.pipe_fd[1] = -1;
 	while (1)
 	{
 		if (ready_to_execute(current))
 		{
-			if (execute(command, out, &fd, current) == 1)
+			if (execute(command, out, fd, current) == 1)
 			{
 				command = NULL;
 				out = NULL;
@@ -148,9 +145,9 @@ void	execute_command_line(t_shell *shell)
 			break ;
 		if (current->type == INFILE)
 		{
-			if (fd.prev_fd != -1)
-				close(fd.prev_fd);
-			fd.prev_fd = current->fd;
+			if (fd->prev_fd != -1)
+				close(fd->prev_fd);
+			fd->prev_fd = current->fd;
 			current->fd = -1;
 		}
 		if (current->type == COMMAND)
