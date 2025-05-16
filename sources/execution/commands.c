@@ -17,6 +17,7 @@ void	ms_env(t_shell *shell)
 	int	i;
 
 	i = 0;
+	//TODO: if first item in array is NULL, we might need to export something (Laura & Anton are exporting SHLVL and "_")
 	while (shell->ms_envp[i])
 	{
 		if (ft_strchr(shell->ms_envp[i], '='))
