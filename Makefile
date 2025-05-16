@@ -29,6 +29,7 @@ SRC_FILES := signal_handlers.c \
 			 execution/execution.c \
 			 execution/pipeline.c \
 			 execution/pipeline_utils.c \
+			 execution/redirections.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
 			 parsing/expansion/env.c \

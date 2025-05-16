@@ -57,4 +57,5 @@ void	execution(t_shell *shell)
 		return ;
 	}
 	execute_command_line(shell, &fd);
+	free(exec);
 }
