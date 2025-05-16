@@ -40,7 +40,7 @@ SRC_FILES := signal_handlers.c \
 			 parsing/node_handling.c \
 			 parsing/node_sorting_utils.c \
 			 parsing/operator_handling.c \
-			 parsing/operators/assignments.c \
+			 parsing/operators/heredoc.c \
 			 parsing/operators/redirections.c \
 
 INCLUDE_DIR := includes

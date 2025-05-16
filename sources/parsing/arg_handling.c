@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 19:54:51 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/16 11:16:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ int	arg_to_len(t_shell *shell, char *arg)
  *                to be incremented past the arg being copied.
  * 
  */
-void	arg_cpy(t_shell *shell, char *dest, char *input, size_t *input_i)
+static void	arg_cpy(
+	char *dest, char *input, size_t *input_i, bool disable_expansion)
 {
 	size_t		dest_i;
 	char		in_quote;
@@ -128,8 +129,8 @@ void	arg_cpy(t_shell *shell, char *dest, char *input, size_t *input_i)
 			dest[dest_i++] = input[(*input_i)++];
 			continue ;
 		}
-		if (expand_into_dest((t_expand_into_dest_args){shell, input, input_i,
-				in_quote, dest, &dest_i}))
+		if (!disable_expansion && expand_into_dest((t_expand_into_dest_args){
+				get_shell(), input, input_i, in_quote, dest, &dest_i}))
 			continue ;
 		if (!in_quote && is_control_flow(input[(*input_i)]))
 				break ;
@@ -146,7 +147,7 @@ void	arg_cpy(t_shell *shell, char *dest, char *input, size_t *input_i)
  * @returns A copy of the next valid argument (or `NULL` on allocation failure).
  * 
  */
-char	*extract_arg(t_shell *shell, t_parsing *parsing)
+char	*extract_arg(t_shell *shell, t_parsing *parsing, bool disable_expansion)
 {
 	size_t	arg_len;
 	char	*arg;
@@ -158,6 +159,6 @@ char	*extract_arg(t_shell *shell, t_parsing *parsing)
 		print_err("parsing: ", strerror(ENOMEM));
 		return (NULL);
 	}
-	arg_cpy(shell, arg, parsing->input, &parsing->i);
+	arg_cpy(arg, parsing->input, &parsing->i, disable_expansion);
 	return (arg);
 }

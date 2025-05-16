@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:28:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 11:16:58 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
 			return (true);
 		if (cmd_node && input[parsing->i] && !redirect_of_c(&input[parsing->i]))
 		{
-			cmd_node->argv[cmd_i] = extract_arg(shell, parsing);
+			cmd_node->argv[cmd_i] = extract_arg(shell, parsing, false);
 			if (!cmd_node->argv[cmd_i++])
 				return (false);
 		}

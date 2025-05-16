@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/11 17:28:21 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/16 18:51:31 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,25 @@ void	sigpipe_handler(int sig, siginfo_t *info, void *prevact)
 	print_err(pid_to_buf(buffer),
 		" process received SIGPIPE - exiting gracefully.");
 	shell_exit(get_shell(), 128 + SIGPIPE);
+}
+
+/**
+ * 
+ * A signal handler for heredoc's SIGINT -
+ * exits out of heredoc.
+ * 
+ * @param sig     Ignored.
+ * 
+ * @param info    Ignored.
+ * 
+ * @param prevact Ignored.
+ * 
+ */
+void	heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact)
+{
+	(void)prevact;
+	(void)info;
+	(void)sig;
+	
+	close(STDIN_FILENO);
 }
