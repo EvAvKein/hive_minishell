@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 12:35:51 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/16 18:44:02 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ size_t		env_name_len(char *var_name);
 size_t		expanded_len(t_shell *shell, char *expand_start);
 bool		expand_into_dest(t_expand_into_dest_args var);
 
-char		*extract_arg(t_shell *shell, t_parsing *parsing);
+char		*extract_arg(
+				t_shell *shell, t_parsing *parsing, bool disable_expansion);
 bool		extract_nodes(t_shell *shell, t_parsing *parsing);
 bool		sort_nodes_segment(t_shell *shell, t_parsing *parsing);
 
@@ -126,6 +127,10 @@ int			str_to_argc(char *str, t_str_to_argc_vars var);
 bool		skip_pipe(t_parsing *parsing);
 bool		handle_redirect(t_shell *shell, t_parsing *parsing);
 bool		memorize_and_skip_redirect(char *str, size_t *i, char memory[3]);
+
+bool		is_delimiter_quoted(t_parsing *parsing);
+void		increment_postfixed_num(char *buffer);
+bool		execute_heredoc(t_node *node);
 
 bool		parse_heredoc(t_shell *shell, t_parsing *parsing);
 bool		parse_appendfile(t_shell *shell, t_parsing *parsing);
@@ -173,6 +178,7 @@ void	wait_for_all_children(t_shell *shell);
 void 		init_signal_handlers();
 void		sigint_handler(int sig, siginfo_t *info, void *prevact);
 void		sigpipe_handler(int sig, siginfo_t *info, void *prevact);
+void		heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact);
 
 /* UTILITY FUNCTIONS **********************************************************/
 

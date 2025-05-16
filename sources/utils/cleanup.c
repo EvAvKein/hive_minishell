@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 10:48:50 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 19:26:44 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ void	*free_2d_arr(void *arr, size_t length)
 
 /**
  * 
- * Frees the provided linked list of nodes
- * (and every heap-allocated thing inside them).
+ * Frees the provided linked list of nodes -
+ * freeing every heap-allocated thing inside them,
+ * closing file descriptors for open redirects and deleting heredoc files.
  * 
  * @returns `NULL` (for external line-saving reason, due to Norminette).
  * 
@@ -52,6 +53,9 @@ void	*free_nodes(t_node *node)
 	while (node)
 	{
 		next = node->next;
+		if ((node->type == HEREDOC || node->type == HEREDOC_QUOTED)
+			&& node->argv[0])
+				unlink(node->argv[0]);
 		free_2d_arr(node->argv, node->argc);
 		fd = node->fd;
 		if (fd > 0 &&

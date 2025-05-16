@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/14 17:24:10 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/15 21:49:00 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ SRC_FILES := signal_handlers.c \
 			 parsing/node_handling.c \
 			 parsing/node_sorting_utils.c \
 			 parsing/operator_handling.c \
-			 parsing/operators/assignments.c \
+			 parsing/operators/heredoc.c \
 			 parsing/operators/redirections.c \
 
 INCLUDE_DIR := includes
