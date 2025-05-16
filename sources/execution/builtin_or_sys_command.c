@@ -118,5 +118,3 @@ int	execute_builtin(t_shell *shell)
 		ms_exit(shell);
 	return (0);
 }
-//TODO: massive todo: builtins
-//TODO; cd doesn't work
