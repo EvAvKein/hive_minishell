@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/16 12:48:08 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 15:06:27 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ typedef struct s_fd
 {
 	int	pipe_fd[2];
 	int	prev_fd;
+	int	out;
 }			t_fd;
-
 
 typedef struct s_shell
 {
@@ -139,10 +139,11 @@ t_redirect	redirect_of_c(char *c);
 /* EXECUTION FUNCTIONS ********************************************************/
 
 int		count_commands(t_shell *shell);
+int		count_redirections(t_shell *shell);
 char	**dup_envp(char **envp);
 int		execute_builtin(t_shell *shell);
 void	execute_command_line(t_shell *shell, t_fd *fd);
-int		execute_sys_command(t_shell *shell, t_node *current);
+void	execute_sys_command(t_shell *shell, t_node *current);
 void	execution(t_shell *shell);
 void	fatal_error(t_shell *shell, char *msg);
 void	fd_cleanup(t_fd *fd);
@@ -157,6 +158,7 @@ void	ms_exit(t_shell *shell);
 int		ms_export(t_shell *shell);
 void	ms_pwd(char **envp);
 void	ms_unset(t_shell *shell);
+int		open_redirections(t_shell *shell);
 void	pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
 void	wait_for_all_children(t_shell *shell);
 

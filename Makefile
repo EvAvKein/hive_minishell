@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/16 12:42:34 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/16 15:07:09 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC_FILES := signal_handlers.c \
 			 execution/execution.c \
 			 execution/pipeline.c \
 			 execution/pipeline_utils.c \
+			 execution/redirections.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
 			 parsing/traversal.c \

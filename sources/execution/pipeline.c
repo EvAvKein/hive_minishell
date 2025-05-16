@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 12:55:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 14:25:16 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (is_builtin(command->argv[0]))
 			exit(execute_builtin(shell));
 		else
-			exit(execute_sys_command(shell, command));
+		{
+			execute_sys_command(shell, command);
+			exit(EXIT_SUCCESS);
+		}
 	}
 }
 

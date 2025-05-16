@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 12:37:20 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 15:03:37 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,3 +32,21 @@ void	wait_for_all_children(t_shell *shell)
 	}
 }
 
+void	fd_cleanup(t_fd *fd)
+{
+	if (fd->prev_fd != -1)
+	{
+		close(fd->prev_fd);
+		fd->prev_fd = -1;
+	}
+	if (fd->pipe_fd[READ] != -1)
+	{
+		close(fd->pipe_fd[READ]);
+		fd->pipe_fd[READ] = -1;
+	}
+	if (fd->pipe_fd[WRITE] != -1)
+	{
+		close(fd->pipe_fd[WRITE]);
+		fd->pipe_fd[WRITE] = -1;
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 12:43:02 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 14:05:55 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,33 +70,29 @@ static char	*get_path_from_arg(char *command)
 	return (path);
 }
 
-int	execute_sys_command(t_shell *shell, t_node *current)
+void	execute_sys_command(t_shell *shell, t_node *current)
 {
 	char	*path;
-	char	**path_list;
 	char	**args;
 	char	**tmp_envp;
-	
-	path_list = NULL;
+
 	if (ft_strchr(current->argv[0], '/'))
 		path = get_path_from_arg(current->argv[0]);
 	else
 		path = get_path_from_envp(current);
 	if (!path)
-		return (127);
+		shell_exit(shell, 127);
 	args = current->argv;
 	current->argv = NULL;
 	tmp_envp = shell->ms_envp;
 	shell->ms_envp = NULL;
 	shell_cleanup(shell);
 	execve(path, args, tmp_envp);
-	if (path_list)
-		free_env_array(path_list);
 	if (path && path != args[0])
 		free(path);
 	free_env_array(args);
 	print_err("execution: ", strerror(errno));
-	return (126);
+	shell_exit(shell, 126);
 }
 
 int	execute_builtin(t_shell *shell)
