@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/12 13:32:45 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/14 17:24:10 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 MAIN := main.c
 SRC_FILES := signal_handlers.c \
-			 utils/spaces.c \
+			 utils/tiny_checks.c \
 			 utils/misc.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
@@ -31,8 +31,9 @@ SRC_FILES := signal_handlers.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
 			 parsing/traversal.c \
-			 parsing/env.c \
-			 parsing/expansion.c \
+			 parsing/expansion/env.c \
+			 parsing/expansion/expansion.c \
+			 parsing/expansion/delete_void_expansions.c \
 			 parsing/misc.c \
 			 parsing/arg_handling.c \
 			 parsing/node_handling.c \
