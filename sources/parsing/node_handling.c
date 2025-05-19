@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 09:36:45 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:21:09 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_node	*append_new_node(t_shell *shell, int argc)
 {
 	t_node	*new_node;
 	t_node	*node_for_append;
-	
+
 	new_node = ft_calloc(1, sizeof(t_node));
 	if (!new_node && print_err("parsing: ", strerror(ENOMEM)))
 		return (NULL);
@@ -106,8 +106,8 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 	int		argc;
 
 	argc = str_to_argc(&parsing->input[parsing->i],
-		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
-		.in_quote = '\0', .redirect = {'\0', '\0', '\0'}});
+			(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
+			.in_quote = '\0', .redirect = {'\0', '\0', '\0'}});
 	if (argc < 0)
 	{
 		get_shell()->last_exit_status = 2;
@@ -140,7 +140,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
  */
 bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing)
 {
-	t_node_sort sort;
+	t_node_sort	sort;
 
 	if (!parsing->midparse_nodes)
 		return (true);

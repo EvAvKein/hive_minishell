@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static inline void reset_parsing_for_next_segment(
+static inline void	reset_parsing_for_next_segment(
 	t_shell *shell, t_parsing *parsing)
 {
 	skip_spaces(parsing);

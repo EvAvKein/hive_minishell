@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:32:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 17:37:04 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:31:42 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ inline bool	is_quote(char c)
  */
 inline bool	is_control_flow(char c)
 {
-	return (c == '<' || c == '>' || c == '|');	
+	return (c == '<' || c == '>' || c == '|');
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/16 11:16:19 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:22:41 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static inline void	set_start_of_arg(t_str_to_argc_vars *var)
 			var->argc++;
 	}
 }
+
 /**
  * 
  * Counts how many arguments are in the provided string.
@@ -73,8 +74,8 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
  */
 int	arg_to_len(t_shell *shell, char *arg)
 {
-	t_arg_to_len_vars var;
-	
+	t_arg_to_len_vars	var;
+
 	var = (t_arg_to_len_vars){.i = 0, .length = 0, .in_quote = '\0'};
 	while (arg[var.i])
 	{
@@ -133,7 +134,7 @@ static void	arg_cpy(
 				get_shell(), input, input_i, in_quote, dest, &dest_i}))
 			continue ;
 		if (!in_quote && is_control_flow(input[(*input_i)]))
-				break ;
+			break ;
 		if (!toggle_quote_by_c(&in_quote, input[(*input_i)++]))
 			dest[dest_i++] = input[(*input_i) - 1];
 	}

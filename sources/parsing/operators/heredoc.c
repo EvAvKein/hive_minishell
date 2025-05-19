@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 20:46:39 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/16 11:09:10y ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/19 11:24:05 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	increment_postfixed_num(char *buffer)
 char	*get_available_file_name(char **dest)
 {
 	char	name[35];
-	
+
 	ft_bzero(name, 35);
 	if (!access("/tmp", O_DIRECTORY))
 	{
@@ -161,7 +161,7 @@ bool	execute_heredoc(t_node *node, bool expand)
 		{
 			if (input)
 				free(input);
-			break;
+			break ;
 		}
 		heredoc_write(fd, input, expand);
 		free(input);

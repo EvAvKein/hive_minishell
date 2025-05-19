@@ -11,37 +11,31 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-	
-t_shell	*get_shell()
+
+t_shell	*get_shell(void)
 {
-	static t_shell shell;
+	static t_shell	shell;
+
 	return (&shell);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 	char	*input;
 
 	(void) argc;
 	(void) argv;
-	
-	// int i = 0;
-
 	shell = get_shell();
 	ft_bzero(shell, sizeof(t_shell));
-	
 	init_signal_handlers();
-	
 	pid_to_buf(shell->pid);
 	shell->envp = envp;
 	shell->ms_envp = dup_envp(shell->envp);
-	if(!shell->ms_envp)
+	if (!shell->ms_envp)
 		fatal_error(shell, "envp duplication failed");
 	while (1)
 	{
-		// if (i++ == 10)
-		//	exit(1);
 		input = readline(SHELL_PROMPT);
 		if (!input)
 			break ;

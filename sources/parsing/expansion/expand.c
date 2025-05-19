@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion.c                                        :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 17:06:34 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:29:33 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,11 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 
 	if ((var.input[*var.input_i] != '$' || var.in_quote == '\''))
 		return (false);
-	if ((!var.input[*var.input_i + 1] || is_space(var.input[*var.input_i + 1])
-		|| is_quote(var.input[*var.input_i + 1])
-		|| is_control_flow(var.input[*var.input_i + 1])) && ++(*var.input_i))
+	if (!var.input[*var.input_i + 1] || is_space(var.input[*var.input_i + 1])
+			|| is_quote(var.input[*var.input_i + 1])
+			|| is_control_flow(var.input[*var.input_i + 1]))
 	{
+		(*var.input_i)++;
 		var.dest[(*var.dest_i)++] = '$';
 		return (true);
 	}
@@ -127,10 +128,8 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 		return (true);
 	expansion_value = env_value(var.shell, &var.input[++(*var.input_i)]);
 	if (expansion_value)
-	{
 		*var.dest_i += ft_strlcpy(&var.dest[*var.dest_i],
-			expansion_value, ft_strlen(expansion_value) + 1);
-	}
+				expansion_value, ft_strlen(expansion_value) + 1);
 	*var.input_i += env_name_len(&var.input[*var.input_i]);
 	return (true);
 }
