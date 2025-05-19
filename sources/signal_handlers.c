@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:33:08 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:19:45 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	sigint_handler(int sig, siginfo_t *info, void *prevact)
 	(void)prevact;
 	(void)info;
 	(void)sig;
-	get_shell()->last_exit_status = 128 + SIGINT;
+	get_shell()->last_exit_status = EXIT_CMD_ERROR + SIGINT;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -72,7 +72,7 @@ void	sigpipe_handler(int sig, siginfo_t *info, void *prevact)
 	(void)sig;
 	print_err(pid_to_buf(buffer),
 		" process received SIGPIPE - exiting gracefully.");
-	shell_exit(get_shell(), 128 + SIGPIPE);
+	shell_exit(get_shell(), EXIT_CMD_ERROR + SIGPIPE);
 }
 
 /**
@@ -92,6 +92,6 @@ void	heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact)
 	(void)prevact;
 	(void)info;
 	(void)sig;
-	get_shell()->last_exit_status = 128 + SIGINT;
+	get_shell()->last_exit_status = EXIT_CMD_ERROR + SIGINT;
 	close(STDIN_FILENO);
 }

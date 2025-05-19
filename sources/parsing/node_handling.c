@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:21:09 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:21:51 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 			.in_quote = '\0', .redirect = {'\0', '\0', '\0'}});
 	if (argc < 0)
 	{
-		get_shell()->last_exit_status = 2;
+		get_shell()->last_exit_status = EXIT_INCORRECT;
 		return (false);
 	}
 	if (argc)

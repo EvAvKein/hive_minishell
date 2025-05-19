@@ -57,7 +57,7 @@ bool	parsing(t_shell *shell, char *input)
 	free(input);
 	if (parsing.piping && print_err("syntax error: ambiguous pipe", ""))
 	{
-		get_shell()->last_exit_status = 2;
+		get_shell()->last_exit_status = EXIT_INCORRECT;
 		return (false);
 	}
 	return (true);

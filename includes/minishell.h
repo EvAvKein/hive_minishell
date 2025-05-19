@@ -45,6 +45,14 @@
 
 /* TYPES **********************************************************************/
 
+typedef enum e_exit_status
+{
+	EXIT_INCORRECT =		2,
+	EXIT_CMD_NOT_EXEC =		126,
+	EXIT_CMD_NOT_FOUND =	127,
+	EXIT_CMD_ERROR =		128,
+}	t_node_status;
+
 typedef enum e_node_type
 {
 	UNPARSED = 0,
