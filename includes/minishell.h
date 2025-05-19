@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:47:03 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 18:16:23 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_shell
 
 /* PARSING FUNCTIONS **********************************************************/
 
-bool		parsing(t_shell *shell, char *input);
+bool		parsing(char *input);
 
 void		delete_void_expansions(char *input);
 
