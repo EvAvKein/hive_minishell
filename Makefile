@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/19 13:47:30 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/19 13:53:30 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC_DIR := sources
 
 SRC_FILES := main.c \
 			 signal_handlers.c \
+			 env/env.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
 			 utils/tiny_checks.c \
@@ -27,6 +28,7 @@ SRC_FILES := main.c \
 			 execution/execution.c \
 			 execution/pipeline.c \
 			 execution/pipeline_utils.c \
+			 execution/pipeline_parent_and_child.c \
 			 execution/redirections.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
