@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:02:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 15:06:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 13:23:12 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	count_redirections(t_shell *shell)
 {
-	t_node *tmp;
+	t_node	*tmp;
 	int		i;
 
 	i = 0;
@@ -23,7 +23,7 @@ int	count_redirections(t_shell *shell)
 	{
 		if (tmp->type == INFILE
 			|| tmp->type == OUTFILE || tmp->type == APPENDFILE)
-		i++;
+			i++;
 		tmp = tmp->next;
 	}
 	return (i);
@@ -73,7 +73,7 @@ static int	open_outfile_or_appendfile(t_node *node, t_shell *shell)
 
 int	open_redirections(t_shell *shell)
 {
-	t_node *node;
+	t_node	*node;
 
 	node = shell->nodes;
 	while (node)

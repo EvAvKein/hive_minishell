@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 10:53:52 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 13:21:01 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,6 @@ int	get_env_elements(char **envp)
 			i++;
 	}
 	return (i);
-}
-
-char	**dup_envp(char **envp)
-{
-	int		i;
-	int		env_count;
-	char	**dup;
-
-	i = 0;
-	env_count = get_env_elements(envp);
-	dup = ft_calloc(env_count + 1, sizeof(char *));
-	if (!dup)
-		return (NULL);
-	while (envp[i])
-	{
-		dup[i] = ft_strdup(envp[i]);
-		if (!dup[i])
-		{
-			free_env_array(dup);
-			return (NULL);
-		}
-		i++;
-	}
-	dup[i] = NULL;
-	return (dup);
 }
 
 void	free_env_array(char **env)
@@ -90,7 +65,7 @@ int	count_commands(t_shell *shell)
 
 	i = 0;
 	tmp = shell->nodes;
-	while(tmp)
+	while (tmp)
 	{
 		if (tmp->type == COMMAND)
 			i++;

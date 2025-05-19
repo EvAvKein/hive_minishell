@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 15:03:37 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 13:22:32 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ void	wait_for_all_children(t_shell *shell)
 	int	status;
 
 	i = 0;
-	while (i < shell->exec->pid_count)
+	while (i < shell->exec.pid_count)
 	{
-		waitpid(shell->exec->pids[i], &status, 0);
-		if (i == shell->exec->pid_count - 1)
+		waitpid(shell->exec.pids[i], &status, 0);
+		if (i == shell->exec.pid_count - 1)
 		{
-			if (WIFEXITED(status)) // child process exited normally
+			if (WIFEXITED(status))
 				shell->last_exit_status = WEXITSTATUS(status);
-			else // child process was terminated by signal or error
+			else
 				shell->last_exit_status = 1;
 		}
 		i++;
@@ -39,6 +39,20 @@ void	fd_cleanup(t_fd *fd)
 		close(fd->prev_fd);
 		fd->prev_fd = -1;
 	}
+	if (fd->pipe_fd[READ] != -1)
+	{
+		close(fd->pipe_fd[READ]);
+		fd->pipe_fd[READ] = -1;
+	}
+	if (fd->pipe_fd[WRITE] != -1)
+	{
+		close(fd->pipe_fd[WRITE]);
+		fd->pipe_fd[WRITE] = -1;
+	}
+}
+
+void	close_pipe(t_fd *fd)
+{
 	if (fd->pipe_fd[READ] != -1)
 	{
 		close(fd->pipe_fd[READ]);

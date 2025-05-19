@@ -6,15 +6,38 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 15:25:48 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 13:22:01 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    execution(t_shell *shell)
+void	handle_single_builtin(t_shell *shell, int temp)
 {
-    t_exec		*exec;
+	if (count_redirections(shell) > 0)
+	{
+		temp = dup(STDOUT_FILENO);
+		if (temp == -1)
+			shell_exit(shell, 1);
+		if (dup2(shell->nodes->next->fd, STDOUT_FILENO) == -1)
+			shell_exit(shell, 1);
+	}
+	if (execute_builtin(shell) == 1)
+		command_cleanup(shell);
+	if (temp != -1)
+	{
+		if (dup2(temp, STDOUT_FILENO) == -1)
+		{
+			close(temp);
+			shell_exit(shell, 1);
+		}
+		close (temp);
+	}
+}
+
+void	execution(t_shell *shell)
+{
+	t_exec		exec;
 	int			command_count;
 	t_fd		fd;
 	int			temp;
@@ -23,34 +46,15 @@ void    execution(t_shell *shell)
 	fd.pipe_fd[0] = -1;
 	fd.pipe_fd[1] = -1;
 	temp = -1;
-	exec = ft_calloc(1, sizeof(t_exec));
+	ft_bzero(&exec, sizeof(t_exec));
 	shell->exec = exec;
 	command_count = count_commands(shell);
 	if (open_redirections(shell) == 1)
 		return ;
 	if (command_count == 1 && is_builtin(shell->nodes->argv[0]))
 	{
-		if (count_redirections(shell) > 0)
-		{
-			temp = dup(STDOUT_FILENO);
-			if (temp == -1)
-				shell_exit(shell, 1);
-			if (dup2(shell->nodes->next->fd, STDOUT_FILENO) == -1)
-				shell_exit(shell, 1);
-		}
-		if (execute_builtin(shell) == 1)
-			command_cleanup(shell);
-		if (temp != -1)
-		{
-			if (dup2(temp, STDOUT_FILENO)  == -1)
-			{
-				close(temp);
-				shell_exit(shell, 1);
-			}
-			close (temp);
-		}
+		handle_single_builtin(shell, temp);
 		return ;
 	}
 	execute_command_line(shell, &fd);
-	free(exec);
 }

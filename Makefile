@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/16 15:07:09 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/19 11:23:16 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 MAIN := main.c
 SRC_FILES := signal_handlers.c \
+			 env/env.c \
 			 utils/tiny_checks.c \
 			 utils/misc.c \
 			 utils/cleanup.c \
