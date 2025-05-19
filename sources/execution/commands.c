@@ -98,4 +98,6 @@ void	ms_exit(t_shell *shell)
 	if (shell->nodes->argv[1])
 		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
 	shell_exit(shell, 0);
+
+	//if arguments: exit status / exit with value
 }
