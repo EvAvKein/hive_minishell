@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:32:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 15:55:54 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:25:58 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 static inline bool	has_prefixed_content(char *expansion, char *input)
 {
 	return ((expansion != input && !is_space(expansion[-1])
-		&& !is_control_flow(expansion[-1])));
+			&& !is_control_flow(expansion[-1])));
 }
 
 /**
@@ -113,12 +113,9 @@ void	delete_void_expansions(t_shell *shell, char *input)
 	{
 		if (!expansion)
 			break ;
-		if (*expansion != '$' || in_quote
-			|| toggle_quote_by_c(&in_quote, *expansion))
-		{
-			expansion += 1;
+		if ((*expansion != '$' || in_quote
+				|| toggle_quote_by_c(&in_quote, *expansion)) && expansion++)
 			continue ;
-		}
 		if (skipped_expansion(&expansion, input, &exp_len))
 		{
 			continue ;

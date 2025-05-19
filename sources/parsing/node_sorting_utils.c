@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:17:31 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 10:21:55 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:21:58 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
 {
 	size_t	node_i_from_end;
-	
+
 	node_i_from_end = 0;
 	while (node_i_from_end < parsing->midparse_nodes)
 	{
@@ -86,7 +86,7 @@ bool	collect_segment_nodes(t_node_sort *sort)
 t_node	*link_collected_nodes(t_node ***nodes_arr, size_t i)
 {
 	t_node	*linked_list;
-	
+
 	if ((*nodes_arr)[i])
 	{
 		set_prev_and_next((*nodes_arr)[i], NULL, NULL);

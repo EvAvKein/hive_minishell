@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 09:36:35 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/16 18:43:40y ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/19 11:22:52 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/19 11:23:40 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,20 @@ static t_node	*parse_redirection(
 bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*heredoc_node;
-	
+
 	heredoc_node = parse_redirection(shell, parsing, 2, true);
 	if (!heredoc_node)
 		return (false);
 	heredoc_node->type = HEREDOC;
-	sigaction(SIGINT, 
+	sigaction(SIGINT,
 		&(struct sigaction){.sa_sigaction = heredoc_sigint_handler}, NULL);
 	if (!execute_heredoc(heredoc_node, is_delimiter_quoted(parsing)))
 	{
-		sigaction(SIGINT, 
+		sigaction(SIGINT,
 			&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
 		return (false);
 	}
-	sigaction(SIGINT, 
+	sigaction(SIGINT,
 		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
 	return (true);
 }
@@ -81,7 +81,7 @@ bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
 bool	parse_appendfile(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*appendfile_node;
-	
+
 	appendfile_node = parse_redirection(shell, parsing, 2, false);
 	if (!appendfile_node)
 		return (false);
@@ -99,7 +99,7 @@ bool	parse_appendfile(t_shell *shell, t_parsing *parsing)
 bool	parse_infile(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*infile_node;
-	
+
 	infile_node = parse_redirection(shell, parsing, 1, false);
 	if (!infile_node)
 		return (false);
@@ -117,7 +117,7 @@ bool	parse_infile(t_shell *shell, t_parsing *parsing)
 bool	parse_outfile(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*outfile_node;
-	
+
 	outfile_node = parse_redirection(shell, parsing, 1, false);
 	if (!outfile_node)
 		return (false);

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 08:46:17 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:33:08 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
  * Initializes the program's signal handlers/actions.
  * 
  */
-void init_signal_handlers()
+void	init_signal_handlers(void)
 {
-	// rl_event_hook can also be assigned a handler, might be useful for heredoc
-	sigaction(SIGINT, 
+	sigaction(SIGINT,
 		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
 	sigaction(SIGPIPE,
 		&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
@@ -45,7 +44,6 @@ void	sigint_handler(int sig, siginfo_t *info, void *prevact)
 	(void)prevact;
 	(void)info;
 	(void)sig;
-
 	get_shell()->last_exit_status = 128 + SIGINT;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
@@ -72,7 +70,6 @@ void	sigpipe_handler(int sig, siginfo_t *info, void *prevact)
 	(void)prevact;
 	(void)info;
 	(void)sig;
-	
 	print_err(pid_to_buf(buffer),
 		" process received SIGPIPE - exiting gracefully.");
 	shell_exit(get_shell(), 128 + SIGPIPE);
@@ -95,7 +92,6 @@ void	heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact)
 	(void)prevact;
 	(void)info;
 	(void)sig;
-	
 	get_shell()->last_exit_status = 128 + SIGINT;
 	close(STDIN_FILENO);
 }

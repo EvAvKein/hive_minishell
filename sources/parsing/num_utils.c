@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:21:54 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 09:15:02 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:18:31 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,37 +69,5 @@ char	*itoa_to_buf(int num, char *buf)
 	}
 	if (negative)
 		buf[i] = '-';
-	return (buf);
-}
-
-/**
- * 
- * Writes the current process' ID
- * (or an error indicator on failure)
- * to the provided buffer.
- * 
- * @param buf A buffer for writing the PID or the error indicator,
- *            assumed to have a size of (at least) 20.
- * 
- * @returns The buffer.
- * 
- */
-char	*pid_to_buf(char buf[20])
-{
-	int		fd;
-	int		i;
-	
-	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd < 0 || read(fd, buf, 20) < 0)
-		ft_strlcpy(buf, "[PID UNAVAILABLE]", 18);
-	else
-	{
-		i = 0;
-		while (buf[i] && buf[i] != ' ')
-			i++;
-		buf[i] = '\0';
-	}
-	if (fd >= 0)
-		close(fd);
 	return (buf);
 }

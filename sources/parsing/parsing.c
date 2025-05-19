@@ -6,13 +6,13 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 09:35:36 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:21:40 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static inline void reset_parsing_for_next_segment(
+static inline void	reset_parsing_for_next_segment(
 	t_shell *shell, t_parsing *parsing)
 {
 	skip_spaces(parsing);

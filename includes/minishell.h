@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 10:25:59 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:51:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ typedef struct s_fd
 	int	pipe_fd[2];
 	int	prev_fd;
 }			t_fd;
-
 
 typedef struct s_shell
 {
@@ -181,14 +180,14 @@ void	wait_for_all_children(t_shell *shell);
 
 /* SIGNAL FUNCTIONS ***********************************************************/
 
-void 		init_signal_handlers();
+void		init_signal_handlers(void);
 void		sigint_handler(int sig, siginfo_t *info, void *prevact);
 void		sigpipe_handler(int sig, siginfo_t *info, void *prevact);
 void		heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
-t_shell		*get_shell();
+t_shell		*get_shell(void);
 
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
