@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:32:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:25:58 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:37:55 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static inline bool	skipped_expansion(
  *              gets modified as per this function's description.
  * 
  */
-void	delete_void_expansions(t_shell *shell, char *input)
+void	delete_void_expansions(char *input)
 {
 	char	*expansion;
 	size_t	exp_len;
@@ -120,7 +120,7 @@ void	delete_void_expansions(t_shell *shell, char *input)
 		{
 			continue ;
 		}
-		if (env_value(shell, &expansion[1]))
+		if (env_value(&expansion[1]))
 			expansion += exp_len;
 		else
 			ft_memset(expansion, ' ', exp_len);

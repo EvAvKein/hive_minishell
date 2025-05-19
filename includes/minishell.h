@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 13:52:53 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:47:03 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,21 @@ typedef struct s_shell
 
 bool		parsing(t_shell *shell, char *input);
 
-void		delete_void_expansions(t_shell *shell, char *input);
+void		delete_void_expansions(char *input);
 
 void		skip_to_first_node(t_node **node);
 void		skip_to_last_node(t_node **node);
-t_node		*append_new_node(t_shell *shell, int argc);
+t_node		*append_new_node(int argc);
 
 bool		envncmp(char *env_str, char *name_str, size_t cmp);
-char		*env_value(t_shell *shell, char *var_name);
+char		*env_value(char *var_name);
 size_t		env_name_len(char *var_name);
-size_t		expanded_len(t_shell *shell, char *expand_start);
+size_t		expanded_len(char *expand_start);
 bool		expand_into_dest(t_expand_into_dest_args var);
 
-char		*extract_arg(
-				t_shell *shell, t_parsing *parsing, bool disable_expansion);
-bool		extract_nodes(t_shell *shell, t_parsing *parsing);
-bool		sort_nodes_segment(t_shell *shell, t_parsing *parsing);
+char		*extract_arg(t_parsing *parsing, bool disable_expansion);
+bool		extract_nodes(t_parsing *parsing);
+bool		sort_nodes_segment(t_parsing *parsing);
 
 void		count_segment_nodes(t_parsing *parsing, t_node_sort *sort);
 bool		collect_segment_nodes(t_node_sort *sort);
@@ -116,7 +115,7 @@ bool		toggle_quote_by_c(char *containing_quote, char c);
 
 int			str_to_argc(char *str, t_str_to_argc_vars var);
 bool		skip_pipe(t_parsing *parsing);
-bool		handle_redirect(t_shell *shell, t_parsing *parsing);
+bool		handle_redirect(t_parsing *parsing);
 bool		memorize_and_skip_redirect(char *str, size_t *i, char memory[3]);
 
 size_t		count_digits(int num);
@@ -127,10 +126,10 @@ bool		is_delimiter_quoted(t_parsing *parsing);
 void		increment_postfixed_num(char *buffer);
 bool		execute_heredoc(t_node *node, bool expand);
 
-bool		parse_heredoc(t_shell *shell, t_parsing *parsing);
-bool		parse_appendfile(t_shell *shell, t_parsing *parsing);
-bool		parse_infile(t_shell *shell, t_parsing *parsing);
-bool		parse_outfile(t_shell *shell, t_parsing *parsing);
+bool		parse_heredoc(t_parsing *parsing);
+bool		parse_appendfile(t_parsing *parsing);
+bool		parse_infile(t_parsing *parsing);
+bool		parse_outfile(t_parsing *parsing);
 
 t_redirect	redirect_of_c(char *c);
 

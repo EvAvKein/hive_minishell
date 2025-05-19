@@ -6,17 +6,16 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 13:22:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:46:11 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static inline void	reset_parsing_for_next_segment(
-	t_shell *shell, t_parsing *parsing)
+static inline void	reset_parsing_for_next_segment(t_parsing *parsing)
 {
 	skip_spaces(parsing);
-	parsing->node_before_command = shell->nodes;
+	parsing->node_before_command = get_shell()->nodes;
 	skip_to_last_node(&parsing->node_before_command);
 	parsing->midparse_nodes = 0;
 	parsing->command_node = NULL;
@@ -26,29 +25,25 @@ static inline void	reset_parsing_for_next_segment(
  * 
  * Parses user input and stores the parsed output inside `shell` on success.
  * 
- * @param shell The address of the initialized shell struct
- *              in which to store the parsed output.
- * 
  * @param input The user input.
  * 
  * @returns Whether the parsed input is valid.
  * 
  */
-bool	parsing(t_shell *shell, char *input)
+bool	parsing(char *input)
 {
 	t_parsing	parsing;
 
 	parsing = (t_parsing){.i = 0, .input = input, .node_before_command = NULL,
 		.command_node = NULL, .midparse_nodes = 0, .piping = false};
-	delete_void_expansions(shell, input);
+	delete_void_expansions(input);
 	while (input[parsing.i])
 	{
-		reset_parsing_for_next_segment(shell, &parsing);
+		reset_parsing_for_next_segment(&parsing);
 		if (!parsing.input[parsing.i]
 			|| (parsing.piping && input[parsing.i] == '|'))
 			break ;
-		if (!extract_nodes(shell, &parsing)
-			|| !sort_nodes_segment(shell, &parsing))
+		if (!extract_nodes(&parsing) || !sort_nodes_segment(&parsing))
 		{
 			free(input);
 			return (false);

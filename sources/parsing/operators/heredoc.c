@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:24:05 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:49:26 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	heredoc_write(int fd, char *input, bool expand)
 		if (!expansion)
 			break ;
 		write(fd, input, expansion - input);
-		value = env_value(get_shell(), expansion);
+		value = env_value(expansion);
 		if (value)
 			write(fd, value, ft_strlen(value));
 		input += (expansion - input) + env_name_len(&expansion[1]) + 1;
