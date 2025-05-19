@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:20:37 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 12:54:48 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 10:24:35 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	print_node_type(int fd, t_node_type type)
 		ft_dprintf(fd, "COMMAND");
 	else if (type == HEREDOC)
 		ft_dprintf(fd, "HEREDOC");
-	else if (type == HEREDOC_QUOTED)
-		ft_dprintf(fd, "HEREDOC_QUOTED");
 	else if (type == INFILE)
 		ft_dprintf(fd, "INFILE");
 	else if (type == OUTFILE)

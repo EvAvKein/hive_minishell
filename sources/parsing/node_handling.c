@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/16 11:16:58 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 09:36:45 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,10 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
 		.in_quote = '\0', .redirect = {'\0', '\0', '\0'}});
 	if (argc < 0)
+	{
+		get_shell()->last_exit_status = 2;
 		return (false);
+	}
 	if (argc)
 	{
 		parsing->command_node = append_new_node(shell, argc);
@@ -125,8 +128,8 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 
 /**
  * 
- * Sorts the newly-added nodes according to data accumulated in the provided `
- * parsing` struct:
+ * Sorts the newly-added nodes according to data accumulated in the provided
+ * `parsing` struct:
  * Moving any infiles and heredocs nodes to the beginning of the segement,
  * any command node to the middle of the segement,
  * and any outfile and appendfile nodes to the end of the segement.

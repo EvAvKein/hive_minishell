@@ -58,5 +58,5 @@ int main(int argc, char **argv, char **envp)
 		command_cleanup(shell);
 	}
 	shell_cleanup(shell);
-	return (EXIT_SUCCESS);
+	return (get_shell()->last_exit_status);
 }

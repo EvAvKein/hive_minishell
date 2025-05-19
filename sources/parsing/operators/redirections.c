@@ -57,13 +57,10 @@ bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
 	heredoc_node = parse_redirection(shell, parsing, 2, true);
 	if (!heredoc_node)
 		return (false);
-	if (is_delimiter_quoted(parsing))
-		heredoc_node->type = HEREDOC_QUOTED;
-	else
-		heredoc_node->type = HEREDOC;
+	heredoc_node->type = HEREDOC;
 	sigaction(SIGINT, 
 		&(struct sigaction){.sa_sigaction = heredoc_sigint_handler}, NULL);
-	if (!execute_heredoc(heredoc_node))
+	if (!execute_heredoc(heredoc_node, is_delimiter_quoted(parsing)))
 	{
 		sigaction(SIGINT, 
 			&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);

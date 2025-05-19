@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/16 18:51:31 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 08:46:17 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ void	heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact)
 	(void)info;
 	(void)sig;
 	
+	get_shell()->last_exit_status = 128 + SIGINT;
 	close(STDIN_FILENO);
 }
