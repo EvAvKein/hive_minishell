@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 13:52:53 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:22:31 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,12 +152,12 @@ char		*get_pwd_from_env(char **envp);
 int			get_env_elements(char **envp);
 int			is_builtin(char *cmd);
 int			ms_cd(t_shell *shell);
-void		ms_echo(t_shell *shell);
-void		ms_env(t_shell *shell);
-void		ms_exit(t_shell *shell);
+int			ms_echo(t_shell *shell);
+int			ms_env(t_shell *shell);
+int			ms_exit(t_shell *shell);
 int			ms_export(t_shell *shell);
-void		ms_pwd(char **envp);
-void		ms_unset(t_shell *shell);
+int			ms_pwd(char **envp);
+int			ms_unset(t_shell *shell);
 int			open_redirections(t_shell *shell);
 void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
 int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);

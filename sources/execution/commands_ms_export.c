@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:23:51 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 14:57:14 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,16 @@ static void	print_sorted_envp(char **envp)
 		k = 0;
 		if (ft_strchr(envp[i], '='))
 		{
-			write(1, "declare -x ", 11);
+			printf("declare -x ");
 			while (envp[i][k] != '=')
 			{
-				write(1, &envp[i][k], 1);
+				printf("%c", envp[i][k]);
 				k++;
 			}
-			write(1, "=\"", 2);
-			while (envp[i][k++])
-				write(1, &envp[i][k], 1);
-			write(1, "\"\n", 2);
+			printf("=\"");
+			while (envp[i][++k])
+				printf("%c", envp[i][k]);
+			printf("\"\n");
 		}
 		i++;
 	}
@@ -90,7 +90,6 @@ static void	sort_envp(char **envp)
 		}
 		i = 0;
 	}
-	print_sorted_envp(envp);
 }
 
 int	ms_export(t_shell *shell)
@@ -116,6 +115,7 @@ int	ms_export(t_shell *shell)
 		if (!add)
 			fatal_error(shell, "export: malloc failed");
 		sort_envp(add);
+		print_sorted_envp(add);
 		free_env_array(add);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 14:05:55 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:18:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,19 +98,18 @@ void	execute_sys_command(t_shell *shell, t_node *current)
 int	execute_builtin(t_shell *shell)
 {
 	if (!ft_strncmp(shell->nodes->argv[0], "env", 4))
-		ms_env(shell);
-	if (!ft_strncmp(shell->nodes->argv[0], "cd", 3))
-		if (ms_cd(shell) == 1)
-			perror("cd failed");
-	if (!ft_strncmp(shell->nodes->argv[0], "pwd", 4))
-		ms_pwd(shell->ms_envp);
-	if (!ft_strncmp(shell->nodes->argv[0], "export", 7))
-		ms_export(shell);
-	if (!ft_strncmp(shell->nodes->argv[0], "unset", 6))
-		ms_unset(shell);
-	if (!ft_strncmp(shell->nodes->argv[0], "echo", 5))
-		ms_echo(shell);
-	if (!ft_strncmp(shell->nodes->argv[0], "exit", 5))
-		ms_exit(shell);
+		return (ms_env(shell));
+	else if (!ft_strncmp(shell->nodes->argv[0], "cd", 3))
+		return (ms_cd(shell));
+	else if (!ft_strncmp(shell->nodes->argv[0], "pwd", 4))
+		return (ms_pwd(shell->ms_envp));
+	else if (!ft_strncmp(shell->nodes->argv[0], "export", 7))
+		return (ms_export(shell));
+	else if (!ft_strncmp(shell->nodes->argv[0], "unset", 6))
+		return (ms_unset(shell));
+	else if (!ft_strncmp(shell->nodes->argv[0], "echo", 5))
+		return (ms_echo(shell));
+	else if (!ft_strncmp(shell->nodes->argv[0], "exit", 5))
+		return (ms_exit(shell));
 	return (0);
 }

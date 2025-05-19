@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 13:22:01 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:16:18 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ void	handle_single_builtin(t_shell *shell, int temp)
 			shell_exit(shell, 1);
 	}
 	if (execute_builtin(shell) == 1)
+	{
+		shell->last_exit_status = 1;
 		command_cleanup(shell);
+	}
+	else
+		shell->last_exit_status = 0;
 	if (temp != -1)
 	{
 		if (dup2(temp, STDOUT_FILENO) == -1)
