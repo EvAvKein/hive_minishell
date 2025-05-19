@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:32:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:37:55 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 19:08:55 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,7 @@ void	delete_void_expansions(char *input)
 				|| toggle_quote_by_c(&in_quote, *expansion)) && expansion++)
 			continue ;
 		if (skipped_expansion(&expansion, input, &exp_len))
-		{
 			continue ;
-		}
 		if (env_value(&expansion[1]))
 			expansion += exp_len;
 		else
