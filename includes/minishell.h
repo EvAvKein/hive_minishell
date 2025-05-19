@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/16 18:44:02 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 10:25:59 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,16 @@
 # define READ		0
 # define WRITE		1
 
+# define EXIT_INCORRECT     2
+# define EXIT_CMD_NOT_EXEC  126
+# define EXIT_CMD_NOT_FOUND 127
+# define EXIT_CMD_ERROR     128
+
 /* SETTINGS *******************************************************************/
 
-// # ifndef VERBOSE
-// #  define VERBOSE 0
-// # endif
+# ifndef VERBOSE
+#  define VERBOSE 0
+# endif
 
 /* TYPES **********************************************************************/
 
@@ -53,7 +58,6 @@ typedef enum e_node_type
 	UNPARSED = 0,
 	COMMAND,
 	HEREDOC,
-	HEREDOC_QUOTED,
 	INFILE,
 	OUTFILE,
 	APPENDFILE
@@ -128,16 +132,18 @@ bool		skip_pipe(t_parsing *parsing);
 bool		handle_redirect(t_shell *shell, t_parsing *parsing);
 bool		memorize_and_skip_redirect(char *str, size_t *i, char memory[3]);
 
+size_t		count_digits(int num);
+char		*itoa_to_buf(int integer, char *buf);
+char		*pid_to_buf(char buf[20]);
+
 bool		is_delimiter_quoted(t_parsing *parsing);
 void		increment_postfixed_num(char *buffer);
-bool		execute_heredoc(t_node *node);
+bool		execute_heredoc(t_node *node, bool expand);
 
 bool		parse_heredoc(t_shell *shell, t_parsing *parsing);
 bool		parse_appendfile(t_shell *shell, t_parsing *parsing);
 bool		parse_infile(t_shell *shell, t_parsing *parsing);
 bool		parse_outfile(t_shell *shell, t_parsing *parsing);
-bool		parse_equals(t_shell *shell, t_parsing *parsing);
-bool		parse_plusequals(t_shell *shell, t_parsing *parsing);
 
 t_redirect	redirect_of_c(char *c);
 
@@ -187,11 +193,6 @@ t_shell		*get_shell();
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
 void		print_node_type(int fd, t_node_type type);
-
-size_t		count_digits(int num);
-char		*itoa_to_buf(int integer, char *buf);
-char		*pid_to_buf(char buf[20]);
-bool		is_invalid_identifier(char c);
 
 bool		is_quote(char c);
 bool		is_control_flow(char c);

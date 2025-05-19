@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 15:22:03 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 10:05:47 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,5 @@ int main(int argc, char **argv, char **envp)
 		command_cleanup(shell);
 	}
 	shell_cleanup(shell);
-	return (EXIT_SUCCESS);
+	return (get_shell()->last_exit_status);
 }

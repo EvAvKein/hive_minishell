@@ -138,10 +138,12 @@ void	heredoc_write(int fd, char *input, bool expand)
  * If successful, replaces `node->argv[0]` from the delimiter to the contents'
  * file path.
  * 
+ * @param expand Whether to expand environment variables written to the heredoc.
+ * 
  * @returns Whether heredoc execution was successful.
  * 
  */
-bool	execute_heredoc(t_node *node)
+bool	execute_heredoc(t_node *node, bool expand)
 {
 	char	*file_name;
 	int		fd;
@@ -154,14 +156,14 @@ bool	execute_heredoc(t_node *node)
 		return (free(file_name), false);
 	while (1)
 	{
-		input = readline("heredoc >");
+		input = readline("heredoc +");
 		if (!input || !ft_strncmp(input, node->argv[0], ft_strlen(input)))
 		{
 			if (input)
 				free(input);
 			break;
 		}
-		heredoc_write(fd, input, node->type == HEREDOC);
+		heredoc_write(fd, input, expand);
 		free(input);
 	}
 	close(fd);

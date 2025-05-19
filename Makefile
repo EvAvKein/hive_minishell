@@ -6,19 +6,18 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/15 21:49:00 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/19 09:51:27 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 
 SRC_DIR := sources
-MAIN := main.c
-SRC_FILES := signal_handlers.c \
-			 utils/tiny_checks.c \
-			 utils/misc.c \
+SRC_FILES := main.c \
+			 signal_handlers.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
+			 utils/tiny_checks.c \
 			 execution/builtin_or_sys_command.c \
 			 execution/commands.c \
 			 execution/commands_ms_cd.c \
@@ -30,17 +29,17 @@ SRC_FILES := signal_handlers.c \
 			 execution/redirections.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
-			 parsing/traversal.c \
 			 parsing/expansion/env.c \
-			 parsing/expansion/expansion.c \
+			 parsing/expansion/expand.c \
 			 parsing/expansion/delete_void_expansions.c \
-			 parsing/misc.c \
-			 parsing/arg_handling.c \
-			 parsing/node_handling.c \
-			 parsing/node_sorting_utils.c \
-			 parsing/operator_handling.c \
 			 parsing/operators/heredoc.c \
 			 parsing/operators/redirections.c \
+			 parsing/operators/control_flow.c \
+			 parsing/node_sorting_utils.c \
+			 parsing/node_handling.c \
+			 parsing/arg_handling.c \
+			 parsing/num_utils.c \
+			 parsing/misc.c
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h parsing.h
@@ -52,7 +51,6 @@ COMPILE_FLAGS := -Wall -Wextra -Werror -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(LIBFT
 LIBRARY_FLAGS := -lreadline
 DEBUG_FLAGS := -g
 
-MAIN_OBJ := $(MAIN:%.c=$(SRC_DIR)/%.o)
 SRC_OBJ := $(SRC_FILES:%.c=$(SRC_DIR)/%.o)
 HEADERS := $(INCLUDE_FILES:%=$(INCLUDE_DIR)/%)
 LIBFT_HEADERS := $(LIBFT_DIR)/libft_plus.h $(LIBFT_INCLUDE_FILES:%=$(LIBFT_INCLUDE_DIR)/%)
@@ -65,12 +63,12 @@ $(LIBFT_LIB):
 %.o: %.c
 	cc $(COMPILE_FLAGS) -c $< -o $@
 
-$(NAME): $(LIBFT_LIB) $(SRC_OBJ) $(MAIN_OBJ) $(HEADERS) $(LIBFT_HEADERS)
-	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(MAIN_OBJ) $(LIBFT_LIB) -o $(NAME) $(LIBRARY_FLAGS)
+$(NAME): $(LIBFT_LIB) $(SRC_OBJ) $(HEADERS) $(LIBFT_HEADERS)
+	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(LIBFT_LIB) -o $(NAME) $(LIBRARY_FLAGS)
 
 clean:
 	@make -C $(LIBFT_DIR) $@ --no-print-directory
-	@rm -f $(MAIN_OBJ) $(SRC_OBJ)
+	@rm -f $(SRC_OBJ)
 
 fclean: clean
 	@make -C $(LIBFT_DIR) $@ --no-print-directory
@@ -80,6 +78,9 @@ re: fclean all
 
 neat: $(NAME) clean
 	clear
+
+verbose: export VERBOSE = 1
+verbose: re
 
 debug: COMPILE_FLAGS += $(DEBUG_FLAGS)
 debug: re

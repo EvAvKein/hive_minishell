@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:06:37 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 15:14:48 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 09:01:34 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,30 @@ void	set_prev_and_next(t_node *node, t_node *new_prev, t_node *new_next)
 {
 	node->prev = new_prev;
 	node->next = new_next;
+}
+
+/**
+ * 
+ * Skips the provided pointer for a linked list to its first node.
+ * 
+ * @param node An address to a `t_node` pointer.
+ * 
+ */
+void	skip_to_last_node(t_node **node)
+{
+	while (node && *node && (*node)->next)
+		*node = (*node)->next;
+}
+
+/**
+ * 
+ * Skips the provided pointer for a linked list to its final node.
+ * 
+ * @param node An address to a `t_node` pointer.
+ * 
+ */
+void	skip_to_first_node(t_node **node)
+{
+	while (node && *node && (*node)->prev)
+		*node = (*node)->prev;
 }

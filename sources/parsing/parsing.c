@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 15:22:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 09:35:36 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ bool	parsing(t_shell *shell, char *input)
 		}
 	}
 	free(input);
-	if (parsing.piping)
+	if (parsing.piping && print_err("syntax error: ambiguous pipe", ""))
 	{
-		print_err("syntax error: ambiguous pipe", "");
+		get_shell()->last_exit_status = 2;
 		return (false);
 	}
 	return (true);
