@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:49:26 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 19:35:40 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,9 @@ void	increment_postfixed_num(char *buffer)
 
 /**
  * 
- * @returns A heap-allocated (or `NULL`) path to the next creatable hidden file.
- * 
  * @param dest An pointer to which to assign available (or `NULL`) path.
  * 
- * @returns The value asssigned to `dest`.
+ * @returns A heap-allocated (or `NULL`) path to the next creatable hidden file.
  *  
  */
 char	*get_available_file_name(char **dest)
