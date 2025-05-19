@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operator_handling.c                                :+:      :+:    :+:   */
+/*   control_flow.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:23:07 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/29 08:49:40 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:24:18 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @returns A value corresponding to the type of redirect it is (or if it isn't)
  * 
  */
-t_redirect redirect_of_c(char *c)
+t_redirect	redirect_of_c(char *c)
 {
 	if (!c || !*c)
 		return (RDR_NONE);

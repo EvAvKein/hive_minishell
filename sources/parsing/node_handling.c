@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/12 13:28:23 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/19 13:21:51 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_node	*append_new_node(t_shell *shell, int argc)
 {
 	t_node	*new_node;
 	t_node	*node_for_append;
-	
+
 	new_node = ft_calloc(1, sizeof(t_node));
 	if (!new_node && print_err("parsing: ", strerror(ENOMEM)))
 		return (NULL);
@@ -83,7 +83,7 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
 			return (true);
 		if (cmd_node && input[parsing->i] && !redirect_of_c(&input[parsing->i]))
 		{
-			cmd_node->argv[cmd_i] = extract_arg(shell, parsing);
+			cmd_node->argv[cmd_i] = extract_arg(shell, parsing, false);
 			if (!cmd_node->argv[cmd_i++])
 				return (false);
 		}
@@ -106,10 +106,13 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 	int		argc;
 
 	argc = str_to_argc(&parsing->input[parsing->i],
-		(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
-		.in_quote = '\0', .redirect = {'\0', '\0', '\0'}});
+			(t_str_to_argc_vars){.i = 0, .argc = 0, .in_arg = false,
+			.in_quote = '\0', .redirect = {'\0', '\0', '\0'}});
 	if (argc < 0)
+	{
+		get_shell()->last_exit_status = EXIT_INCORRECT;
 		return (false);
+	}
 	if (argc)
 	{
 		parsing->command_node = append_new_node(shell, argc);
@@ -125,8 +128,8 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 
 /**
  * 
- * Sorts the newly-added nodes according to data accumulated in the provided `
- * parsing` struct:
+ * Sorts the newly-added nodes according to data accumulated in the provided
+ * `parsing` struct:
  * Moving any infiles and heredocs nodes to the beginning of the segement,
  * any command node to the middle of the segement,
  * and any outfile and appendfile nodes to the end of the segement.
@@ -137,7 +140,7 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
  */
 bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing)
 {
-	t_node_sort sort;
+	t_node_sort	sort;
 
 	if (!parsing->midparse_nodes)
 		return (true);

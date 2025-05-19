@@ -6,13 +6,13 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/13 15:22:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:22:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static inline void reset_parsing_for_next_segment(
+static inline void	reset_parsing_for_next_segment(
 	t_shell *shell, t_parsing *parsing)
 {
 	skip_spaces(parsing);
@@ -55,9 +55,9 @@ bool	parsing(t_shell *shell, char *input)
 		}
 	}
 	free(input);
-	if (parsing.piping)
+	if (parsing.piping && print_err("syntax error: ambiguous pipe", ""))
 	{
-		print_err("syntax error: ambiguous pipe", "");
+		get_shell()->last_exit_status = EXIT_INCORRECT;
 		return (false);
 	}
 	return (true);

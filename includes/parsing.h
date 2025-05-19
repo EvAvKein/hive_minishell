@@ -6,26 +6,26 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:04:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/07 12:29:33 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:38:07 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-#include "minishell.h"
+# include "minishell.h"
 
 /* TYPES **********************************************************************/
 
-typedef struct s_node t_node;
-typedef struct s_shell t_shell;
+typedef struct s_node	t_node;
+typedef struct s_shell	t_shell;
 
 /**
  * 
  * The top-level information needed for parsing user input into a list of nodes.
  * 
  */
-typedef	struct s_parsing
+typedef struct s_parsing
 {
 	char	*input;
 	size_t	i;
@@ -99,7 +99,6 @@ typedef struct s_expand_into_dest_args
 	char		*dest;
 	size_t		*dest_i;
 }			t_expand_into_dest_args;
-
 
 /**
  * 

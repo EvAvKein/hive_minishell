@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 09:36:35 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 08:55:11 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/19 11:22:52 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/19 11:23:40 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
  * 
  */
 static t_node	*parse_redirection(
-	t_shell *shell, t_parsing *parsing, size_t operator_len)
+	t_shell *shell, t_parsing *parsing, size_t operator_len, bool heredoc)
 {
 	t_node	*new_node;
 
@@ -35,11 +35,40 @@ static t_node	*parse_redirection(
 	if (!new_node)
 		return (NULL);
 	skip_spaces(parsing);
-	new_node->argv[0] = extract_arg(shell, parsing);
+	new_node->argv[0] = extract_arg(shell, parsing, heredoc);
 	if (!new_node->argv[0])
 		return (NULL);
 	parsing->midparse_nodes++;
 	return (new_node);
+}
+
+/**
+ * 
+ * Parses a heredoc operation from its (assumed) operator,
+ * swaps the SIGINT action for the duration, and executes the heredoc.
+ * 
+ * @returns Whether heredoc parsing and execution were successful.
+ * 
+ */
+bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
+{
+	t_node	*heredoc_node;
+
+	heredoc_node = parse_redirection(shell, parsing, 2, true);
+	if (!heredoc_node)
+		return (false);
+	heredoc_node->type = HEREDOC;
+	sigaction(SIGINT,
+		&(struct sigaction){.sa_sigaction = heredoc_sigint_handler}, NULL);
+	if (!execute_heredoc(heredoc_node, is_delimiter_quoted(parsing)))
+	{
+		sigaction(SIGINT,
+			&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
+		return (false);
+	}
+	sigaction(SIGINT,
+		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
+	return (true);
 }
 
 /**
@@ -52,33 +81,11 @@ static t_node	*parse_redirection(
 bool	parse_appendfile(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*appendfile_node;
-	
-	// printf("Appendfile detected: \"%.2s\" @ i-%lu\n",
-	// 	&parsing->input[parsing->i], parsing->i);
-	appendfile_node = parse_redirection(shell, parsing, 2);
+
+	appendfile_node = parse_redirection(shell, parsing, 2, false);
 	if (!appendfile_node)
 		return (false);
 	appendfile_node->type = APPENDFILE;
-	return (true);
-}
-
-/**
- * 
- * Parses a heredoc operation from its (assumed) operator.
- * 
- * @returns Whether parsing and memory allocations were all successful.
- * 
- */
-bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
-{
-	t_node	*heredoc_node;
-	
-	// printf("Heredoc detected: \"%.2s\" @ i-%lu\n",
-	// 	&parsing->input[parsing->i], parsing->i);
-	heredoc_node = parse_redirection(shell, parsing, 2);
-	if (!heredoc_node)
-		return (false);
-	heredoc_node->type = HEREDOC;
 	return (true);
 }
 
@@ -92,10 +99,8 @@ bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
 bool	parse_infile(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*infile_node;
-	
-	// printf("Infile detected: '%c' @ i-%lu\n",
-	// 	parsing->input[parsing->i], parsing->i);
-	infile_node = parse_redirection(shell, parsing, 1);
+
+	infile_node = parse_redirection(shell, parsing, 1, false);
 	if (!infile_node)
 		return (false);
 	infile_node->type = INFILE;
@@ -112,10 +117,8 @@ bool	parse_infile(t_shell *shell, t_parsing *parsing)
 bool	parse_outfile(t_shell *shell, t_parsing *parsing)
 {
 	t_node	*outfile_node;
-	
-	// printf("Outfile detected: '%c' @ i-%lu\n",
-	// 	parsing->input[parsing->i], parsing->i);
-	outfile_node = parse_redirection(shell, parsing, 1);
+
+	outfile_node = parse_redirection(shell, parsing, 1, false);
 	if (!outfile_node)
 		return (false);
 	outfile_node->type = OUTFILE;

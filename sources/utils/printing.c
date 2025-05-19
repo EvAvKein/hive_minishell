@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:20:37 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/04/25 12:54:48 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:30:30 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	print_node_type(int fd, t_node_type type)
 		ft_dprintf(fd, "COMMAND");
 	else if (type == HEREDOC)
 		ft_dprintf(fd, "HEREDOC");
-	else if (type == HEREDOC_QUOTED)
-		ft_dprintf(fd, "HEREDOC_QUOTED");
 	else if (type == INFILE)
 		ft_dprintf(fd, "INFILE");
 	else if (type == OUTFILE)
@@ -89,4 +87,36 @@ void	print_nodes(int fd, t_node *node)
 	}
 	if (print_finale)
 		ft_dprintf(fd, "│\n");
+}
+
+/**
+ * 
+ * Writes the current process' ID
+ * (or an error indicator on failure)
+ * to the provided buffer, for later printing.
+ * 
+ * @param buf A buffer for writing the PID or the error indicator,
+ *            assumed to have a size of (at least) 20.
+ * 
+ * @returns The buffer.
+ * 
+ */
+char	*pid_to_buf(char buf[20])
+{
+	int		fd;
+	int		i;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd < 0 || read(fd, buf, 20) < 0)
+		ft_strlcpy(buf, "[PID UNAVAILABLE]", 18);
+	else
+	{
+		i = 0;
+		while (buf[i] && buf[i] != ' ')
+			i++;
+		buf[i] = '\0';
+	}
+	if (fd >= 0)
+		close(fd);
+	return (buf);
 }
