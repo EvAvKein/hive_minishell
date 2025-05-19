@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 13:16:57 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/19 13:18:11 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <readline/history.h>
 # include "libft_plus.h"
 # include "parsing.h"
+# include "execution.h"
 
 # define SHELL_NAME "shellGBTQ+"
 
@@ -35,10 +36,6 @@
 \001\x1b[1;38;2;240;115;0m\002Q\
 \001\x1b[1;38;2;228;3;3m\002 + \
 \001\x1b[0m\002"
-
-# define MAX_CMDS	256
-# define READ		0
-# define WRITE		1
 
 /* SETTINGS *******************************************************************/
 
@@ -76,18 +73,6 @@ typedef struct s_node
 	struct s_node	*next;
 }					t_node;
 
-typedef struct s_exec
-{
-	pid_t	pids[MAX_CMDS];
-	int		pid_count;
-}			t_exec;
-
-typedef struct s_fd
-{
-	int	pipe_fd[2];
-	int	prev_fd;
-}			t_fd;
-
 typedef struct s_shell
 {
 	char		**envp;
@@ -95,7 +80,7 @@ typedef struct s_shell
 	int			last_exit_status;
 	char		pid[20];
 	t_node		*nodes;
-	t_exec		*exec;
+	t_exec		exec;
 }				t_shell;
 
 /* PARSING FUNCTIONS **********************************************************/
@@ -151,35 +136,31 @@ t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
-int		check_redirections(t_node *current);
-int 	*close_pipe_fds(int pipe_fd[2]);
-char	**dup_envp(char **envp);
-int		execute_builtin(t_shell *shell);
-int		execute_command(t_shell *shell, t_node *current);
-void	execute_command_line(t_shell *shell);
-void    execute_last_pipeline_element(t_shell *shell, t_node *current, int prev_fd, int pipe_fd[2]);
-int		execute_sys_command(t_shell *shell, t_node *current);
-void	execution(t_shell *shell);
-void	fatal_error(t_shell *shell, char *msg);
-void	fd_cleanup(t_fd *fd);
-int		fork_and_execute_sys_command(t_shell *shell);
-void	free_env_array(char **env);
-char	*get_pwd_from_env(char **envp);
-int		get_env_elements(char **envp);
-int		handle_appendfile(t_node *current);
-int		handle_infile(t_node *current);
-int		handle_outfile(t_node *current);
-int		is_builtin(char *cmd);
-int		ms_cd(t_shell *shell);
-void	ms_echo(t_shell *shell);
-void	ms_env(t_shell *shell);
-void	ms_exit(t_shell *shell);
-int		ms_export(t_shell *shell);
-void	ms_pipe(t_shell *shell);
-void	ms_pwd(char **envp);
-void	ms_unset(t_shell *shell);
-void	pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
-void	wait_for_all_children(t_shell *shell);
+void		close_pipe(t_fd *fd);
+int			count_commands(t_shell *shell);
+int			count_redirections(t_shell *shell);
+char		**dup_envp(char **envp);
+int			execute_builtin(t_shell *shell);
+void		execute_command_line(t_shell *shell, t_fd *fd);
+void		execute_sys_command(t_shell *shell, t_node *current);
+void		execution(t_shell *shell);
+void		fatal_error(t_shell *shell, char *msg);
+void		fd_cleanup(t_fd *fd);
+void		free_env_array(char **env);
+char		*get_pwd_from_env(char **envp);
+int			get_env_elements(char **envp);
+int			is_builtin(char *cmd);
+int			ms_cd(t_shell *shell);
+void		ms_echo(t_shell *shell);
+void		ms_env(t_shell *shell);
+void		ms_exit(t_shell *shell);
+int			ms_export(t_shell *shell);
+void		ms_pwd(char **envp);
+void		ms_unset(t_shell *shell);
+int			open_redirections(t_shell *shell);
+void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
+int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);
+void		wait_for_all_children(t_shell *shell);
 
 /* SIGNAL FUNCTIONS ***********************************************************/
 

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/04/30 14:32:31 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 14:20:41 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,6 @@ void	ms_unset(t_shell *shell)
 	i = 0;
 	k = 0;
 	removables = set_removables(shell);
-	while (removables[i])
-	{
-		printf("%s\n", removables[i]);
-		i++;
-	}
-	i = 0;
 	new_env = ft_calloc(get_env_elements(shell->ms_envp) + 1, sizeof(char *));
 	if (!new_env)
 		fatal_error(shell, "unset: malloc failed");

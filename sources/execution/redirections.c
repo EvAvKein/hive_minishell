@@ -5,76 +5,90 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 08:37:30 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:33:22 by ahavu            ###   ########.fr       */
+/*   Created: 2025/05/16 15:02:31 by ahavu             #+#    #+#             */
+/*   Updated: 2025/05/19 13:23:12 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_infile(t_node *current)
-{
-	if (dup2(current->fd, STDIN_FILENO) == -1)
-	{
-		perror("dup2 failed");
-		return (1);
-	}
-	close(current->fd);
-	current->fd = -1;
-	return (0);
-}
-
-int	handle_outfile(t_node *current)
-{
-	current->fd = open(current->argv[0], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (current->fd == -1)
-	{
-		perror("fd failed");
-		return (1);
-	}
-	else if (dup2(current->fd, STDOUT_FILENO) == -1)
-	{
-		perror("dup2 failed");
-		return (1);
-	}
-	close(current->fd);
-	current->fd = -1;
-	return (0);
-}
-
-int	handle_appendfile(t_node *current)
-{
-	current->fd = open(current->argv[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (current->fd == -1)
-	{
-		perror("fd failed");
-		return (1);
-	}
-	else if (dup2(current->fd, STDOUT_FILENO) == -1)
-	{
-		perror("dup2 failed");
-		return (1);
-	}
-	close(current->fd);
-	current->fd = -1;
-	return (0);
-}
-
-int	count_redirections(t_node *head)
+int	count_redirections(t_shell *shell)
 {
 	t_node	*tmp;
-	int		count;
-	
-	tmp = head;
-	count = 0;
-	while (tmp->next && tmp->next != head)
+	int		i;
+
+	i = 0;
+	tmp = shell->nodes;
+	while (tmp)
 	{
-		if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
-			count++;
+		if (tmp->type == INFILE
+			|| tmp->type == OUTFILE || tmp->type == APPENDFILE)
+			i++;
 		tmp = tmp->next;
 	}
-	if (tmp->type == INFILE || tmp->type == OUTFILE || tmp->type == APPENDFILE)
-		count++;
-	return (count);
+	return (i);
 }
 
+static int	open_infile(t_shell *shell, t_node *node)
+{
+	if (access(node->argv[0], F_OK) == -1)
+	{
+		shell->last_exit_status = 2;
+		print_err(node->argv[0], " file doesn't exist");
+		return (1);
+	}
+	node->fd = open(node->argv[0], O_RDONLY);
+	if (node->fd == -1)
+	{
+		print_err(node->argv[0], " couldn't be read.");
+		return (1);
+	}
+	return (0);
+}
+
+static int	open_outfile_or_appendfile(t_node *node, t_shell *shell)
+{
+	if (node->type == OUTFILE)
+	{
+		node->fd = open(node->argv[0], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (node->fd == -1)
+		{
+			shell->last_exit_status = 2;
+			print_err(node->argv[0], " couldn't be read.");
+			return (1);
+		}
+	}
+	if (node->type == APPENDFILE)
+	{
+		node->fd = open(node->argv[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (node->fd == -1)
+		{
+			shell->last_exit_status = 2;
+			print_err(node->argv[0], " couldn't be read.");
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int	open_redirections(t_shell *shell)
+{
+	t_node	*node;
+
+	node = shell->nodes;
+	while (node)
+	{
+		if (node->type == INFILE)
+		{
+			if (open_infile(shell, node) == 1)
+				return (1);
+		}
+		if (node->type == OUTFILE || node->type == APPENDFILE)
+		{
+			if (open_outfile_or_appendfile(node, shell) == 1)
+				return (1);
+		}
+		node = node->next;
+	}
+	return (0);
+}

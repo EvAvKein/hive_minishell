@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
 /*   Updated: 2025/05/19 11:35:13 by ekeinan          ###   ########.fr       */
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 			command_cleanup(shell);
 			continue ;
 		}
-		print_nodes(STDERR_FILENO, shell->nodes);
+		//print_nodes(STDERR_FILENO, shell->nodes);
 		execution(shell);
 		command_cleanup(shell);
 	}

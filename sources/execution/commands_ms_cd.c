@@ -6,17 +6,16 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:26:52 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/16 12:57:16 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//TODO: repeated cd/pwd calls somehow screw everything up if there's a removed directory
-//try to figure it out by printf debugging
+
 static int	update_oldpwd(t_shell *shell, char *oldpwd, int i)
 {
 	char	*new_oldpwd;
-	
+
 	new_oldpwd = ft_strjoin("OLDPWD=", oldpwd);
 	if (!new_oldpwd)
 		return (1);
@@ -29,7 +28,7 @@ static int	update_current_wd(t_shell *shell, int i)
 {
 	char	*cwd;
 	char	*new_pwd;
-	
+
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (1);
@@ -62,12 +61,12 @@ static int	update_pwds(t_shell *shell, char *oldpwd)
 char	*get_pwd_from_env(char **envp)
 {
 	int		i;
-	
+
 	i = 0;
-	while(envp[i])
+	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], "PWD=", 4))
-			return(envp[i]);
+			return (envp[i]);
 		i++;
 	}
 	return (NULL);
