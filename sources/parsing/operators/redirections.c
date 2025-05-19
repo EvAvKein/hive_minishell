@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:22:52 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:23:40 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:48:55 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@
  * 
  */
 static t_node	*parse_redirection(
-	t_shell *shell, t_parsing *parsing, size_t operator_len, bool heredoc)
+	t_parsing *parsing, size_t operator_len, bool heredoc)
 {
 	t_node	*new_node;
 
 	parsing->i += operator_len;
 	skip_spaces(parsing);
-	new_node = append_new_node(shell, 1);
+	new_node = append_new_node(1);
 	if (!new_node)
 		return (NULL);
 	skip_spaces(parsing);
-	new_node->argv[0] = extract_arg(shell, parsing, heredoc);
+	new_node->argv[0] = extract_arg(parsing, heredoc);
 	if (!new_node->argv[0])
 		return (NULL);
 	parsing->midparse_nodes++;
@@ -50,11 +50,11 @@ static t_node	*parse_redirection(
  * @returns Whether heredoc parsing and execution were successful.
  * 
  */
-bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
+bool	parse_heredoc(t_parsing *parsing)
 {
 	t_node	*heredoc_node;
 
-	heredoc_node = parse_redirection(shell, parsing, 2, true);
+	heredoc_node = parse_redirection(parsing, 2, true);
 	if (!heredoc_node)
 		return (false);
 	heredoc_node->type = HEREDOC;
@@ -78,11 +78,11 @@ bool	parse_heredoc(t_shell *shell, t_parsing *parsing)
  * @returns Whether parsing and memory allocations were all successful.
  * 
  */
-bool	parse_appendfile(t_shell *shell, t_parsing *parsing)
+bool	parse_appendfile(t_parsing *parsing)
 {
 	t_node	*appendfile_node;
 
-	appendfile_node = parse_redirection(shell, parsing, 2, false);
+	appendfile_node = parse_redirection(parsing, 2, false);
 	if (!appendfile_node)
 		return (false);
 	appendfile_node->type = APPENDFILE;
@@ -96,11 +96,11 @@ bool	parse_appendfile(t_shell *shell, t_parsing *parsing)
  * @returns Whether parsing and memory allocations were all successful.
  * 
  */
-bool	parse_infile(t_shell *shell, t_parsing *parsing)
+bool	parse_infile(t_parsing *parsing)
 {
 	t_node	*infile_node;
 
-	infile_node = parse_redirection(shell, parsing, 1, false);
+	infile_node = parse_redirection(parsing, 1, false);
 	if (!infile_node)
 		return (false);
 	infile_node->type = INFILE;
@@ -114,11 +114,11 @@ bool	parse_infile(t_shell *shell, t_parsing *parsing)
  * @returns Whether parsing and memory allocations were all successful.
  * 
  */
-bool	parse_outfile(t_shell *shell, t_parsing *parsing)
+bool	parse_outfile(t_parsing *parsing)
 {
 	t_node	*outfile_node;
 
-	outfile_node = parse_redirection(shell, parsing, 1, false);
+	outfile_node = parse_redirection(parsing, 1, false);
 	if (!outfile_node)
 		return (false);
 	outfile_node->type = OUTFILE;
