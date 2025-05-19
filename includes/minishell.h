@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:35:27 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:51:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:16:57 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@
 # define READ		0
 # define WRITE		1
 
-# define EXIT_INCORRECT     2
-# define EXIT_CMD_NOT_EXEC  126
-# define EXIT_CMD_NOT_FOUND 127
-# define EXIT_CMD_ERROR     128
-
 /* SETTINGS *******************************************************************/
 
 # ifndef VERBOSE
@@ -52,6 +47,14 @@
 # endif
 
 /* TYPES **********************************************************************/
+
+typedef enum e_exit_status
+{
+	EXIT_INCORRECT =		2,
+	EXIT_CMD_NOT_EXEC =		126,
+	EXIT_CMD_NOT_FOUND =	127,
+	EXIT_CMD_ERROR =		128,
+}	t_node_status;
 
 typedef enum e_node_type
 {
