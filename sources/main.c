@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
 /*   Updated: 2025/05/20 13:44:39 by ahavu            ###   ########.fr       */
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 		if (input_was_entirely_spaces(input))
 			continue ;
 		add_history(input);
-		if (!parsing(shell, input))
+		if (!parsing(input))
 		{
 			command_cleanup(shell);
 			continue ;

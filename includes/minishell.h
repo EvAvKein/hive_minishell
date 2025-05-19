@@ -86,7 +86,7 @@ typedef struct s_shell
 
 /* PARSING FUNCTIONS **********************************************************/
 
-bool		parsing(t_shell *shell, char *input);
+bool		parsing(char *input);
 
 void		delete_void_expansions(char *input);
 
