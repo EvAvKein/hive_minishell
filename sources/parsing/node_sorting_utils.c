@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:17:31 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:21:58 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 19:36:49 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 /**
  * 
  * Counts how many infile/heredoc nodes and outfile/appendfile nodes are in the
- * segment being sorted, storing that information back in the provided `
- * sort`.
+ * segment being sorted, storing that information back in the provided `sort`.
  * 
  */
 void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
@@ -40,8 +39,8 @@ void	count_segment_nodes(t_parsing *parsing, t_node_sort *sort)
 
 /**
  * 
- * Collect the current segment's nodes based on the counts in `sort
- * `, creating redirection arrays in the struct and assigning the command node.
+ * Collect the current segment's nodes based on the counts in `sort`,
+ * creating redirection arrays in the struct and assigning the command node.
  * 
  * @returns Whether the collection (with its array allocations) was successful.
  * 

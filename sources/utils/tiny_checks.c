@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:32:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:31:42 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 19:38:13 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 /**
  * 
- * @returns Whether the provided `c` is a quote
- *          (single-quote or double-quote).
+ * @returns Whether the provided `c` is a quote (single-quote or double-quote).
  * 
  */
 inline bool	is_quote(char c)
