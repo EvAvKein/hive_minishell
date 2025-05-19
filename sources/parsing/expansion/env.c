@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:03:34 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:39:11 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 18:45:49 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*env_value(char *var_start)
 	size_t	i;
 	char	*var_found;
 
-	env = get_shell();
+	env = get_shell()->ms_envp;
 	i = 0;
 	if (!var_start)
 		return (NULL);
