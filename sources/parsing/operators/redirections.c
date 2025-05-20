@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:22:52 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:48:55 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/20 20:57:02 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,12 @@ bool	parse_heredoc(t_parsing *parsing)
 	if (!heredoc_node)
 		return (false);
 	heredoc_node->type = HEREDOC;
-	sigaction(SIGINT,
-		&(struct sigaction){.sa_sigaction = heredoc_sigint_handler}, NULL);
 	if (!execute_heredoc(heredoc_node, is_delimiter_quoted(parsing)))
 	{
 		sigaction(SIGINT,
 			&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
 		return (false);
 	}
-	sigaction(SIGINT,
-		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
 	return (true);
 }
 

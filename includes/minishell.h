@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 18:16:23 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/20 21:00:11 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void		wait_for_all_children(t_shell *shell);
 void		init_signal_handlers(void);
 void		sigint_handler(int sig, siginfo_t *info, void *prevact);
 void		sigpipe_handler(int sig, siginfo_t *info, void *prevact);
-void		heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact);
+void		heredoc_sigint_handler(int sig);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
