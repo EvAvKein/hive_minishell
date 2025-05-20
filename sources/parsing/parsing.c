@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:57:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:46:11 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/20 09:29:31y ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,25 @@ static inline void	reset_parsing_for_next_segment(t_parsing *parsing)
  */
 bool	parsing(char *input)
 {
-	t_parsing	parsing;
+	t_parsing	parse;
 
-	parsing = (t_parsing){.i = 0, .input = input, .node_before_command = NULL,
+	parse = (t_parsing){.i = 0, .input = input, .node_before_command = NULL,
 		.command_node = NULL, .midparse_nodes = 0, .piping = false};
 	delete_void_expansions(input);
-	while (input[parsing.i])
+	while (input[parse.i])
 	{
-		reset_parsing_for_next_segment(&parsing);
-		if (!parsing.input[parsing.i]
-			|| (parsing.piping && input[parsing.i] == '|'))
+		reset_parsing_for_next_segment(&parse);
+		if (!parse.input[parse.i] || (parse.piping && input[parse.i] == '|')
+			|| (input[parse.i] == '|' && !get_shell()->nodes && ++parse.piping))
 			break ;
-		if (!extract_nodes(&parsing) || !sort_nodes_segment(&parsing))
+		if (!extract_nodes(&parse) || !sort_nodes_segment(&parse))
 		{
 			free(input);
 			return (false);
 		}
 	}
 	free(input);
-	if (parsing.piping && print_err("syntax error: ambiguous pipe", ""))
+	if (parse.piping && print_err("syntax error: ambiguous pipe", ""))
 	{
 		get_shell()->last_exit_status = EXIT_INCORRECT;
 		return (false);
