@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 14:57:14 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/20 13:49:21 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,65 +39,29 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 	return (0);
 }
 
-static void	print_sorted_envp(char **envp)
+static int	check_exportables(char **argv)
 {
 	int	i;
-	int	k;
 
 	i = 0;
-	while (envp[i])
+	while (argv[i])
 	{
-		k = 0;
-		if (ft_strchr(envp[i], '='))
-		{
-			printf("declare -x ");
-			while (envp[i][k] != '=')
-			{
-				printf("%c", envp[i][k]);
-				k++;
-			}
-			printf("=\"");
-			while (envp[i][++k])
-				printf("%c", envp[i][k]);
-			printf("\"\n");
-		}
+		if (!isalnum(argv[i][0]) && argv[i][0] != '_')
+			return (1);
 		i++;
 	}
-}
-
-static void	sort_envp(char **envp)
-{
-	int		i;
-	char	*tmp;
-	bool	swapped;
-
-	i = 0;
-	swapped = true;
-	while (swapped)
-	{
-		swapped = false;
-		while (envp[i + 1])
-		{
-			tmp = envp[i];
-			if (ft_strncmp(envp[i], envp[i + 1], ft_strlen(envp[i])) > 0)
-			{
-				tmp = envp[i];
-				envp[i] = envp[i + 1];
-				envp[i + 1] = tmp;
-				swapped = true;
-			}
-			i++;
-		}
-		i = 0;
-	}
+	return (0);
 }
 
 int	ms_export(t_shell *shell)
 {
 	char	**add;
 
-	if (shell->nodes->argc > 2 && shell->nodes->argv[1][0] == '-')
+	if (check_exportables(shell->nodes->argv) == 1)
+	{
+		print_err(shell->nodes->argv[1], ": not a valid var name");
 		return (1);
+	}
 	if (shell->nodes->argc > 1)
 	{
 		add = ft_calloc(shell->nodes->argc
@@ -110,13 +74,6 @@ int	ms_export(t_shell *shell)
 		shell->ms_envp = add;
 	}
 	else if (shell->nodes->argc == 1)
-	{
-		add = dup_envp(shell->ms_envp);
-		if (!add)
-			fatal_error(shell, "export: malloc failed");
-		sort_envp(add);
-		print_sorted_envp(add);
-		free_env_array(add);
-	}
+		export_just_print(shell);
 	return (0);
 }

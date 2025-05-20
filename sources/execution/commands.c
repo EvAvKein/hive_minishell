@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 15:21:31 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/20 12:29:50 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,24 @@ int	ms_pwd(char **envp)
 	return (0);
 }
 
+static int	check_flag(t_shell *shell)
+{
+	if (shell->nodes->argv[1] && shell->nodes->argv[1][0] == '-'
+		&& shell->nodes->argv[1][1] && shell->nodes->argv[1][1] == 'n')
+		return (1);
+	else
+		return (0);
+}
+
 int	ms_echo(t_shell *shell)
 {
 	int	i;
 	int	flag;
 
 	i = 1;
-	flag = 0;
-	if (shell->nodes->argv[1] && shell->nodes->argv[1][0] == '-'
-			&& shell->nodes->argv[1][1] == 'n')
-	{
-		flag = 1;
+	flag = check_flag(shell);
+	if (flag)
 		i++;
-	}
 	if (flag && shell->nodes->argc == 2)
 		return (0);
 	if (shell->nodes->argc == 1)
@@ -67,24 +72,21 @@ int	ms_echo(t_shell *shell)
 	}
 	while (shell->nodes->argv[i])
 	{
-		//ft_putstr_fd(shell->nodes->argv[i], 1);
 		printf("%s", shell->nodes->argv[i]);
 		i++;
 		if (i < shell->nodes->argc)
-			//ft_putchar_fd(' ', 1);
 			printf(" ");
 	}
 	if (!flag)
-		//ft_putchar_fd('\n', 1);
 		printf("\n");
 	return (0);
 }
 
 void	ms_exit(t_shell *shell)
 {
-	ft_putstr_fd("exit\n", 1);
-	(void)shell;
+	if (shell->nodes->argc > 1)
+		printf("exit\n");
+	if (shell->nodes->argv[1])
+		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
 	shell_exit(shell, 0);
-
-	//if arguments: exit status / exit with value
 }

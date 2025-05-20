@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:22:31 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/20 13:33:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_shell
 	char		pid[20];
 	t_node		*nodes;
 	t_exec		exec;
+	char		*working_dir;
 }				t_shell;
 
 /* PARSING FUNCTIONS **********************************************************/
@@ -151,10 +152,11 @@ void		free_env_array(char **env);
 char		*get_pwd_from_env(char **envp);
 int			get_env_elements(char **envp);
 int			is_builtin(char *cmd);
+void		export_just_print(t_shell *shell);
 int			ms_cd(t_shell *shell);
 int			ms_echo(t_shell *shell);
 int			ms_env(t_shell *shell);
-int			ms_exit(t_shell *shell);
+void		ms_exit(t_shell *shell);
 int			ms_export(t_shell *shell);
 int			ms_pwd(char **envp);
 int			ms_unset(t_shell *shell);

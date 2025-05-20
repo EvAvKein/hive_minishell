@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 15:16:18 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/20 13:53:16 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	execution(t_shell *shell)
 	t_fd		fd;
 	int			temp;
 
+	shell->working_dir = getcwd(NULL, 0);
 	fd.prev_fd = -1;
 	fd.pipe_fd[0] = -1;
 	fd.pipe_fd[1] = -1;

@@ -6,39 +6,25 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 15:18:30 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/20 13:51:11 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_path_from_envp(t_node *current)
+static char	*iterate_through_path_list(char **path_list, t_node *current)
 {
-	char	*env_path;
+	int		i;
 	char	*ret_path;
 	char	*temp;
-	char	**path_list;
-	int		i;
 
 	i = 0;
-	env_path = getenv("PATH");
-	if (!env_path)
-	{
-		perror("path not found in environment");
-		return (NULL);
-	}
-	path_list = ft_split(env_path, ':');
-	if (!path_list)
-	{
-		perror("ft_split failed");
-		return (NULL);
-	}
 	while (path_list[i])
 	{
 		temp = ft_strjoin(path_list[i], "/");
 		if (!temp)
 		{
-			perror("ft_strjoin failed");
+			print_err(current->argv[0], ": ft_strjoin failed");
 			return (NULL);
 		}
 		ret_path = ft_strjoin(temp, current->argv[0]);
@@ -51,9 +37,31 @@ static char	*get_path_from_envp(t_node *current)
 		ret_path = NULL;
 		i++;
 	}
+	return (ret_path);
+}
+
+static char	*get_path_from_envp(t_node *current)
+{
+	char	*env_path;
+	char	*ret_path;
+	char	**path_list;
+
+	env_path = getenv("PATH");
+	if (!env_path)
+	{
+		print_err(current->argv[0], ": path not found in environment");
+		return (NULL);
+	}
+	path_list = ft_split(env_path, ':');
+	if (!path_list)
+	{
+		print_err(current->argv[0], ": ft_split failed");
+		return (NULL);
+	}
+	ret_path = iterate_through_path_list(path_list, current);
 	free_env_array(path_list);
 	if (!ret_path)
-		perror("command not found/invalid path");
+		print_err(current->argv[0], ": command not found");
 	return (ret_path);
 }
 
@@ -64,7 +72,7 @@ static char	*get_path_from_arg(char *command)
 	path = command;
 	if (access(path, F_OK) != 0)
 	{
-		perror("invalid path");
+		print_err(command, ": invalid path");
 		path = NULL;
 	}
 	return (path);
@@ -110,6 +118,6 @@ int	execute_builtin(t_shell *shell)
 	else if (!ft_strncmp(shell->nodes->argv[0], "echo", 5))
 		return (ms_echo(shell));
 	else if (!ft_strncmp(shell->nodes->argv[0], "exit", 5))
-		return (ms_exit(shell));
+		(ms_exit(shell));
 	return (0);
 }

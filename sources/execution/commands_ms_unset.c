@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 15:22:35 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/20 09:34:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ int	ms_unset(t_shell *shell)
 	new_env[k] = NULL;
 	free_env_array(shell->ms_envp);
 	shell->ms_envp = new_env;
-	k = 0;
 	free(removables);
+	return (0);
 }
