@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 13:19:45 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/20 21:01:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,15 @@ void	sigpipe_handler(int sig, siginfo_t *info, void *prevact)
 /**
  * 
  * A signal handler for heredoc's SIGINT -
- * exits out of heredoc.
+ * exits out of heredoc back to the command prompt.
  * 
  * @param sig     Ignored.
  * 
- * @param info    Ignored.
- * 
- * @param prevact Ignored.
- * 
  */
-void	heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact)
+void	heredoc_sigint_handler(int sig)
 {
-	(void)prevact;
-	(void)info;
 	(void)sig;
 	get_shell()->last_exit_status = EXIT_CMD_ERROR + SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
 	close(STDIN_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 19:35:40 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/20 20:59:29 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,50 +32,12 @@ bool	is_delimiter_quoted(t_parsing *parsing)
 
 /**
  * 
- * Increments the character-based number at the end of the provided string.
- * 
- * @param buffer The array in which increment the number
- *               according to its digit characters.
- *               Assumed to contain at least one leading non-space character,
- *               at least one digit,
- *               and assumed to have enough space for all necessary digits.
- * 
- */
-void	increment_postfixed_num(char *buffer)
-{
-	size_t	i;
-
-	i = ft_strlen(buffer) - 1;
-	if (buffer[i] < '9')
-	{
-		buffer[i]++;
-		return ;
-	}
-	while (buffer[i] == '9')
-	{
-		if (!ft_isdigit(buffer[i - 1]))
-		{
-			buffer[i++] = '1';
-			while (buffer[i])
-				buffer[i++] = '0';
-			break ;
-		}
-		buffer[i--] = '0';
-	}
-	if (!buffer[i])
-		buffer[i] = '0';
-	else
-		buffer[i]++;
-}
-
-/**
- * 
  * @param dest An pointer to which to assign available (or `NULL`) path.
  * 
  * @returns A heap-allocated (or `NULL`) path to the next creatable hidden file.
  *  
  */
-char	*get_available_file_name(char **dest)
+static char	*get_available_file_name(char **dest)
 {
 	char	name[35];
 
@@ -105,7 +67,7 @@ char	*get_available_file_name(char **dest)
  * @param expand Whether to expand environment variables in the `input`.
  * 
  */
-void	heredoc_write(int fd, char *input, bool expand)
+static void	heredoc_write(int fd, char *input, bool expand)
 {
 	char	*expansion;
 	char	*value;
@@ -132,26 +94,16 @@ void	heredoc_write(int fd, char *input, bool expand)
 
 /**
  * 
- * Executes the heredoc for the provided `node`.
- * If successful, replaces `node->argv[0]` from the delimiter to the contents'
- * file path.
+ * 
+ * @param fd     The file descriptor to which to write the heredoc content.
  * 
  * @param expand Whether to expand environment variables written to the heredoc.
  * 
- * @returns Whether heredoc execution was successful.
- * 
  */
-bool	execute_heredoc(t_node *node, bool expand)
+void	heredoc_loop(t_node *node, int fd, bool expand)
 {
-	char	*file_name;
-	int		fd;
-	char	*input;
+	char		*input;
 
-	if (!get_available_file_name(&file_name))
-		return (false);
-	fd = open(file_name, O_CREAT | O_WRONLY, 0644);
-	if (fd < 0 && print_err("heredoc: ", strerror(errno)))
-		return (free(file_name), false);
 	while (1)
 	{
 		input = readline("heredoc +");
@@ -164,7 +116,39 @@ bool	execute_heredoc(t_node *node, bool expand)
 		heredoc_write(fd, input, expand);
 		free(input);
 	}
-	close(fd);
+}
+
+/**
+ * 
+ * Executes the heredoc for the provided `node`.
+ * If successful, replaces `node->argv[0]` from the delimiter to the contents'
+ * file path.
+ * 
+ * @param expand Whether to expand environment variables written to the heredoc.
+ * 
+ * @returns Whether heredoc execution was successful.
+ * 
+ */
+bool	execute_heredoc(t_node *node, bool expand)
+{
+	char		*file_name;
+	int			fd;
+	const int	heredoc_fd = dup(STDIN_FILENO);
+
+	if (heredoc_fd == -1 && print_err("parsing: ", strerror(errno)))
+		return (false);
+	if (!get_available_file_name(&file_name))
+		return (close(heredoc_fd), false);
+	fd = open(file_name, O_CREAT | O_WRONLY, 0644);
+	if (fd < 0 && print_err("heredoc: ", strerror(errno)))
+		return (close(heredoc_fd), free(file_name), false);
+	sigaction(SIGINT,
+		&(struct sigaction){.sa_handler = heredoc_sigint_handler}, NULL);
+	heredoc_loop(node, fd, expand);
+	if ((close(fd) || 1) && dup2(heredoc_fd, STDIN_FILENO) < 0)
+		return (free(file_name), false);
+	sigaction(SIGINT,
+		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
 	free(node->argv[0]);
 	node->argv[0] = file_name;
 	return (!!node->argv[0]);

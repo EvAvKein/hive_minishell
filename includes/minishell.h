@@ -169,7 +169,7 @@ void		wait_for_all_children(t_shell *shell);
 void		init_signal_handlers(void);
 void		sigint_handler(int sig, siginfo_t *info, void *prevact);
 void		sigpipe_handler(int sig, siginfo_t *info, void *prevact);
-void		heredoc_sigint_handler(int sig, siginfo_t *info, void *prevact);
+void		heredoc_sigint_handler(int sig);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
