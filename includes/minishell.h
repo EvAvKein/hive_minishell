@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/20 13:33:38 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 15:37:48 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ t_redirect	redirect_of_c(char *c);
 
 void		close_pipe(t_fd *fd);
 int			count_commands(t_shell *shell);
+int			count_outfiles(t_shell *shell);
 int			count_redirections(t_shell *shell);
 char		**dup_envp(char **envp);
 int			execute_builtin(t_shell *shell);

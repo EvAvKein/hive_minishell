@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 13:51:11 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 15:55:08 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*get_path_from_envp(t_node *current)
 	char	*ret_path;
 	char	**path_list;
 
-	env_path = getenv("PATH");
+	env_path = getenv("PATH");//TODO: make your on getenv() for ms_envp
 	if (!env_path)
 	{
 		print_err(current->argv[0], ": path not found in environment");
@@ -84,7 +84,7 @@ void	execute_sys_command(t_shell *shell, t_node *current)
 	char	**args;
 	char	**tmp_envp;
 
-	if (ft_strchr(current->argv[0], '/'))
+	if (ft_strchr(current->argv[0], '/')) //TODO: access X_OK instead
 		path = get_path_from_arg(current->argv[0]);
 	else
 		path = get_path_from_envp(current);

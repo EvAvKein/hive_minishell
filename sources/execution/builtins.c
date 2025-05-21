@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 11:25:53 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 15:48:42 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ms_pwd(char **envp)
 		path = get_pwd_from_env(envp);
 		if (!path)
 		{
-			perror("pwd: getcwd failed!");
+			print_err("pwd: ", "getcwd failed");
 			return (1);
 		}
 	}
@@ -83,7 +83,7 @@ int	ms_echo(t_shell *shell)
 	}
 	if (!flag)
 		printf("\n");
-	if (shell->exec.child_process)
+	if (shell->exec.child_process)//TODO: this doesn't work
 	{
 		printf("cleaning child proc\n");
 		shell_cleanup(shell);

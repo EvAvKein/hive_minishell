@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands_ms_cd.c                                   :+:      :+:    :+:   */
+/*   builtins_ms_cd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 13:46:11 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 15:02:53 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	ms_cd(t_shell *shell)
 	char	*oldpwd;
 	char	*destination;
 
+	printf("%s\n", shell->working_dir);
 	destination = NULL;
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands_ms_export.c                               :+:      :+:    :+:   */
+/*   builtins_ms_export.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 13:49:21 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 14:15:06 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 	return (0);
 }
 
-static int	check_exportables(char **argv)
+static int	check_exportables_names(char **argv)
 {
 	int	i;
 
@@ -57,7 +57,7 @@ int	ms_export(t_shell *shell)
 {
 	char	**add;
 
-	if (check_exportables(shell->nodes->argv) == 1)
+	if (check_exportables_names(shell->nodes->argv) == 1)
 	{
 		print_err(shell->nodes->argv[1], ": not a valid var name");
 		return (1);

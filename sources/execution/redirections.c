@@ -6,11 +6,27 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:02:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 13:23:12 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 15:37:27 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	count_outfiles(t_shell *shell)
+{
+	t_node	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = shell->nodes;
+	while (tmp)
+	{
+		if (tmp->type == OUTFILE || tmp->type == APPENDFILE)
+			i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
 
 int	count_redirections(t_shell *shell)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_parent_and_child.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 11:17:25 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 11:54:35 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int	parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current)
 	{
 		sigaction(SIGINT,
 			&(struct sigaction){.sa_handler = SIG_DFL}, NULL);
+		sigaction(SIGPIPE,
+			&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
 		pipeline_child(shell, command, fd, current);
 	}
 	else
