@@ -75,7 +75,6 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		**envp;
 	char		**ms_envp;
 	int			last_exit_status;
 	char		pid[20];
@@ -148,7 +147,6 @@ void		execute_ext_command(t_shell *shell, t_node *current);
 void		execution(t_shell *shell);
 void		fatal_error(t_shell *shell, char *msg);
 void		fd_cleanup(t_fd *fd);
-void		free_env_array(char **env);
 char		*get_pwd_from_env(char **envp);
 char		*get_env(char **envp, char *find);
 int			get_env_elements(char **envp);
@@ -166,6 +164,12 @@ int			open_redirections(t_shell *shell);
 void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
 int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);
 void		wait_for_all_children(t_shell *shell);
+
+/* ENV FUNCTIONS **************************************************************/
+
+void		init_env(char **envp);
+size_t		env_count(char **env);
+char		**dup_env(char **env);
 
 /* SIGNAL FUNCTIONS ***********************************************************/
 
@@ -190,11 +194,11 @@ bool		input_was_entirely_spaces(char *input);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
-void		command_cleanup(t_shell *shell);
-void		shell_cleanup(t_shell *shell);
-void		shell_exit(t_shell *shell, int exit_status);
+void		command_cleanup();
+void		shell_cleanup();
+void		shell_exit(int exit_status);
 
 void		*free_nodes(t_node *node);
-void		*free_2d_arr(void *arr, size_t length);
+void		free_str_array(char **env);
 
 #endif
