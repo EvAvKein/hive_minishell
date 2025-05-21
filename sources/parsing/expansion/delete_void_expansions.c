@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:32:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 19:18:32 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/21 17:07:38 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ static inline bool	has_prefixed_content(char *expansion, char *input)
  */
 static inline bool	has_postfixed_content(char *expansion, size_t exp_len)
 {
-	return (expansion[exp_len] && !is_control_flow(expansion[exp_len])
-		&& !is_space(expansion[exp_len]) && !is_quote(expansion[exp_len]));
+	return (expansion[exp_len] && expansion[exp_len] != '$'
+		&& !is_control_flow(expansion[exp_len]) && !is_space(expansion[exp_len])
+		&& !is_quote(expansion[exp_len]));
 }
 
 /**
@@ -69,9 +70,16 @@ static inline bool	has_postfixed_content(char *expansion, size_t exp_len)
  * If the provided expansion is not actually an expansion
  * (i.e. doesn't start with a '$'), skips to the next characters.
  *
- * @param expansion A pointer to a string which starts with '$'.
+ * @param expansion A pointer to a string which starts with '$',
+ *                  to be potentially skipped past the expansion.
+ * 
+ * @param input     The user input being parsed.
+ * 
+ * @param exp_len   A pointer in which to set the expansion string's length,
+ *                  gets set for external use.
+ *                  
  *  
- * @returns Whether something was skipped.
+ * @returns Whether `expansion` was skipped.
  * 
  */
 static inline bool	skipped_expansion(
@@ -80,11 +88,13 @@ static inline bool	skipped_expansion(
 	if (!(*expansion)[1])
 	{
 		(*expansion) += 1;
+		(*exp_len) = 1;
 		return (true);
 	}
 	if ((*expansion)[1] == '$')
 	{
 		*expansion += 2;
+		(*exp_len) = 2;
 		return (true);
 	}
 	*exp_len = env_name_len(&((*expansion)[1])) + 1;
@@ -120,17 +130,16 @@ void	delete_void_expansions(char *input)
 	in_quote = '\0';
 	while (expansion && *expansion)
 	{
-		if (!expansion)
-			break ;
 		if ((*expansion != '$' || in_quote
-				|| toggle_quote_by_c(&in_quote, *expansion)) && expansion++)
+			|| toggle_quote_by_c(&in_quote, *expansion)))
+		{
+			expansion++;
 			continue ;
+		}
 		if (skipped_expansion(&expansion, input, &exp_len))
 			continue ;
-		if (env_value(&expansion[1]))
-			expansion += exp_len;
-		else
+		if (!env_value(&expansion[1]))
 			ft_memset(expansion, ' ', exp_len);
-		expansion++;
+		expansion += exp_len;
 	}
 }
