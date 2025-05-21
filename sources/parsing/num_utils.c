@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 21:21:54 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:18:31 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/19 11:18:31 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/20 20:32:50 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,42 @@ char	*itoa_to_buf(int num, char *buf)
 	if (negative)
 		buf[i] = '-';
 	return (buf);
+}
+
+/**
+ * 
+ * Increments the character-based number at the end of the provided string.
+ * 
+ * @param buffer The array in which increment the number
+ *               according to its digit characters.
+ *               Assumed to contain at least one leading non-space character,
+ *               at least one digit,
+ *               and assumed to have enough space for all necessary digits.
+ * 
+ */
+void	increment_postfixed_num(char *buffer)
+{
+	size_t	i;
+
+	i = ft_strlen(buffer) - 1;
+	if (buffer[i] < '9')
+	{
+		buffer[i]++;
+		return ;
+	}
+	while (buffer[i] == '9')
+	{
+		if (!ft_isdigit(buffer[i - 1]))
+		{
+			buffer[i++] = '1';
+			while (buffer[i])
+				buffer[i++] = '0';
+			break ;
+		}
+		buffer[i--] = '0';
+	}
+	if (!buffer[i])
+		buffer[i] = '0';
+	else
+		buffer[i]++;
 }

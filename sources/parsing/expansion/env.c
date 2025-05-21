@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:03:34 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/14 17:16:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 18:45:49 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,13 @@ bool	envncmp(char *env_str, char *var_start, size_t cmp)
  *          variable's value, no `NULL` if there's no such environment variable.
  * 
  */
-char	*env_value(t_shell *shell, char *var_start)
+char	*env_value(char *var_start)
 {
 	char	**env;
 	size_t	i;
 	char	*var_found;
 
-	env = shell->ms_envp;
+	env = get_shell()->ms_envp;
 	i = 0;
 	if (!var_start)
 		return (NULL);

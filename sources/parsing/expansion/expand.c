@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:29:33 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:50:08 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
  * @returns `true` (for a line-saving conditional chain).
  * 
  */
-bool	expand_pid(t_shell *shell, char *dest, size_t *dest_i, size_t *input_i)
+bool	expand_pid(char *dest, size_t *dest_i, size_t *input_i)
 {
 	*input_i += 2;
-	ft_strlcpy(&dest[*dest_i], shell->pid, 20);
-	*dest_i += ft_strlen(shell->pid);
+	ft_strlcpy(&dest[*dest_i], get_shell()->pid, 20);
+	*dest_i += ft_strlen(get_shell()->pid);
 	return (true);
 }
 
@@ -54,14 +54,13 @@ bool	expand_pid(t_shell *shell, char *dest, size_t *dest_i, size_t *input_i)
  * @returns `true` (for a line-saving conditional chain).
  * 
  */
-static bool	expand_exit_status(
-	t_shell *shell, char *dest, size_t *dest_i, size_t *input_i)
+static bool	expand_exit_status(char *dest, size_t *dest_i, size_t *input_i)
 {
 	int		status;
 	size_t	length;
 
 	*input_i += 2;
-	status = shell->last_exit_status;
+	status = get_shell()->last_exit_status;
 	length = count_digits(status);
 	itoa_to_buf(status, &dest[*dest_i]);
 	*dest_i += length;
@@ -77,7 +76,7 @@ static bool	expand_exit_status(
  * the responsibility of the calling func.
  * 
  */
-size_t	expanded_len(t_shell *shell, char *expand_start)
+size_t	expanded_len(char *expand_start)
 {
 	char	*expansion_value;
 
@@ -87,10 +86,10 @@ size_t	expanded_len(t_shell *shell, char *expand_start)
 		|| is_quote(expand_start[1]) || is_control_flow(expand_start[1]))
 		return (1);
 	if (expand_start[1] == '$')
-		return (ft_strlen(shell->pid));
+		return (ft_strlen(get_shell()->pid));
 	if (expand_start[1] == '?')
-		return (count_digits(shell->last_exit_status));
-	expansion_value = env_value(shell, expand_start + 1);
+		return (count_digits(get_shell()->last_exit_status));
+	expansion_value = env_value(expand_start + 1);
 	if (expansion_value)
 		return (ft_strlen(expansion_value));
 	return (0);
@@ -121,12 +120,12 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 		return (true);
 	}
 	if (var.input[*var.input_i + 1] == '$'
-		&& expand_pid(var.shell, var.dest, var.dest_i, var.input_i))
+		&& expand_pid(var.dest, var.dest_i, var.input_i))
 		return (true);
 	if (var.input[*var.input_i + 1] == '?'
-		&& expand_exit_status(var.shell, var.dest, var.dest_i, var.input_i))
+		&& expand_exit_status(var.dest, var.dest_i, var.input_i))
 		return (true);
-	expansion_value = env_value(var.shell, &var.input[++(*var.input_i)]);
+	expansion_value = env_value(&var.input[++(*var.input_i)]);
 	if (expansion_value)
 		*var.dest_i += ft_strlcpy(&var.dest[*var.dest_i],
 				expansion_value, ft_strlen(expansion_value) + 1);

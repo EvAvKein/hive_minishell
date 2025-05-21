@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:32:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:25:58 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 19:18:32 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@
  * @param expansion A pointer to the string
  *                  which starts ('$') with the expansion.
  * 
+ * @param input     The start of the user input
+ *                  (for checking if it's safe to index backwards).
+ * 
+ * @return Whether the provided expansion has any content before it.
+ * 
  */
 static inline bool	has_prefixed_content(char *expansion, char *input)
 {
@@ -43,6 +48,10 @@ static inline bool	has_prefixed_content(char *expansion, char *input)
  * 
  * @param expansion A pointer to the string
  *                  which starts ('$') with the expansion.
+ * 
+ * @param exp_len   The length of the expansion text (`$` plus variable length).
+ * 
+ * @return Whether the provided expansion has any content after it.
  * 
  */
 static inline bool	has_postfixed_content(char *expansion, size_t exp_len)
@@ -101,7 +110,7 @@ static inline bool	skipped_expansion(
  *              gets modified as per this function's description.
  * 
  */
-void	delete_void_expansions(t_shell *shell, char *input)
+void	delete_void_expansions(char *input)
 {
 	char	*expansion;
 	size_t	exp_len;
@@ -117,10 +126,8 @@ void	delete_void_expansions(t_shell *shell, char *input)
 				|| toggle_quote_by_c(&in_quote, *expansion)) && expansion++)
 			continue ;
 		if (skipped_expansion(&expansion, input, &exp_len))
-		{
 			continue ;
-		}
-		if (env_value(shell, &expansion[1]))
+		if (env_value(&expansion[1]))
 			expansion += exp_len;
 		else
 			ft_memset(expansion, ' ', exp_len);

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:31:49 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 13:21:51 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:46:51 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
  * @returns A pointer to the new node (or `NULL` on memory allocation failure).
  * 
  */
-t_node	*append_new_node(t_shell *shell, int argc)
+t_node	*append_new_node(int argc)
 {
 	t_node	*new_node;
 	t_node	*node_for_append;
@@ -41,12 +41,12 @@ t_node	*append_new_node(t_shell *shell, int argc)
 		return (NULL);
 	}
 	new_node->fd = -1;
-	if (!shell->nodes)
+	if (!get_shell()->nodes)
 	{
-		shell->nodes = new_node;
+		get_shell()->nodes = new_node;
 		return (new_node);
 	}
-	node_for_append = shell->nodes;
+	node_for_append = get_shell()->nodes;
 	skip_to_last_node(&node_for_append);
 	node_for_append->next = new_node;
 	new_node->prev = node_for_append;
@@ -64,7 +64,7 @@ t_node	*append_new_node(t_shell *shell, int argc)
  * @returns Whether all node creations were successful.
  * 
  */
-static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
+static bool	str_to_nodes(t_parsing *parsing, t_node *cmd_node)
 {
 	int		cmd_i;
 	char	*input;
@@ -76,14 +76,14 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
 		skip_spaces(parsing);
 		if (skip_pipe(parsing))
 			return (true);
-		if (!handle_redirect(shell, parsing))
+		if (!handle_redirect(parsing))
 			return (false);
 		skip_spaces(parsing);
 		if (skip_pipe(parsing))
 			return (true);
 		if (cmd_node && input[parsing->i] && !redirect_of_c(&input[parsing->i]))
 		{
-			cmd_node->argv[cmd_i] = extract_arg(shell, parsing, false);
+			cmd_node->argv[cmd_i] = extract_arg(parsing, false);
 			if (!cmd_node->argv[cmd_i++])
 				return (false);
 		}
@@ -101,7 +101,7 @@ static bool	str_to_nodes(t_shell *shell, t_parsing *parsing, t_node *cmd_node)
  *          and memory allocations were successful.
  * 
  */
-bool	extract_nodes(t_shell *shell, t_parsing *parsing)
+bool	extract_nodes(t_parsing *parsing)
 {
 	int		argc;
 
@@ -115,13 +115,13 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
 	}
 	if (argc)
 	{
-		parsing->command_node = append_new_node(shell, argc);
+		parsing->command_node = append_new_node(argc);
 		if (!parsing->command_node)
 			return (false);
 		parsing->command_node->type = COMMAND;
 	}
 	parsing->piping = false;
-	if (!str_to_nodes(shell, parsing, parsing->command_node))
+	if (!str_to_nodes(parsing, parsing->command_node))
 		return (false);
 	return (true);
 }
@@ -138,13 +138,13 @@ bool	extract_nodes(t_shell *shell, t_parsing *parsing)
  *          was successful.
  * 
  */
-bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing)
+bool	sort_nodes_segment(t_parsing *parsing)
 {
 	t_node_sort	sort;
 
 	if (!parsing->midparse_nodes)
 		return (true);
-	sort = (t_node_sort){.node = shell->nodes,
+	sort = (t_node_sort){.node = get_shell()->nodes,
 		.command_node = parsing->command_node,
 		.infile_count = 0, .infile_arr = NULL,
 		.outfile_count = 0, .outfile_arr = NULL};
@@ -158,6 +158,6 @@ bool	sort_nodes_segment(t_shell *shell, t_parsing *parsing)
 		.outfiles = link_collected_nodes(&sort.outfile_arr, 0)};
 	reattach_nodes(parsing, &sort.attach);
 	if (!parsing->node_before_command)
-		shell->nodes = sort.attach.start;
+		get_shell()->nodes = sort.attach.start;
 	return (true);
 }

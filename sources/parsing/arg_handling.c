@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:22:41 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:42:46 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	str_to_argc(char *str, t_str_to_argc_vars var)
  * @returns The total length, with the aforementioned parsing aspects in mind.
  * 
  */
-int	arg_to_len(t_shell *shell, char *arg)
+int	arg_to_len(char *arg)
 {
 	t_arg_to_len_vars	var;
 
@@ -88,7 +88,7 @@ int	arg_to_len(t_shell *shell, char *arg)
 		}
 		if (arg[var.i] == '$' && var.in_quote != '\'')
 		{
-			var.length += expanded_len(shell, &arg[var.i]);
+			var.length += expanded_len(&arg[var.i]);
 			var.i += env_name_len(&arg[++var.i]);
 			continue ;
 		}
@@ -148,12 +148,12 @@ static void	arg_cpy(
  * @returns A copy of the next valid argument (or `NULL` on allocation failure).
  * 
  */
-char	*extract_arg(t_shell *shell, t_parsing *parsing, bool disable_expansion)
+char	*extract_arg(t_parsing *parsing, bool disable_expansion)
 {
 	size_t	arg_len;
 	char	*arg;
 
-	arg_len = arg_to_len(shell, &parsing->input[parsing->i]);
+	arg_len = arg_to_len(&parsing->input[parsing->i]);
 	arg = ft_calloc(1, (arg_len + 1) * (sizeof(char)));
 	if (!arg)
 	{
