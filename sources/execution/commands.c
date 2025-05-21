@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 12:29:50 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 11:25:53 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,14 @@ int	ms_echo(t_shell *shell)
 	if (flag)
 		i++;
 	if (flag && shell->nodes->argc == 2)
+	{
+		shell_cleanup(shell);
 		return (0);
+	}
 	if (shell->nodes->argc == 1)
 	{
 		printf("\n");
+		shell_cleanup(shell);
 		return (0);
 	}
 	while (shell->nodes->argv[i])
@@ -79,6 +83,11 @@ int	ms_echo(t_shell *shell)
 	}
 	if (!flag)
 		printf("\n");
+	if (shell->exec.child_process)
+	{
+		printf("cleaning child proc\n");
+		shell_cleanup(shell);
+	}
 	return (0);
 }
 

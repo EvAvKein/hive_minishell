@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 13:19:27 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/21 11:17:25 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	pipeline_child(t_shell *shell, t_node *command,
 	t_fd *fd, t_node *current)
 {
+	shell->exec.child_process = true;
 	if (fd->prev_fd != -1)
 	{
 		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
