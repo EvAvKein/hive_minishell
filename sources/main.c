@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 18:17:36 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/21 18:00:05 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,14 @@ t_shell	*get_shell(void)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	*shell;
 	char	*input;
 
 	(void) argc;
 	(void) argv;
-	shell = get_shell();
-	ft_bzero(shell, sizeof(t_shell));
+	ft_bzero(get_shell(), sizeof(t_shell));
 	init_signal_handlers();
-	pid_to_buf(shell->pid);
-	shell->envp = envp;
-	shell->ms_envp = dup_envp(shell->envp);
-	if (!shell->ms_envp)
-		fatal_error(shell, "envp duplication failed");
+	pid_to_buf(get_shell()->pid);
+	init_env(envp);
 	while (1)
 	{
 		input = readline(SHELL_PROMPT);
@@ -44,13 +39,13 @@ int	main(int argc, char **argv, char **envp)
 		add_history(input);
 		if (!parsing(input))
 		{
-			command_cleanup(shell);
+			command_cleanup();
 			continue ;
 		}
-		//print_nodes(STDERR_FILENO, shell->nodes);
-		execution(shell);
-		command_cleanup(shell);
+		print_nodes(STDERR_FILENO, get_shell()->nodes);
+		// execution(shell);
+		command_cleanup();
 	}
-	shell_cleanup(shell);
+	shell_cleanup();
 	return (get_shell()->last_exit_status);
 }

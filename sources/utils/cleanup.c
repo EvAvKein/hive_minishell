@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:31:15 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/21 18:02:29 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,21 @@
 
 /**
  * 
- * @param arr    An array of pointers to be freed, also freeing the array itself
- *               (basically `void **`, the single-pointer type is misleading
- *               but necessary).
  * 
- * @param length The amount of individual allocations inside the provided `arr`.
  * 
  * @returns `NULL` (for external line-saving reason, due to Norminette).
  * 
  */
-void	*free_2d_arr(void *arr, size_t length)
+void	free_str_array(char **arr)
 {
-	char	**array;
+	size_t	i;
 
 	if (!arr)
 		return (NULL);
-	array = arr;
-	while (length)
-		free(array[--length]);
-	free(array);
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 	return (NULL);
 }
 
@@ -55,7 +51,7 @@ void	*free_nodes(t_node *node)
 		next = node->next;
 		if (node->type == HEREDOC && node->argv[0])
 			unlink(node->argv[0]);
-		free_2d_arr(node->argv, node->argc);
+		free_str_arr(node->argv, node->argc);
 		fd = node->fd;
 		if (fd > 0
 			&& fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
@@ -68,35 +64,35 @@ void	*free_nodes(t_node *node)
 
 /**
  * 
- * Frees all command-specific allocations in the provided `shell`,
+ * Frees all command-specific allocations in the shell,
  * resetting their variable values in preperation for new command input.
  * 
  */
-void	command_cleanup(t_shell *shell)
+void	command_cleanup()
 {
-	free_nodes(shell->nodes);
-	shell->nodes = NULL;
+	free_nodes(get_shell()->nodes);
+	get_shell()->nodes = NULL;
 }
 
 /**
  * 
- * Frees all allocations in the provided `shell`.
+ * Frees all allocations in the shell.
  * 
  */
-void	shell_cleanup(t_shell *shell)
+void	shell_cleanup()
 {
-	free_env_array(shell->ms_envp);
-	command_cleanup(shell);
+	free_str_array(get_shell()->ms_envp);
+	command_cleanup();
 }
 
 /**
  * 
- * Frees all allocations in the provided `shell`
+ * Frees all allocations in the shell
  * and exit the program with the provided `exit_status`.
  * 
  */
-void	shell_exit(t_shell *shell, int exit_status)
+void	shell_exit(int exit_status)
 {
-	shell_cleanup(shell);
+	shell_cleanup();
 	exit(exit_status);
 }

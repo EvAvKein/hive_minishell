@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/20 21:00:11 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/21 17:59:13 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		**envp;
 	char		**ms_envp;
 	int			last_exit_status;
 	char		pid[20];
@@ -138,7 +137,6 @@ t_redirect	redirect_of_c(char *c);
 void		close_pipe(t_fd *fd);
 int			count_commands(t_shell *shell);
 int			count_redirections(t_shell *shell);
-char		**dup_envp(char **envp);
 int			execute_builtin(t_shell *shell);
 void		execute_command(t_shell *shell, t_node *command);
 void		execute_command_line(t_shell *shell, t_fd *fd);
@@ -146,9 +144,7 @@ void		execute_sys_command(t_shell *shell, t_node *current);
 void		execution(t_shell *shell);
 void		fatal_error(t_shell *shell, char *msg);
 void		fd_cleanup(t_fd *fd);
-void		free_env_array(char **env);
 char		*get_pwd_from_env(char **envp);
-int			get_env_elements(char **envp);
 int			is_builtin(char *cmd);
 int			ms_cd(t_shell *shell);
 void		ms_echo(t_shell *shell);
@@ -161,6 +157,12 @@ int			open_redirections(t_shell *shell);
 void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
 int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);
 void		wait_for_all_children(t_shell *shell);
+
+/* ENV FUNCTIONS **************************************************************/
+
+void		init_env(char **envp);
+size_t		env_count(char **env);
+char		**dup_env(char **env);
 
 /* SIGNAL FUNCTIONS ***********************************************************/
 
@@ -185,11 +187,11 @@ bool		input_was_entirely_spaces(char *input);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
-void		command_cleanup(t_shell *shell);
-void		shell_cleanup(t_shell *shell);
-void		shell_exit(t_shell *shell, int exit_status);
+void		command_cleanup();
+void		shell_cleanup();
+void		shell_exit(int exit_status);
 
 void		*free_nodes(t_node *node);
-void		*free_2d_arr(void *arr, size_t length);
+void		free_str_array(char **env);
 
 #endif

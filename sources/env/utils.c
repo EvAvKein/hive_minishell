@@ -5,44 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 17:44:44 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/21 17:22:52 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/21 17:26:59 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	fatal_error(t_shell *shell, char *msg)
+size_t	env_count(char **envp)
 {
-	(void) shell;
-	if (msg)
-		perror(msg);
-	shell_exit(EXIT_FAILURE);
-}
+	size_t	i;
 
-int	is_builtin(char *cmd)
-{
-	if (!ft_strncmp(cmd, "env", 3) || !ft_strncmp(cmd, "cd", 2)
-		|| !ft_strncmp(cmd, "pwd", 3) || !ft_strncmp(cmd, "export", 6)
-		|| !ft_strncmp(cmd, "unset", 5) || !ft_strncmp(cmd, "echo", 4)
-		|| !ft_strncmp(cmd, "exit", 4))
-		return (1);
-	else
+	if (!envp)
 		return (0);
-}
-
-int	count_commands(t_shell *shell)
-{
-	int		i;
-	t_node	*tmp;
-
 	i = 0;
-	tmp = shell->nodes;
-	while (tmp)
-	{
-		if (tmp->type == COMMAND)
-			i++;
-		tmp = tmp->next;
-	}
+	while (envp[i])
+		i++;
 	return (i);
 }

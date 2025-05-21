@@ -3,40 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 11:18:23 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 11:23:28 by ahavu            ###   ########.fr       */
+/*   Created: 2025/05/21 17:23:19 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/21 17:46:14 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**short_dup()
+
+static char	**default_env()
 {
 	char	**ret;
 
 	ret = ft_calloc(2, sizeof(char *));
-	ret[0] = "SHLVL=1";
+	if (!ret)
+		return (NULL);
+	ret[0] = ft_strdup("SHLVL=1");
+	if (!ret[0])
+	{
+		free(ret);
+		return (NULL);
+	}
 	return (ret);
 }
 
-char	**dup_envp(char **envp)
+char	**dup_env(char **env)
 {
-	int		i;
-	int		env_count;
+	size_t	i;
+	size_t	env_size;
 	char	**dup;
 
 	i = 0;
-	if (envp[0] == NULL)
-		return(short_dup());
-	env_count = get_env_elements(envp);
-	dup = ft_calloc(env_count + 1, sizeof(char *));
+	if (!env || !env[0])
+		return(default_env());
+	env_size = env_count(env);
+	dup = ft_calloc(env_size + 1, sizeof(char *));
 	if (!dup)
 		return (NULL);
-	while (envp[i])
+	while (env[i])
 	{
-		dup[i] = ft_strdup(envp[i]);
+		dup[i] = ft_strdup(env[i]);
 		if (!dup[i])
 		{
 			free_env_array(dup);
@@ -44,6 +52,15 @@ char	**dup_envp(char **envp)
 		}
 		i++;
 	}
-	dup[i] = NULL;
 	return (dup);
+}
+
+void	init_env(char **envp)
+{
+	get_shell()->ms_envp = dup_env(envp);
+	if (!get_shell()->ms_envp)
+	{
+		print_err("env creation failed: ", strerror(ENOMEM));
+		shell_exit(EXIT_FAILURE);
+	}
 }

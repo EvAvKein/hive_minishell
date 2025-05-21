@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
+#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/19 13:53:30 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/21 17:35:15 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC_DIR := sources
 SRC_FILES := main.c \
 			 signal_handlers.c \
 			 env/env.c \
+			 env/utils.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
 			 utils/tiny_checks.c \
