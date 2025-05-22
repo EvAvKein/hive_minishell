@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 14:29:58 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/22 14:47:48 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	execute_command(t_shell *shell, t_node *command)
 {
 	if (is_builtin(command->argv[0]))
-		exit(execute_builtin(shell));
+		exit(execute_builtin(shell, command));
 	else
 	{
-		execute_sys_command(shell, command);
+		execute_ext_command(shell, command);
 		exit(EXIT_SUCCESS);
 	}
 }

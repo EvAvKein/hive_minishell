@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/21 15:37:48 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/22 14:47:43 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,20 +141,21 @@ int			count_commands(t_shell *shell);
 int			count_outfiles(t_shell *shell);
 int			count_redirections(t_shell *shell);
 char		**dup_envp(char **envp);
-int			execute_builtin(t_shell *shell);
+int			execute_builtin(t_shell *shell, t_node *command);
 void		execute_command(t_shell *shell, t_node *command);
 void		execute_command_line(t_shell *shell, t_fd *fd);
-void		execute_sys_command(t_shell *shell, t_node *current);
+void		execute_ext_command(t_shell *shell, t_node *current);
 void		execution(t_shell *shell);
 void		fatal_error(t_shell *shell, char *msg);
 void		fd_cleanup(t_fd *fd);
 void		free_env_array(char **env);
 char		*get_pwd_from_env(char **envp);
+char		*get_env(char **envp, char *find);
 int			get_env_elements(char **envp);
 int			is_builtin(char *cmd);
 void		export_just_print(t_shell *shell);
 int			ms_cd(t_shell *shell);
-int			ms_echo(t_shell *shell);
+int			ms_echo(t_shell *shell, t_node *command);
 int			ms_env(t_shell *shell);
 void		ms_exit(t_shell *shell);
 int			ms_export(t_shell *shell);

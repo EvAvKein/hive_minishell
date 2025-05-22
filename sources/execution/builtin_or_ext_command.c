@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_or_sys_command.c                           :+:      :+:    :+:   */
+/*   builtin_or_ext_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 15:55:08 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/22 14:47:28 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static char	*get_path_from_arg(char *command)
 	return (path);
 }
 
-void	execute_sys_command(t_shell *shell, t_node *current)
+void	execute_ext_command(t_shell *shell, t_node *current)
 {
 	char	*path;
 	char	**args;
@@ -103,21 +103,21 @@ void	execute_sys_command(t_shell *shell, t_node *current)
 	shell_exit(shell, 126);
 }
 
-int	execute_builtin(t_shell *shell)
+int	execute_builtin(t_shell *shell, t_node *command)
 {
-	if (!ft_strncmp(shell->nodes->argv[0], "env", 4))
+	if (!ft_strncmp(command->argv[0], "env", 4))
 		return (ms_env(shell));
-	else if (!ft_strncmp(shell->nodes->argv[0], "cd", 3))
+	else if (!ft_strncmp(command->argv[0], "cd", 3))
 		return (ms_cd(shell));
-	else if (!ft_strncmp(shell->nodes->argv[0], "pwd", 4))
+	else if (!ft_strncmp(command->argv[0], "pwd", 4))
 		return (ms_pwd(shell->ms_envp));
-	else if (!ft_strncmp(shell->nodes->argv[0], "export", 7))
+	else if (!ft_strncmp(command->argv[0], "export", 7))
 		return (ms_export(shell));
-	else if (!ft_strncmp(shell->nodes->argv[0], "unset", 6))
+	else if (!ft_strncmp(command->argv[0], "unset", 6))
 		return (ms_unset(shell));
-	else if (!ft_strncmp(shell->nodes->argv[0], "echo", 5))
-		return (ms_echo(shell));
-	else if (!ft_strncmp(shell->nodes->argv[0], "exit", 5))
+	else if (!ft_strncmp(command->argv[0], "echo", 5))
+		return (ms_echo(shell, command));
+	else if (!ft_strncmp(command->argv[0], "exit", 5))
 		(ms_exit(shell));
 	return (0);
 }

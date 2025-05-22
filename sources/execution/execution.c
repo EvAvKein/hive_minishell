@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 15:39:30 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/22 13:33:48 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_single_builtin(t_shell *shell, int temp)
 		if (dup2(tmp->fd, STDOUT_FILENO) == -1)
 			shell_exit(shell, 1);
 	}
-	if (execute_builtin(shell) == 1)
+	if (execute_builtin(shell, shell->nodes) == 1)
 	{
 		shell->last_exit_status = 1;
 		command_cleanup(shell);
@@ -56,7 +56,6 @@ void	execution(t_shell *shell)
 	t_fd		fd;
 	int			temp;
 
-	shell->working_dir = getcwd(NULL, 0);
 	fd.prev_fd = -1;
 	fd.pipe_fd[0] = -1;
 	fd.pipe_fd[1] = -1;
@@ -77,5 +76,4 @@ void	execution(t_shell *shell)
 		return ;
 	}
 	execute_command_line(shell, &fd);
-	free(shell->working_dir);
 }
