@@ -29,17 +29,15 @@ static char	**default_env()
 	return (ret);
 }
 
-char	**dup_env(char **env)
+char	**dup_env(char **env, size_t extra_size)
 {
 	size_t	i;
-	size_t	env_size;
 	char	**dup;
 
 	i = 0;
 	if (!env || !env[0])
 		return(default_env());
-	env_size = env_count(env);
-	dup = ft_calloc(env_size + 1, sizeof(char *));
+	dup = ft_calloc(str_arr_count(env) + extra_size + 1, sizeof(char *));
 	if (!dup)
 		return (NULL);
 	while (env[i])
@@ -57,8 +55,8 @@ char	**dup_env(char **env)
 
 void	init_env(char **envp)
 {
-	get_shell()->ms_envp = dup_env(envp);
-	if (!get_shell()->ms_envp)
+	get_shell()->env = dup_env(envp, 0);
+	if (!get_shell()->env)
 	{
 		print_err("env creation failed: ", strerror(ENOMEM));
 		shell_exit(EXIT_FAILURE);

@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-size_t	env_count(char **envp)
+size_t	str_arr_count(char **str_arr)
 {
 	size_t	i;
 
-	if (!envp)
+	if (!str_arr)
 		return (0);
 	i = 0;
-	while (envp[i])
+	while (str_arr[i])
 		i++;
 	return (i);
 }

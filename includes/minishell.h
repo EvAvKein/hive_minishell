@@ -75,7 +75,7 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		**ms_envp;
+	char		**env;
 	int			last_exit_status;
 	char		pid[20];
 	t_node		*nodes;
@@ -161,8 +161,8 @@ void		wait_for_all_children(t_shell *shell);
 /* ENV FUNCTIONS **************************************************************/
 
 void		init_env(char **envp);
-size_t		env_count(char **env);
 char		**dup_env(char **env);
+size_t	str_arr_count(char **str_arr);
 
 /* SIGNAL FUNCTIONS ***********************************************************/
 
