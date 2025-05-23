@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/21 18:02:29 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/23 09:37:14 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @returns `NULL` (for external line-saving reason, due to Norminette).
  * 
  */
-void	free_str_array(char **arr)
+void	*free_str_array(char **arr)
 {
 	size_t	i;
 
@@ -51,7 +51,7 @@ void	*free_nodes(t_node *node)
 		next = node->next;
 		if (node->type == HEREDOC && node->argv[0])
 			unlink(node->argv[0]);
-		free_str_arr(node->argv, node->argc);
+		free_str_array(node->argv);
 		fd = node->fd;
 		if (fd > 0
 			&& fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
@@ -81,7 +81,7 @@ void	command_cleanup()
  */
 void	shell_cleanup()
 {
-	free_str_array(get_shell()->ms_envp);
+	free_str_array(get_shell()->env);
 	command_cleanup();
 }
 

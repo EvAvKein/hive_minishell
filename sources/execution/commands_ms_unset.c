@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_ms_unset.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 14:20:41 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 09:43:20 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,21 @@ void	ms_unset(t_shell *shell)
 	i = 0;
 	k = 0;
 	removables = set_removables(shell);
-	new_env = ft_calloc(get_env_elements(shell->ms_envp) + 1, sizeof(char *));
+	new_env = ft_calloc(str_arr_count(shell->env) + 1, sizeof(char *));
 	if (!new_env)
 		fatal_error(shell, "unset: malloc failed");
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
-		if (!line_is_removable(shell->ms_envp[i], removables))
+		if (!line_is_removable(shell->env[i], removables))
 		{
-			new_env[k] = ft_strdup(shell->ms_envp[i]);
+			new_env[k] = ft_strdup(shell->env[i]);
 			k++;
 		}
 		i++;
 	}
 	new_env[k] = NULL;
-	free_env_array(shell->ms_envp);
-	shell->ms_envp = new_env;
+	free_str_array(shell->env);
+	shell->env = new_env;
 	k = 0;
 	free(removables);
 }

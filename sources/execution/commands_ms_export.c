@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_ms_export.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/12 13:23:51 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 09:42:32 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static int	append_envp(t_shell *shell, char **add, int i, int k)
 {
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
-		add[i] = ft_strdup(shell->ms_envp[i]);
+		add[i] = ft_strdup(shell->env[i]);
 		if (!add[i])
 		{
-			free_env_array(add);
+			free_str_array(add);
 			return (1);
 		}
 		i++;
@@ -29,7 +29,7 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 		add[i] = ft_strdup(shell->nodes->argv[k]);
 		if (!add[i])
 		{
-			free_env_array(add);
+			free_str_array(add);
 			return (1);
 		}
 		i++;
@@ -102,21 +102,21 @@ int	ms_export(t_shell *shell)
 	if (shell->nodes->argc > 1)
 	{
 		add = ft_calloc(shell->nodes->argc
-				+ get_env_elements(shell->ms_envp) + 1, sizeof(char *));
+				+ str_arr_count(shell->env) + 1, sizeof(char *));
 		if (!add)
 			fatal_error(shell, "export: malloc failed");
 		if (append_envp(shell, add, 0, 1) == 1)
 			return (1);
-		free_env_array(shell->ms_envp);
-		shell->ms_envp = add;
+		free_str_array(shell->env);
+		shell->env = add;
 	}
 	else if (shell->nodes->argc == 1)
 	{
-		add = dup_envp(shell->ms_envp);
+		add = dup_env(shell->env, 0);
 		if (!add)
 			fatal_error(shell, "export: malloc failed");
 		sort_envp(add);
-		free_env_array(add);
+		free_str_array(add);
 	}
 	return (0);
 }

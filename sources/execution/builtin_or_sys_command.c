@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_or_sys_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 14:05:55 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 09:38:56 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*get_path_from_envp(t_node *current)
 		ret_path = NULL;
 		i++;
 	}
-	free_env_array(path_list);
+	free_str_array(path_list);
 	if (!ret_path)
 		perror("command not found/invalid path");
 	return (ret_path);
@@ -81,18 +81,18 @@ void	execute_sys_command(t_shell *shell, t_node *current)
 	else
 		path = get_path_from_envp(current);
 	if (!path)
-		shell_exit(shell, 127);
+		shell_exit(127);
 	args = current->argv;
 	current->argv = NULL;
-	tmp_envp = shell->ms_envp;
-	shell->ms_envp = NULL;
+	tmp_envp = shell->env;
+	shell->env = NULL;
 	shell_cleanup(shell);
 	execve(path, args, tmp_envp);
 	if (path && path != args[0])
 		free(path);
-	free_env_array(args);
+	free_str_array(args);
 	print_err("execution: ", strerror(errno));
-	shell_exit(shell, 126);
+	shell_exit(126);
 }
 
 int	execute_builtin(t_shell *shell)
@@ -103,7 +103,7 @@ int	execute_builtin(t_shell *shell)
 		if (ms_cd(shell) == 1)
 			perror("cd failed");
 	if (!ft_strncmp(shell->nodes->argv[0], "pwd", 4))
-		ms_pwd(shell->ms_envp);
+		ms_pwd(shell->env);
 	if (!ft_strncmp(shell->nodes->argv[0], "export", 7))
 		ms_export(shell);
 	if (!ft_strncmp(shell->nodes->argv[0], "unset", 6))

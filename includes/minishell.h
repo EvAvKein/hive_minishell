@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/21 17:59:13 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/23 10:00:54 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,6 @@ void		skip_to_first_node(t_node **node);
 void		skip_to_last_node(t_node **node);
 t_node		*append_new_node(int argc);
 
-bool		envncmp(char *env_str, char *name_str, size_t cmp);
-char		*env_value(char *var_name);
-size_t		env_name_len(char *var_name);
 size_t		expanded_len(char *expand_start);
 bool		expand_into_dest(t_expand_into_dest_args var);
 
@@ -161,8 +158,14 @@ void		wait_for_all_children(t_shell *shell);
 /* ENV FUNCTIONS **************************************************************/
 
 void		init_env(char **envp);
-char		**dup_env(char **env);
-size_t	str_arr_count(char **str_arr);
+char		**dup_env(char **env, int size_adjustment);
+
+size_t		str_arr_count(char **str_arr);
+
+bool		is_envname_char(char c);
+bool		envncmp(char *env_str, char *name_str, size_t cmp);
+char		*env_value(char *var_name);
+size_t		env_name_len(char *var_name);
 
 /* SIGNAL FUNCTIONS ***********************************************************/
 
@@ -192,6 +195,6 @@ void		shell_cleanup();
 void		shell_exit(int exit_status);
 
 void		*free_nodes(t_node *node);
-void		free_str_array(char **env);
+void		*free_str_array(char **env);
 
 #endif

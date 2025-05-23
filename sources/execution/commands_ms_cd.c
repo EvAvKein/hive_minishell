@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_ms_cd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/16 12:57:16 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 09:39:59 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static int	update_oldpwd(t_shell *shell, char *oldpwd, int i)
 	new_oldpwd = ft_strjoin("OLDPWD=", oldpwd);
 	if (!new_oldpwd)
 		return (1);
-	free(shell->ms_envp[i]);
-	shell->ms_envp[i] = new_oldpwd;
+	free(shell->env[i]);
+	shell->env[i] = new_oldpwd;
 	return (0);
 }
 
@@ -35,8 +35,8 @@ static int	update_current_wd(t_shell *shell, int i)
 	new_pwd = ft_strjoin("PWD=", cwd);
 	if (!new_pwd)
 		return (1);
-	free(shell->ms_envp[i]);
-	shell->ms_envp[i] = new_pwd;
+	free(shell->env[i]);
+	shell->env[i] = new_pwd;
 	return (0);
 }
 
@@ -45,12 +45,12 @@ static int	update_pwds(t_shell *shell, char *oldpwd)
 	int		i;
 
 	i = 0;
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
-		if (!ft_strncmp(shell->ms_envp[i], "OLDPWD", 6))
+		if (!ft_strncmp(shell->env[i], "OLDPWD", 6))
 			if (update_oldpwd(shell, oldpwd, i) == 1)
 				return (1);
-		if (!ft_strncmp(shell->ms_envp[i], "PWD=", 4))
+		if (!ft_strncmp(shell->env[i], "PWD=", 4))
 			if (update_current_wd(shell, i) == 1)
 				return (1);
 		i++;
@@ -81,7 +81,7 @@ int	ms_cd(t_shell *shell)
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 	{
-		oldpwd = get_pwd_from_env(shell->ms_envp);
+		oldpwd = get_pwd_from_env(shell->env);
 		if (!oldpwd)
 			return (1);
 	}

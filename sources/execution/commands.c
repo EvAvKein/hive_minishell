@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 11:24:28 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 09:39:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	ms_env(t_shell *shell)
 	int	i;
 
 	i = 0;
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
-		if (ft_strchr(shell->ms_envp[i], '='))
-			printf("%s\n", shell->ms_envp[i]);
+		if (ft_strchr(shell->env[i], '='))
+			printf("%s\n", shell->env[i]);
 		i++;
 	}
 }
@@ -75,5 +75,5 @@ void	ms_exit(t_shell *shell)
 {
 	ft_putstr_fd("exit\n", 1);
 	(void)shell;
-	shell_exit(shell, 0);
+	shell_exit(0);
 }

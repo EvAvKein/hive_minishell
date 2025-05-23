@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 15:27:45 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/23 09:44:00 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
-			shell_exit(shell, 1);
+			shell_exit(1);
 		}
 	}
 	if (command && (current || fd->pipe_fd[WRITE] != -1))
@@ -28,7 +28,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (dup2(fd->pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
-			shell_exit(shell, 1);
+			shell_exit(1);
 		}
 	}
 	close_pipe(fd);
