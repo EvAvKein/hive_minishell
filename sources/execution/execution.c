@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 13:22:01 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 12:54:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,30 @@
 
 void	handle_single_builtin(t_shell *shell, int temp)
 {
-	if (count_redirections(shell) > 0)
+	t_node	*tmp;
+	
+	if (count_outfiles(shell) > 0)
 	{
+		tmp = shell->nodes;
 		temp = dup(STDOUT_FILENO);
 		if (temp == -1)
 			shell_exit(shell, 1);
-		if (dup2(shell->nodes->next->fd, STDOUT_FILENO) == -1)
+		while (tmp)
+		{
+			if (tmp->next == NULL)
+				break ;
+			tmp = tmp->next;
+		}
+		if (dup2(tmp->fd, STDOUT_FILENO) == -1)
 			shell_exit(shell, 1);
 	}
-	if (execute_builtin(shell) == 1)
+	if (execute_builtin(shell, shell->nodes) == 1)
+	{
+		shell->last_exit_status = 1;
 		command_cleanup(shell);
+	}
+	else
+		shell->last_exit_status = 0;
 	if (temp != -1)
 	{
 		if (dup2(temp, STDOUT_FILENO) == -1)
@@ -49,12 +63,19 @@ void	execution(t_shell *shell)
 	ft_bzero(&exec, sizeof(t_exec));
 	shell->exec = exec;
 	command_count = count_commands(shell);
+	if (command_count >= MAX_CMDS)
+	{
+		print_err("too many commands", ".");
+		return ;
+	}
 	if (open_redirections(shell) == 1)
 		return ;
-	if (command_count == 1 && is_builtin(shell->nodes->argv[0]))
+	if (is_builtin_in_parent(shell->nodes))
 	{
+		printf("helo\n");
 		handle_single_builtin(shell, temp);
 		return ;
 	}
-	execute_command_line(shell, &fd);
+	if (command_count >= 1)
+		execute_command_line(shell, &fd);
 }

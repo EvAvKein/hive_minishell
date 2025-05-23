@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/19 13:19:41 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 10:46:49 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	execute_command(t_shell *shell, t_node *command)
 {
 	if (is_builtin(command->argv[0]))
-		exit(execute_builtin(shell));
+		exit(execute_builtin(shell, command));
 	else
 	{
-		execute_sys_command(shell, command);
+		execute_ext_command(shell, command);
 		exit(EXIT_SUCCESS);
 	}
 }
@@ -110,4 +110,5 @@ void	execute_command_line(t_shell *shell, t_fd *fd)
 		current = current->next;
 	}
 	wait_for_all_children(shell);
+	fd_cleanup(fd);
 }

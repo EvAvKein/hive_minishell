@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/19 13:53:30 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/22 14:47:37 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,12 @@ SRC_FILES := main.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
 			 utils/tiny_checks.c \
-			 execution/builtin_or_sys_command.c \
-			 execution/commands.c \
-			 execution/commands_ms_cd.c \
-			 execution/commands_ms_export.c \
-			 execution/commands_ms_unset.c \
+			 execution/builtin_or_ext_command.c \
+			 execution/builtins.c \
+			 execution/builtins_ms_cd.c \
+			 execution/builtins_ms_export.c \
+			 execution/builtins_ms_export_utils.c \
+			 execution/builtins_ms_unset.c \
 			 execution/execution.c \
 			 execution/pipeline.c \
 			 execution/pipeline_utils.c \

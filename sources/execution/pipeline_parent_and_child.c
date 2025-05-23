@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 15:27:45 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:09:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	pipeline_child(t_shell *shell, t_node *command,
 	t_fd *fd, t_node *current)
 {
+	shell->exec.child_process = true;
 	if (fd->prev_fd != -1)
 	{
 		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
@@ -31,9 +32,11 @@ void	pipeline_child(t_shell *shell, t_node *command,
 			shell_exit(shell, 1);
 		}
 	}
-	close_pipe(fd);
-	if (command->type == COMMAND)
+	fd_cleanup(fd);
+	if (command && command->type == COMMAND)
 		execute_command(shell, command);
+	else
+		shell_cleanup(shell);
 }
 
 static void	pipeline_parent(t_fd *fd)
@@ -70,6 +73,8 @@ int	parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current)
 	{
 		sigaction(SIGINT,
 			&(struct sigaction){.sa_handler = SIG_DFL}, NULL);
+		sigaction(SIGPIPE,
+			&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
 		pipeline_child(shell, command, fd, current);
 	}
 	else
