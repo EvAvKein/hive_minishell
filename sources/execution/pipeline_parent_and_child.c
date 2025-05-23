@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_parent_and_child.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
 /*   Updated: 2025/05/23 11:09:30 by ahavu            ###   ########.fr       */
