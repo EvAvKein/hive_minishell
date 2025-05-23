@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/22 14:47:48 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 10:46:49 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,5 @@ void	execute_command_line(t_shell *shell, t_fd *fd)
 		current = current->next;
 	}
 	wait_for_all_children(shell);
+	fd_cleanup(fd);
 }

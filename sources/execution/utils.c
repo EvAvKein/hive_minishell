@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 13:23:39 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 13:43:08 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,30 @@ int	count_commands(t_shell *shell)
 		tmp = tmp->next;
 	}
 	return (i);
+}
+
+bool	is_builtin_in_parent(t_node *nodes)
+{
+	t_node *tmp;
+	bool	builtin_found;
+
+	tmp = nodes;
+	builtin_found = false;
+	if (!tmp)
+		return (false);
+	while (tmp && (tmp->type == INFILE || tmp->type == HEREDOC))
+		tmp = tmp->next;
+	if (tmp && tmp->type == COMMAND)
+	{
+		if (is_builtin(tmp->argv[0]))
+			builtin_found = true;
+		else
+			return (false);
+		tmp = tmp->next;
+	}
+	while (tmp && (tmp->type == OUTFILE || tmp->type == APPENDFILE))
+		tmp = tmp->next;
+	if (!builtin_found || tmp)
+		return (false);
+	return (true);
 }

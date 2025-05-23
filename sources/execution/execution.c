@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/22 13:33:48 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 12:54:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ void	execution(t_shell *shell)
 	}
 	if (open_redirections(shell) == 1)
 		return ;
-	if (command_count == 1 && is_builtin(shell->nodes->argv[0]))
+	if (is_builtin_in_parent(shell->nodes))
 	{
+		printf("helo\n");
 		handle_single_builtin(shell, temp);
 		return ;
 	}
-	execute_command_line(shell, &fd);
+	if (command_count >= 1)
+		execute_command_line(shell, &fd);
 }

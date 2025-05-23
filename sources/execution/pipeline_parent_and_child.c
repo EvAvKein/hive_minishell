@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 11:54:35 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 11:09:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ void	pipeline_child(t_shell *shell, t_node *command,
 			shell_exit(shell, 1);
 		}
 	}
-	close_pipe(fd);
-	if (command->type == COMMAND)
+	fd_cleanup(fd);
+	if (command && command->type == COMMAND)
 		execute_command(shell, command);
+	else
+		shell_cleanup(shell);
 }
 
 static void	pipeline_parent(t_fd *fd)

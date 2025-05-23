@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/22 14:47:43 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 13:39:05 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ char		*get_pwd_from_env(char **envp);
 char		*get_env(char **envp, char *find);
 int			get_env_elements(char **envp);
 int			is_builtin(char *cmd);
+bool		is_builtin_in_parent(t_node *nodes);
 void		export_just_print(t_shell *shell);
 int			ms_cd(t_shell *shell);
 int			ms_echo(t_shell *shell, t_node *command);
