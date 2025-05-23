@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_ms_cd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
 /*   Updated: 2025/05/23 14:13:11 by ahavu            ###   ########.fr       */
@@ -51,12 +51,12 @@ static int	update_pwds(t_shell *shell)
 	int		i;
 
 	i = 0;
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
 		if (!ft_strncmp(shell->ms_envp[i], "OLDPWD", 6))
 			if (update_oldpwd(shell, i) == 1)
 				return (1);
-		if (!ft_strncmp(shell->ms_envp[i], "PWD=", 4))
+		if (!ft_strncmp(shell->env[i], "PWD=", 4))
 			if (update_current_wd(shell, i) == 1)
 				return (1);
 		i++;

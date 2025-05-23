@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_or_ext_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
 /*   Updated: 2025/05/23 11:08:33 by ahavu            ###   ########.fr       */
@@ -89,18 +89,18 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 	else
 		path = get_path_from_envp(current);
 	if (!path)
-		shell_exit(shell, 127);
+		shell_exit(127);
 	args = current->argv;
 	current->argv = NULL;
-	tmp_envp = shell->ms_envp;
-	shell->ms_envp = NULL;
+	tmp_envp = shell->env;
+	shell->env = NULL;
 	shell_cleanup(shell);
 	execve(path, args, tmp_envp);
 	if (path && path != args[0])
 		free(path);
-	free_env_array(args);
+	free_str_array(args);
 	print_err("execution: ", strerror(errno));
-	shell_exit(shell, 126);
+	shell_exit(126);
 }
 
 int	execute_builtin(t_shell *shell, t_node *command)

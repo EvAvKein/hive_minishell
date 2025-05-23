@@ -17,6 +17,8 @@ SRC_DIR := sources
 SRC_FILES := main.c \
 			 signal_handlers.c \
 			 env/env.c \
+			 env/checks.c \
+			 env/getters.c \
 			 env/utils.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
@@ -34,7 +36,6 @@ SRC_FILES := main.c \
 			 execution/redirections.c \
 			 execution/utils.c \
 			 parsing/parsing.c \
-			 parsing/expansion/env.c \
 			 parsing/expansion/expand.c \
 			 parsing/expansion/delete_void_expansions.c \
 			 parsing/operators/heredoc.c \

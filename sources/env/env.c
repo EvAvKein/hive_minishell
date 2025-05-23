@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:23:19 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/21 17:46:14 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/23 09:35:30 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,12 @@ static char	**default_env()
 	return (ret);
 }
 
-char	**dup_env(char **env, size_t extra_size)
+/**
+ * 
+ * 
+ * 
+ */
+char	**dup_env(char **env, int size_adjustment)
 {
 	size_t	i;
 	char	**dup;
@@ -37,7 +42,7 @@ char	**dup_env(char **env, size_t extra_size)
 	i = 0;
 	if (!env || !env[0])
 		return(default_env());
-	dup = ft_calloc(str_arr_count(env) + extra_size + 1, sizeof(char *));
+	dup = ft_calloc(str_arr_count(env) + size_adjustment + 1, sizeof(char *));
 	if (!dup)
 		return (NULL);
 	while (env[i])
@@ -45,7 +50,7 @@ char	**dup_env(char **env, size_t extra_size)
 		dup[i] = ft_strdup(env[i]);
 		if (!dup[i])
 		{
-			free_env_array(dup);
+			free_str_array(dup);
 			return (NULL);
 		}
 		i++;

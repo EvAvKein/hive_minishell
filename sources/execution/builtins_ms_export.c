@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_ms_export.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
 /*   Updated: 2025/05/26 09:44:06 by ahavu            ###   ########.fr       */
@@ -14,12 +14,12 @@
 
 static int	append_envp(t_shell *shell, char **add, int i, int k)
 {
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
 		add[i] = shell->ms_envp[i];
 		if (!add[i])
 		{
-			free_env_array(add);
+			free_str_array(add);
 			return (1);
 		}
 		i++;
@@ -29,7 +29,7 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 		add[i] = shell->nodes->argv[k];
 		if (!add[i])
 		{
-			free_env_array(add);
+			free_str_array(add);
 			return (1);
 		}
 		i++;
@@ -65,7 +65,7 @@ int	ms_export(t_shell *shell)
 	if (shell->nodes->argc > 1)
 	{
 		add = ft_calloc(shell->nodes->argc
-				+ get_env_elements(shell->ms_envp) + 1, sizeof(char *));
+				+ str_arr_count(shell->env) + 1, sizeof(char *));
 		if (!add)
 			fatal_error(shell, "export: malloc failed");
 		if (append_envp(shell, add, 0, 1) == 1)

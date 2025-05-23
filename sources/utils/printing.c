@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:20:37 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:30:30 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/19 21:55:34 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,27 @@
 size_t	print_err(char *part1, char *part2)
 {
 	return (ft_dprintf(STDERR_FILENO, SHELL_NAME ": %s%s\n", part1, part2));
+}
+
+/**
+ * 
+ * Prints `part1` and `part2` followed by a newline to STDERR,
+ * but only if the VERBOSE setting is truthy.
+ * 
+ * @param part1 A string (not null-checked).
+ * 
+ * @param part2 A string (not null-checked).
+ * 
+ * @returns If VERBOSE is on, the return value of `ft_dprintf`
+ *          (amount of characters written, or -1 on write error).
+ *          If VERBOSE is off, '-1'.
+ * 
+ */
+int	verbose(char *part1, char *part2)
+{
+	if (VERBOSE)
+		return (ft_dprintf(STDERR_FILENO, "%s%s\n", part1, part2));
+	return (-1);
 }
 
 /**

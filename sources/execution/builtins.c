@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
 /*   Updated: 2025/05/26 09:52:43 by ahavu            ###   ########.fr       */
@@ -17,10 +17,10 @@ int	ms_env(t_shell *shell)
 	int	i;
 
 	i = 0;
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
-		if (ft_strchr(shell->ms_envp[i], '='))
-			printf("%s\n", shell->ms_envp[i]);
+		if (ft_strchr(shell->env[i], '='))
+			printf("%s\n", shell->env[i]);
 		i++;
 	}
 	return (0);
