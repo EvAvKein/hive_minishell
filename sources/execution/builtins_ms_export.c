@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 14:15:06 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 15:20:06 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 {
 	while (shell->ms_envp[i])
 	{
-		add[i] = ft_strdup(shell->ms_envp[i]);
+		add[i] = shell->ms_envp[i];
 		if (!add[i])
 		{
 			free_env_array(add);
@@ -26,7 +26,7 @@ static int	append_envp(t_shell *shell, char **add, int i, int k)
 	}
 	while (shell->nodes->argv[k])
 	{
-		add[i] = ft_strdup(shell->nodes->argv[k]);
+		add[i] = shell->nodes->argv[k];
 		if (!add[i])
 		{
 			free_env_array(add);
@@ -46,7 +46,7 @@ static int	check_exportables_names(char **argv)
 	i = 0;
 	while (argv[i])
 	{
-		if (!isalnum(argv[i][0]) && argv[i][0] != '_')
+		if (!isalpha(argv[i][0]) && argv[i][0] != '_')
 			return (1);
 		i++;
 	}
@@ -70,10 +70,13 @@ int	ms_export(t_shell *shell)
 			fatal_error(shell, "export: malloc failed");
 		if (append_envp(shell, add, 0, 1) == 1)
 			return (1);
-		free_env_array(shell->ms_envp);
 		shell->ms_envp = add;
+		free(add);
 	}
 	else if (shell->nodes->argc == 1)
+	{
 		export_just_print(shell);
+		shell_cleanup(shell);
+	}
 	return (0);
 }
