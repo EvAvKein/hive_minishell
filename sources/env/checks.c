@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:02:41 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/23 10:02:42 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/24 14:29:47 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,26 @@ inline bool	is_envname_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
+/**
+ * 
+ * @param new_env A new potential environment variable
+ *                (as in an `export` arg).
+ * 
+ * @returns Whether the provided environment variable name is valid.
+ * 
+ */
+bool	is_valid_envname(char *new_env)
+{
+	size_t	i;
+
+	i = 0;
+	if (!new_env || ft_isdigit(new_env[i]))
+		return (false);
+	while (new_env[i] && new_env[i] != '=')
+		if (!is_envname_char(new_env[i++]))
+			return (false);
+	return (i > 0);
+}
 /**
  * 
  * Counts and returns the length

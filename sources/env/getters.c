@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:02:44 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/23 10:02:45 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/24 14:43:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ char  *env_var(char *var_name)
  * Gets the environment's value for the provided variable name.
  * 
  * @param var_name The name (key) of the environment variable to look for.
- * @param var_start The start of an enviroment variable name
- *                  to search for inside the env.
  * 
  * @returns The memory address (not a duplicate) of the provided
  *          variable's value, no `NULL` if there's no such environment variable.
