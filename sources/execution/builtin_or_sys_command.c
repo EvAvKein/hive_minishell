@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 09:38:56 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/23 10:38:00 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*get_path_from_envp(t_node *current)
 	int		i;
 
 	i = 0;
-	env_path = getenv("PATH");
+	env_path = env_value("PATH");
 	if (!env_path)
 	{
 		perror("path not found in environment");

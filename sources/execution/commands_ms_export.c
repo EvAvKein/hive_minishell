@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 09:42:32 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/24 17:38:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	ms_export(t_shell *shell)
 	}
 	else if (shell->nodes->argc == 1)
 	{
-		add = dup_env(shell->env, 0);
+		add = env_dup(shell->env);
 		if (!add)
 			fatal_error(shell, "export: malloc failed");
 		sort_envp(add);

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/23 10:00:54 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/24 15:10:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,11 +158,13 @@ void		wait_for_all_children(t_shell *shell);
 /* ENV FUNCTIONS **************************************************************/
 
 void		init_env(char **envp);
-char		**dup_env(char **env, int size_adjustment);
+char		**env_dup(char **env);
 
+char		**env_var_ptr(char *var_name);
 size_t		str_arr_count(char **str_arr);
 
 bool		is_envname_char(char c);
+bool		is_valid_envname(char *new_env);
 bool		envncmp(char *env_str, char *name_str, size_t cmp);
 char		*env_value(char *var_name);
 size_t		env_name_len(char *var_name);
