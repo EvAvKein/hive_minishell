@@ -6,31 +6,11 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/23 09:37:14 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/25 19:03:38 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * 
- * 
- * 
- * @returns `NULL` (for external line-saving reason, due to Norminette).
- * 
- */
-void	*free_str_array(char **arr)
-{
-	size_t	i;
-
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-	return (NULL);
-}
 
 /**
  * 

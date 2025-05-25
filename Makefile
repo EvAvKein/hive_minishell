@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/23 09:47:41 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/25 18:57:18 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC_FILES := main.c \
 			 env/env.c \
 			 env/checks.c \
 			 env/getters.c \
-			 env/utils.c \
+			 utils/str_arr.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
 			 utils/tiny_checks.c \
