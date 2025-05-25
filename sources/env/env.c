@@ -6,13 +6,17 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:23:19 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/24 17:37:38 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/25 22:14:23 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
+/**
+ * 
+ * @return The shell's default env (or `NULL` if memory allocation failed).
+ * 
+ */
 static char	**default_env()
 {
 	char	**ret;
@@ -31,7 +35,10 @@ static char	**default_env()
 
 /**
  * 
+ * @param env An array of strings to be duplicated.
  * 
+ * @returns A duplicate of the provided env,
+ *          containing copies of the inside strings.
  * 
  */
 char	**env_dup(char **env)
@@ -41,7 +48,7 @@ char	**env_dup(char **env)
 
 	i = 0;
 	if (!env || !env[0])
-		return(default_env());
+		return (default_env());
 	dup = ft_calloc(str_arr_count(env) + 1, sizeof(char *));
 	if (!dup)
 		return (NULL);
@@ -58,6 +65,12 @@ char	**env_dup(char **env)
 	return (dup);
 }
 
+/**
+ * 
+ * Initializes the shell's env based on the `
+ * envp` inherited from the parent shell.
+ * 
+ */
 void	init_env(char **envp)
 {
 	get_shell()->env = env_dup(envp);

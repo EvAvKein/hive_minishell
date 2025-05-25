@@ -17,7 +17,7 @@
 
 # include <fcntl.h>
 # include <errno.h>
-# include <signal.h>
+# include <signal.h> /** TODO: Discuess potentially unused */
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -168,7 +168,6 @@ void		init_env(char **envp);
 char		**env_dup(char **env);
 
 char		**env_var_ptr(char *var_name);
-size_t		str_arr_count(char **str_arr);
 
 bool		is_envname_char(char c);
 bool		is_valid_envname(char *new_env);
@@ -187,6 +186,10 @@ void		heredoc_sigint_handler(int sig);
 
 t_shell		*get_shell(void);
 
+size_t		str_arr_count(char **str_arr);
+char		**str_arr_shallow_copy(char **str_arr);
+void		*free_str_array(char **env);
+
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
 void		print_node_type(int fd, t_node_type type);
@@ -199,11 +202,9 @@ bool		input_was_entirely_spaces(char *input);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
+void		*free_nodes(t_node *node);
 void		command_cleanup();
 void		shell_cleanup();
 void		shell_exit(int exit_status);
-
-void		*free_nodes(t_node *node);
-void		*free_str_array(char **env);
 
 #endif

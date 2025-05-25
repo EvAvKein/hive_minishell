@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:09:42 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/24 17:49:44 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/24 18:18:16 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ typedef struct s_copy_paste_i
 
 /**
  * 
- * TODO: Write these docs
+ * Remove the variable with the provided name from the shell's environment.
+ * 
+ * @returns Whether removal was successful.
  * 
  */
 bool	env_remove(char *var_to_remove)

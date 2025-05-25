@@ -14,26 +14,6 @@
 
 /**
  * 
- * 
- * 
- * @returns `NULL` (for external line-saving reason, due to Norminette).
- * 
- */
-void	*free_str_array(char **arr)
-{
-	size_t	i;
-
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-	return (NULL);
-}
-
-/**
- * 
  * Frees the provided linked list of nodes -
  * freeing every heap-allocated thing inside them,
  * closing file descriptors for open redirects and deleting heredoc files.

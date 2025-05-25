@@ -19,7 +19,7 @@ SRC_FILES := main.c \
 			 env/env.c \
 			 env/checks.c \
 			 env/getters.c \
-			 env/utils.c \
+			 utils/str_arr.c \
 			 utils/cleanup.c \
 			 utils/printing.c \
 			 utils/tiny_checks.c \
