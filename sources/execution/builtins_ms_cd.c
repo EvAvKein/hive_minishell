@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/22 14:32:41 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 14:13:11 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ static int	update_oldpwd(t_shell *shell, int i)
 	oldpwd = ft_strjoin("OLDPWD=", pwd);
 	if (!oldpwd)
 		return (1);
-	free(shell->ms_envp[i]);//OTA MEIDAN OMASTA ENVPSTA PWD JA TEE SIITA OLDPWD
+	free(shell->ms_envp[i]);
 	shell->ms_envp[i] = oldpwd;
-	//free(oldpwd);
 	return (0);
 }
 

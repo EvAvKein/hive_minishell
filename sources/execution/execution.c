@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 12:54:38 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/23 14:41:47 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	execution(t_shell *shell)
 		return ;
 	if (is_builtin_in_parent(shell->nodes))
 	{
-		printf("helo\n");
 		handle_single_builtin(shell, temp);
 		return ;
 	}
