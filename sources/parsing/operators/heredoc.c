@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 17:38:22 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:58:30 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ void	heredoc_loop(t_node *node, int fd, bool expand)
  * Executes the heredoc for the provided `node`.
  * If successful, replaces `node->argv[0]` from the delimiter to the contents'
  * file path.
+ * 
+ * @param node   The heredoc node to be executed.
  * 
  * @param expand Whether to expand environment variables written to the heredoc.
  * 
