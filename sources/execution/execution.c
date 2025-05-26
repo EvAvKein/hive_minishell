@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 14:41:47 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:32:16 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_single_builtin(t_shell *shell, int temp)
 		tmp = shell->nodes;
 		temp = dup(STDOUT_FILENO);
 		if (temp == -1)
-			shell_exit(shell, 1);
+			shell_exit(1);
 		while (tmp)
 		{
 			if (tmp->next == NULL)
@@ -29,7 +29,7 @@ void	handle_single_builtin(t_shell *shell, int temp)
 			tmp = tmp->next;
 		}
 		if (dup2(tmp->fd, STDOUT_FILENO) == -1)
-			shell_exit(shell, 1);
+			shell_exit(1);
 	}
 	if (execute_builtin(shell, shell->nodes) == 1)
 	{
@@ -43,7 +43,7 @@ void	handle_single_builtin(t_shell *shell, int temp)
 		if (dup2(temp, STDOUT_FILENO) == -1)
 		{
 			close(temp);
-			shell_exit(shell, 1);
+			shell_exit(1);
 		}
 		close (temp);
 	}

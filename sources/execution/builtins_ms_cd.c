@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_ms_cd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 14:13:11 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 12:52:39 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ static int	update_oldpwd(t_shell *shell, int i)
 	char	*oldpwd;
 	char	*pwd;
 
-	pwd = getenv("PWD");
+	pwd = env_value("PWD");
 	oldpwd = ft_strjoin("OLDPWD=", pwd);
 	if (!oldpwd)
 		return (1);
-	free(shell->ms_envp[i]);
-	shell->ms_envp[i] = oldpwd;
+	free(shell->env[i]);
+	shell->env[i] = oldpwd;
 	return (0);
 }
 
@@ -40,8 +40,8 @@ static int	update_current_wd(t_shell *shell, int i)
 		free(cwd);
 		return (1);
 	}
-	free(shell->ms_envp[i]);
-	shell->ms_envp[i] = new_pwd;
+	free(shell->env[i]);
+	shell->env[i] = new_pwd;
 	free(cwd);
 	return (0);
 }
@@ -51,12 +51,12 @@ static int	update_pwds(t_shell *shell)
 	int		i;
 
 	i = 0;
-	while (shell->ms_envp[i])
+	while (shell->env[i])
 	{
-		if (!ft_strncmp(shell->ms_envp[i], "OLDPWD", 6))
+		if (!ft_strncmp(shell->env[i], "OLDPWD", 6))
 			if (update_oldpwd(shell, i) == 1)
 				return (1);
-		if (!ft_strncmp(shell->ms_envp[i], "PWD=", 4))
+		if (!ft_strncmp(shell->env[i], "PWD=", 4))
 			if (update_current_wd(shell, i) == 1)
 				return (1);
 		i++;
@@ -89,7 +89,7 @@ int	ms_cd(t_shell *shell)
 	destination = NULL;
 	if (shell->nodes->argc == 1)
 	{
-		destination = getenv("HOME");//Eve has this function implementation
+		destination = env_value("HOME");
 		if (!destination)
 			return (1);
 	}

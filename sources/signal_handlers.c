@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/20 21:01:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/23 09:33:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	sigpipe_handler(int sig, siginfo_t *info, void *prevact)
 	(void)sig;
 	print_err(pid_to_buf(buffer),
 		" process received SIGPIPE - exiting gracefully.");
-	shell_exit(get_shell(), EXIT_CMD_ERROR + SIGPIPE);
+	shell_exit(EXIT_CMD_ERROR + SIGPIPE);
 }
 
 /**

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands_ms_export_utils.c                         :+:      :+:    :+:   */
+/*   builtins_ms_export_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:58:43 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 13:02:59 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 12:51:22 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ void	export_just_print(t_shell *shell)
 {
 	char **add;
 	
-	add = dup_envp(shell->ms_envp);
+	add = str_arr_shallow_copy(shell->env);
 	if (!add)
 		fatal_error(shell, "export: malloc failed");
 	sort_envp(add);
 	print_sorted_envp(add);
-	free_env_array(add);
+	free(add);
 }

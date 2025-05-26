@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:23:07 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 22:07:56 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 09:47:42 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
  * @param c The address of the character to be checked.
  *          If not falsy, assumed to be part of a null-terminated string.
  * 
- * @returns A value corresponding to the type of redirect it is (or if it isn't)
+ * @returns A value corresponding to the type of redirect it is
+ *          (or a falsy value if it isn't).
  * 
  */
 t_redirect	redirect_of_c(char *c)

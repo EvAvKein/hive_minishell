@@ -21,7 +21,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
-			shell_exit(shell, 1);
+			shell_exit(1);
 		}
 	}
 	if (command && (current || fd->pipe_fd[WRITE] != -1))
@@ -29,7 +29,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 		if (dup2(fd->pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
 			print_err("execution: ", "dup2 failed.");
-			shell_exit(shell, 1);
+			shell_exit(1);
 		}
 	}
 	fd_cleanup(fd);

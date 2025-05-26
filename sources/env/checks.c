@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 11:03:34 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 18:45:49 by ekeinan          ###   ########.fr       */
+/*   Created: 2025/05/23 10:02:41 by ekeinan           #+#    #+#             */
+/*   Updated: 2025/05/24 14:29:47 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,31 @@
  * @returns Whether the provided character a valid variable name character.
  * 
  */
-static inline bool	is_envname_char(char c)
+inline bool	is_envname_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
 
+/**
+ * 
+ * @param new_env A new potential environment variable
+ *                (as in an `export` arg).
+ * 
+ * @returns Whether the provided environment variable name is valid.
+ * 
+ */
+bool	is_valid_envname(char *new_env)
+{
+	size_t	i;
+
+	i = 0;
+	if (!new_env || ft_isdigit(new_env[i]))
+		return (false);
+	while (new_env[i] && new_env[i] != '=')
+		if (!is_envname_char(new_env[i++]))
+			return (false);
+	return (i > 0);
+}
 /**
  * 
  * Counts and returns the length
@@ -76,45 +96,7 @@ bool	envncmp(char *env_str, char *var_start, size_t cmp)
 		i++;
 	}
 	if (!i || (env_str[i] && env_str[i] != '=')
-		|| is_envname_char(var_start[i]))
+    || is_envname_char(var_start[i]))
 		return (false);
 	return (true);
-}
-
-/**
- * 
- * Gets the environment's value for the provided variable name.
- * 
- * @param var_start The start of an enviroment variable name
- *                  to search for inside the env.
- * 
- * @returns The memory address (not a duplicate) of the provided
- *          variable's value, no `NULL` if there's no such environment variable.
- * 
- */
-char	*env_value(char *var_start)
-{
-	char	**env;
-	size_t	i;
-	char	*var_found;
-
-	env = get_shell()->ms_envp;
-	i = 0;
-	if (!var_start)
-		return (NULL);
-	while (env[i])
-	{
-		if (envncmp(env[i], var_start, env_name_len(var_start)))
-		{
-			var_found = env[i];
-			i = 0;
-			while (is_envname_char(var_found[i]))
-				i++;
-			if (var_found[i] == '=')
-				i++;
-			return (&var_found[i]);
-		}
-		i++;
-	}
-	return (NULL);
 }

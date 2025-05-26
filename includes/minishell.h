@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/23 13:39:05 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 12:26:50 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # include <fcntl.h>
 # include <errno.h>
-# include <signal.h>
+# include <signal.h> /** TODO: Discuess potentially unused */
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -75,8 +75,7 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		**envp;
-	char		**ms_envp;
+	char		**env;
 	int			last_exit_status;
 	char		pid[20];
 	t_node		*nodes;
@@ -94,9 +93,6 @@ void		skip_to_first_node(t_node **node);
 void		skip_to_last_node(t_node **node);
 t_node		*append_new_node(int argc);
 
-bool		envncmp(char *env_str, char *name_str, size_t cmp);
-char		*env_value(char *var_name);
-size_t		env_name_len(char *var_name);
 size_t		expanded_len(char *expand_start);
 bool		expand_into_dest(t_expand_into_dest_args var);
 
@@ -140,7 +136,6 @@ void		close_pipe(t_fd *fd);
 int			count_commands(t_shell *shell);
 int			count_outfiles(t_shell *shell);
 int			count_redirections(t_shell *shell);
-char		**dup_envp(char **envp);
 int			execute_builtin(t_shell *shell, t_node *command);
 void		execute_command(t_shell *shell, t_node *command);
 void		execute_command_line(t_shell *shell, t_fd *fd);
@@ -148,7 +143,6 @@ void		execute_ext_command(t_shell *shell, t_node *current);
 void		execution(t_shell *shell);
 void		fatal_error(t_shell *shell, char *msg);
 void		fd_cleanup(t_fd *fd);
-void		free_env_array(char **env);
 char		*get_pwd_from_env(char **envp);
 char		*get_env(char **envp, char *find);
 int			get_env_elements(char **envp);
@@ -167,6 +161,21 @@ void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current)
 int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);
 void		wait_for_all_children(t_shell *shell);
 
+/* ENV FUNCTIONS **************************************************************/
+
+void		init_env(char **envp);
+char		**env_dup(char **env);
+bool		env_add(char *new_var);
+bool		env_remove(char *var_to_remove);
+
+char		**env_var_ptr(char *var_name);
+
+bool		is_envname_char(char c);
+bool		is_valid_envname(char *new_env);
+bool		envncmp(char *env_str, char *name_str, size_t cmp);
+char		*env_value(char *var_name);
+size_t		env_name_len(char *var_name);
+
 /* SIGNAL FUNCTIONS ***********************************************************/
 
 void		init_signal_handlers(void);
@@ -177,6 +186,10 @@ void		heredoc_sigint_handler(int sig);
 /* UTILITY FUNCTIONS **********************************************************/
 
 t_shell		*get_shell(void);
+
+size_t		str_arr_count(char **str_arr);
+char		**str_arr_shallow_copy(char **str_arr);
+void		*free_str_arr(char **env);
 
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
@@ -190,11 +203,9 @@ bool		input_was_entirely_spaces(char *input);
 
 /* CLEANUP FUNCTIONS **********************************************************/
 
-void		command_cleanup(t_shell *shell);
-void		shell_cleanup(t_shell *shell);
-void		shell_exit(t_shell *shell, int exit_status);
-
 void		*free_nodes(t_node *node);
-void		*free_2d_arr(void *arr, size_t length);
+void		command_cleanup();
+void		shell_cleanup();
+void		shell_exit(int exit_status);
 
 #endif

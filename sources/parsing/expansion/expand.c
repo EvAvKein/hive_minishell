@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:50:08 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 09:48:15 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static bool	expand_exit_status(char *dest, size_t *dest_i, size_t *input_i)
  *          starting with the '$' at `expand_start`.
  * 
  * Rejecting in-single-quote expansions is
- * the responsibility of the calling func.
+ * the responsibility of the calling function.
  * 
  */
 size_t	expanded_len(char *expand_start)

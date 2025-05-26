@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
 /*   Updated: 2025/05/23 13:43:08 by ahavu            ###   ########.fr       */
@@ -14,37 +14,10 @@
 
 void	fatal_error(t_shell *shell, char *msg)
 {
+	(void) shell;
 	if (msg)
 		perror(msg);
-	shell_exit(shell, EXIT_FAILURE);
-}
-
-int	get_env_elements(char **envp)
-{
-	int	i;
-
-	i = 0;
-	if (envp)
-	{
-		while (envp[i])
-			i++;
-	}
-	return (i);
-}
-
-void	free_env_array(char **env)
-{
-	int	i;
-
-	if (!env)
-		return ;
-	i = 0;
-	while (env[i])
-	{
-		free(env[i]);
-		i++;
-	}
-	free(env);
+	shell_exit(EXIT_FAILURE);
 }
 
 int	is_builtin(char *cmd)
