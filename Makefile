@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
+#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/26 10:32:33 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/26 15:14:36 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC_FILES := main.c \
 			 execution/pipeline_parent_and_child.c \
 			 execution/redirections.c \
 			 execution/utils.c \
+			 execution/utils_atoll.c \
 			 parsing/parsing.c \
 			 parsing/expansion/expand.c \
 			 parsing/expansion/delete_void_expansions.c \

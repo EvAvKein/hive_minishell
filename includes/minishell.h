@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 12:26:50 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:16:13 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define _XOPEN_SOURCE 700 // fixes vscode issue with struct sigaction
 
 # include <fcntl.h>
+# include <limits.h>
 # include <errno.h>
 # include <signal.h> /** TODO: Discuess potentially unused */
 # include <sys/wait.h>
@@ -150,7 +151,7 @@ int			is_builtin(char *cmd);
 bool		is_builtin_in_parent(t_node *nodes);
 void		export_just_print(t_shell *shell);
 int			ms_cd(t_shell *shell);
-int			ms_echo(t_shell *shell, t_node *command);
+int			ms_echo(t_node *command);
 int			ms_env(t_shell *shell);
 void		ms_exit(t_shell *shell);
 int			ms_export(t_shell *shell);
@@ -185,6 +186,7 @@ void		heredoc_sigint_handler(int sig);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
+long long	ft_atoll(const char *nptr);
 t_shell		*get_shell(void);
 
 size_t		str_arr_count(char **str_arr);

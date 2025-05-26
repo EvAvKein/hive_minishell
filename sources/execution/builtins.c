@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/26 10:31:19 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:16:48 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	check_flag(t_node *command)
 		return (0);
 }
 
-int	ms_echo(t_shell *shell, t_node *command)
+int	ms_echo(t_node *command)
 {
 	int	i;
 	int	flag;
@@ -64,14 +64,10 @@ int	ms_echo(t_shell *shell, t_node *command)
 	if (flag)
 		i++;
 	if (flag && command->argc == 2)
-	{
-		shell_cleanup(shell);
 		return (0);
-	}
 	if (command->argc == 1)
 	{
 		printf("\n");
-		shell_cleanup(shell);
 		return (0);
 	}
 	while (command->argv[i])
@@ -83,16 +79,30 @@ int	ms_echo(t_shell *shell, t_node *command)
 	}
 	if (!flag)
 		printf("\n");
-	if (shell->exec.child_process)//TODO: this doesn't work
-		shell_cleanup(shell);
 	return (0);
 }
 
 void	ms_exit(t_shell *shell)
 {
+	int	i;
+
+	i = 0;
 	if (shell->nodes->argc > 1)
 		printf("exit\n");
 	if (shell->nodes->argv[1])
-		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
-	shell_exit(0);
+	{
+		while (shell->nodes->argv[1][i])
+		{
+			if (!ft_isdigit(shell->nodes->argv[1][i])
+			|| ft_atoll(shell->nodes->argv[1]) > INT_MAX
+			|| ft_atoll(shell->nodes->argv[1]) < 0)
+			{
+				print_err("exit: ", "numeric value required");
+				return ;
+			}
+			i++;
+		}
+		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);//atoi_longlong better?
+	}
+	shell_exit(shell->last_exit_status);
 }
