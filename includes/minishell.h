@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 17:36:14 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:40:32 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ typedef struct s_shell
 	int			last_exit_status;
 	t_exec		exec;
 }				t_shell;
-
-int i = sizeof(t_shell);
 
 /* PARSING FUNCTIONS **********************************************************/
 
