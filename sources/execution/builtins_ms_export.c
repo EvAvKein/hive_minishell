@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 15:20:06 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 09:44:06 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	ms_export(t_shell *shell)
 		if (append_envp(shell, add, 0, 1) == 1)
 			return (1);
 		shell->ms_envp = add;
-		free(add);
 	}
 	else if (shell->nodes->argc == 1)
 	{
