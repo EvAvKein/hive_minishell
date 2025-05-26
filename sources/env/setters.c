@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:09:42 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/24 18:18:16 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 09:56:38 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ static void	replace_env(char **new_env)
 
 /**
  * 
- * TODO: Write these docs
+ * Adds the provided environment variable to the shell's environment,
+ * replacing an existing variable with the same name is such exists.
  * 
- * Assumes that the provided env variable is has a valid name,
- * the requisite check should happen before calling this function.
+ * @param new_var A variable to be added/updated to the shell's environment.
+ * 
+ * Rejecting env variables with invalid names is
+ * the responsibility of the calling function.
  * 
  */
 bool	env_add(char *new_var)
