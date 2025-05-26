@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/20 20:59:29 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:14:28 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,11 @@ bool	execute_heredoc(t_node *node, bool expand)
 		&(struct sigaction){.sa_handler = heredoc_sigint_handler}, NULL);
 	heredoc_loop(node, fd, expand);
 	if ((close(fd) || 1) && dup2(heredoc_fd, STDIN_FILENO) < 0)
-		return (free(file_name), false);
+		return (close(heredoc_fd), free(file_name), false);
 	sigaction(SIGINT,
 		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
 	free(node->argv[0]);
+	close(heredoc_fd);
 	node->argv[0] = file_name;
 	return (!!node->argv[0]);
 }

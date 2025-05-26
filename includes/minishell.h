@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 12:26:50 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:08:01 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ size_t		env_name_len(char *var_name);
 /* SIGNAL FUNCTIONS ***********************************************************/
 
 void		init_signal_handlers(void);
+void		set_child_signal_handlers(void);
 void		sigint_handler(int sig, siginfo_t *info, void *prevact);
 void		sigpipe_handler(int sig, siginfo_t *info, void *prevact);
 void		heredoc_sigint_handler(int sig);

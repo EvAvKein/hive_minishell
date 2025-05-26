@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/23 09:33:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:07:34 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,21 @@ void	init_signal_handlers(void)
 		&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
 	sigaction(SIGQUIT,
 		&(struct sigaction){.sa_handler = SIG_IGN}, NULL);
+}
+
+/**
+ * 
+ * Sets signal handlers in a child process.
+ * 
+ */
+void	set_child_signal_handlers(void)
+{
+	sigaction(SIGINT,
+		&(struct sigaction){.sa_handler = SIG_DFL}, NULL);
+	sigaction(SIGPIPE,
+		&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
+	sigaction(SIGQUIT,
+		&(struct sigaction){.sa_handler = SIG_DFL}, NULL);
 }
 
 /**
