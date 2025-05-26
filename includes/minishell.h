@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 16:08:01 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:36:14 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,16 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		**env;
-	int			last_exit_status;
 	char		pid[20];
-	t_node		*nodes;
-	t_exec		exec;
+	char		**env;
 	char		*working_dir;
+	t_node		*nodes;
+	bool		heredoc_aborted;
+	int			last_exit_status;
+	t_exec		exec;
 }				t_shell;
+
+int i = sizeof(t_shell);
 
 /* PARSING FUNCTIONS **********************************************************/
 

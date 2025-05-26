@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 16:07:34 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:33:47 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	heredoc_sigint_handler(int sig)
 {
 	(void)sig;
 	get_shell()->last_exit_status = EXIT_CMD_ERROR + SIGINT;
+	get_shell()->heredoc_aborted = true;
 	write(STDOUT_FILENO, "\n", 1);
 	close(STDIN_FILENO);
 }
