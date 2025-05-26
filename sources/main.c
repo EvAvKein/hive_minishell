@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/22 10:04:11 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 11:46:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	main(int argc, char **argv, char **envp)
 			command_cleanup();
 			continue ;
 		}
-		print_nodes(STDERR_FILENO, get_shell()->nodes);
-		// execution(shell);
+		// print_nodes(STDERR_FILENO, get_shell()->nodes);
+		execution(get_shell());
 		command_cleanup();
 	}
 	shell_cleanup();

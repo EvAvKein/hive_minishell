@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 09:53:09 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:30:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*free_nodes(t_node *node)
 		next = node->next;
 		if (node->type == HEREDOC && node->argv[0])
 			unlink(node->argv[0]);
-		free_str_array(node->argv);
+		free_str_arr(node->argv);
 		fd = node->fd;
 		if (fd > 0
 			&& fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
@@ -61,7 +61,7 @@ void	command_cleanup()
  */
 void	shell_cleanup()
 {
-	free_str_array(get_shell()->env);
+	free_str_arr(get_shell()->env);
 	command_cleanup();
 }
 

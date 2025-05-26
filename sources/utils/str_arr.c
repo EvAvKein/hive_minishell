@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 18:06:09 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/25 19:03:47 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 10:30:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	**str_arr_shallow_copy(char **str_arr)
  * @returns `NULL` (for external line-saving reason, due to Norminette).
  * 
  */
-void	*free_str_array(char **arr)
+void	*free_str_arr(char **arr)
 {
 	size_t	i;
 

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/26 09:52:43 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:31:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,5 @@ void	ms_exit(t_shell *shell)
 		printf("exit\n");
 	if (shell->nodes->argv[1])
 		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
-	shell_exit(shell, 0);
+	shell_exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 11:08:33 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 12:49:30 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*get_path_from_envp(t_node *current)
 	char	*ret_path;
 	char	**path_list;
 
-	env_path = getenv("PATH");//TODO: make your on getenv() for ms_envp
+	env_path = env_value("PATH");
 	if (!env_path)
 	{
 		print_err(current->argv[0], ": path not found in environment");
@@ -59,7 +59,7 @@ static char	*get_path_from_envp(t_node *current)
 		return (NULL);
 	}
 	ret_path = iterate_through_path_list(path_list, current);
-	free_env_array(path_list);
+	free_str_arr(path_list);
 	if (!ret_path)
 		print_err(current->argv[0], ": command not found");
 	return (ret_path);
@@ -98,7 +98,7 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 	execve(path, args, tmp_envp);
 	if (path && path != args[0])
 		free(path);
-	free_str_array(args);
+	free_str_arr(args);
 	print_err("execution: ", strerror(errno));
 	shell_exit(126);
 }
@@ -110,7 +110,7 @@ int	execute_builtin(t_shell *shell, t_node *command)
 	else if (!ft_strncmp(command->argv[0], "cd", 3))
 		return (ms_cd(shell));
 	else if (!ft_strncmp(command->argv[0], "pwd", 4))
-		return (ms_pwd(shell->ms_envp));
+		return (ms_pwd(shell->env));
 	else if (!ft_strncmp(command->argv[0], "export", 7))
 		return (ms_export(shell));
 	else if (!ft_strncmp(command->argv[0], "unset", 6))

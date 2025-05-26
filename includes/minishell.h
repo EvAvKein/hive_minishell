@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/23 13:39:05 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 12:26:50 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ void		close_pipe(t_fd *fd);
 int			count_commands(t_shell *shell);
 int			count_outfiles(t_shell *shell);
 int			count_redirections(t_shell *shell);
-char		**dup_envp(char **envp);
 int			execute_builtin(t_shell *shell, t_node *command);
 void		execute_command(t_shell *shell, t_node *command);
 void		execute_command_line(t_shell *shell, t_fd *fd);
@@ -166,6 +165,8 @@ void		wait_for_all_children(t_shell *shell);
 
 void		init_env(char **envp);
 char		**env_dup(char **env);
+bool		env_add(char *new_var);
+bool		env_remove(char *var_to_remove);
 
 char		**env_var_ptr(char *var_name);
 
@@ -188,7 +189,7 @@ t_shell		*get_shell(void);
 
 size_t		str_arr_count(char **str_arr);
 char		**str_arr_shallow_copy(char **str_arr);
-void		*free_str_array(char **env);
+void		*free_str_arr(char **env);
 
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);

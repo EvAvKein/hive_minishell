@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:23:19 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/25 22:14:23 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 10:30:48 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**env_dup(char **env)
 		dup[i] = ft_strdup(env[i]);
 		if (!dup[i])
 		{
-			free_str_array(dup);
+			free_str_arr(dup);
 			return (NULL);
 		}
 		i++;
