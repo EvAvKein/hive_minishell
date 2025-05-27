@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 11:09:30 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:08:09 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ int	parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current)
 	}
 	if (pid == 0)
 	{
-		sigaction(SIGINT,
-			&(struct sigaction){.sa_handler = SIG_DFL}, NULL);
-		sigaction(SIGPIPE,
-			&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
+		set_child_signal_handlers();
 		pipeline_child(shell, command, fd, current);
 	}
 	else

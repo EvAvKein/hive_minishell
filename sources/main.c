@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 11:46:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,21 @@ t_shell	*get_shell(void)
 	return (&shell);
 }
 
+void	init_shell(char **envp)
+{
+	ft_bzero(get_shell(), sizeof(t_shell));
+	init_signal_handlers();
+	pid_to_buf(get_shell()->pid);
+	init_env(envp);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
 
 	(void) argc;
 	(void) argv;
-	ft_bzero(get_shell(), sizeof(t_shell));
-	init_signal_handlers();
-	pid_to_buf(get_shell()->pid);
-	init_env(envp);
+	init_shell(envp);
 	while (1)
 	{
 		input = readline(SHELL_PROMPT);
@@ -42,7 +47,8 @@ int	main(int argc, char **argv, char **envp)
 			command_cleanup();
 			continue ;
 		}
-		// print_nodes(STDERR_FILENO, get_shell()->nodes);
+		if (VERBOSE)
+			print_nodes(STDERR_FILENO, get_shell()->nodes);
 		execution(get_shell());
 		command_cleanup();
 	}

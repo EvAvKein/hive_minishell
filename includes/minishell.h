@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 12:26:50 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # include <fcntl.h>
 # include <errno.h>
-# include <signal.h> /** TODO: Discuess potentially unused */
+# include <signal.h> /** TODO: Discuss potentially unused */
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -75,12 +75,13 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		**env;
-	int			last_exit_status;
 	char		pid[20];
-	t_node		*nodes;
-	t_exec		exec;
+	char		**env;
 	char		*working_dir;
+	t_node		*nodes;
+	bool		heredoc_aborted;
+	int			last_exit_status;
+	t_exec		exec;
 }				t_shell;
 
 /* PARSING FUNCTIONS **********************************************************/
@@ -179,6 +180,7 @@ size_t		env_name_len(char *var_name);
 /* SIGNAL FUNCTIONS ***********************************************************/
 
 void		init_signal_handlers(void);
+void		set_child_signal_handlers(void);
 void		sigint_handler(int sig, siginfo_t *info, void *prevact);
 void		sigpipe_handler(int sig, siginfo_t *info, void *prevact);
 void		heredoc_sigint_handler(int sig);
