@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:58:43 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 14:20:42 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 14:26:08 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static void	print_sorted_envp(char **envp)
 		printf("declare -x ");
 		if (!ft_strchr(envp[i], '='))
 		{
-			printf("%s\n", envp[i]);
-			break ;
+			printf("%s\n", envp[i++]);
+			continue ;
 		}
 		while (envp[i][k] != '=')
 		{
