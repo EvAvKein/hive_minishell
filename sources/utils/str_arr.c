@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 18:06:09 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 10:30:48 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 20:29:35 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ size_t	str_arr_count(char **str_arr)
  * 
  * @returns A newly heap-allocated array,
  *          storing the same strings/addresses as in the provided `str_arr`
- *          (or `NULL` if allocation fails).
+ *          (or `NULL` on memory allocation failure).
  * 
  */
 char	**str_arr_shallow_copy(char **str_arr)

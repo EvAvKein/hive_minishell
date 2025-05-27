@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:22:52 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/20 20:57:02 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 20:32:13 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
  * @param operator_len The length of the redirection operator being skipped,
  *                     for adding to the parsing index at the very start.
  *  
- * @returns The new appended node,
- *          or `NULL` on parsing error or memory allocation failure.
+ * @returns The new appended node
+ *          (or `NULL` on parsing error or memory allocation failure).
  * 
  */
 static t_node	*parse_redirection(
