@@ -6,42 +6,30 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:57:33 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 14:10:13 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 14:26:29 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_exportables_names(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-	{
-		if (!is_valid_envname(argv[i]))
-		{
-			print_err(argv[i], ": not a valid var name");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 int	ms_export(t_shell *shell)
 {
+	t_node	*node;
 	size_t	i;
 
-	if (check_exportables_names(shell->nodes->argv) == 1)
-	{
-		return (1);
-	}
-	if (shell->nodes->argc > 1)
+	node = shell->nodes;
+	while (node && node->type != COMMAND)
+		node = node->next;
+	if (node->argc > 1)
 	{
 		i = 1;
-		while (shell->nodes->argv[i])
+		while (node->argv[i])
 		{
+			if (!is_valid_envname(node->argv[i]))
+			{
+				print_err(node->argv[i++], ": not a valid identifier");
+				continue ;
+			}
 			if (env_add(shell->nodes->argv[i]) == false)
 				return (1);
 			shell->nodes->argv[i] = NULL;
