@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 22:22:14 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <errno.h>
 # include <signal.h> /** TODO: Discuss potentially unused */
 # include <sys/wait.h>
+# include <dirent.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -130,6 +131,8 @@ bool		parse_infile(t_parsing *parsing);
 bool		parse_outfile(t_parsing *parsing);
 
 t_redirect	redirect_of_c(char *c);
+
+struct dirent	**get_dircontent();
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
