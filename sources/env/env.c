@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:23:19 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 21:49:26 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 20:31:03 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * 
- * @return The shell's default env (or `NULL` if memory allocation failed).
+ * @return The shell's default env (or `NULL` on memory allocation failure).
  * 
  */
 static char	**default_env()
@@ -43,7 +43,7 @@ static char	**default_env()
  *              preferably (but not necessrily) followed by an unsigned number.
  * 
  * @returns A heap-allocated string starting with "SHLVL=" followed by a number
- *          (or `NULL` if memory allocation fails).
+ *          (or `NULL` on memory allocation failure).
  * 
  */
 char	*dup_shlvl_incremented(char *shlvl)
