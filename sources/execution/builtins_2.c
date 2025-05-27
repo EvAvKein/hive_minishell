@@ -1,49 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtins_ms_unset.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/26 15:16:48 by ahavu            ###   ########.fr       */
+/*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
+/*   Updated: 2025/05/27 14:38:29 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ms_env(t_shell *shell)
-{
-	int	i;
-
-	i = 0;
-	while (shell->env[i])
-	{
-		if (ft_strchr(shell->env[i], '='))
-			printf("%s\n", shell->env[i]);
-		i++;
-	}
-	return (0);
-}
-
-int	ms_pwd(char **envp)
-{
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (!path)
-	{
-		path = get_pwd_from_env(envp);//varmista ett dupppaat ton tonne ettei tuu double free
-		if (!path)
-		{
-			print_err("pwd: ", "getcwd failed");
-			return (1);
-		}
-	}
-	printf("%s\n", path);
-	free(path);
-	return (0);
-}
 
 static int	check_flag(t_node *command)
 {
@@ -82,27 +49,38 @@ int	ms_echo(t_node *command)
 	return (0);
 }
 
-void	ms_exit(t_shell *shell)
+static void	handle_exit_argument(t_shell *shell, t_node *command)
 {
 	int	i;
 
 	i = 0;
-	if (shell->nodes->argc > 1)
-		printf("exit\n");
-	if (shell->nodes->argv[1])
+	while (command->argv[1][i])
 	{
-		while (shell->nodes->argv[1][i])
+		if (!ft_isdigit(command->argv[1][i])
+		|| ft_atoll(command->argv[1]) > INT_MAX
+		|| ft_atoll(command->argv[1]) < 0)
 		{
-			if (!ft_isdigit(shell->nodes->argv[1][i])
-			|| ft_atoll(shell->nodes->argv[1]) > INT_MAX
-			|| ft_atoll(shell->nodes->argv[1]) < 0)
-			{
-				print_err("exit: ", "numeric value required");
-				return ;
-			}
-			i++;
+			print_err("exit: ", "numeric argument required");
+			shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
+			shell_exit(shell->last_exit_status);
 		}
-		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);//atoi_longlong better?
+		i++;
+	}
+}
+
+void	ms_exit(t_shell *shell, t_node *command)
+{
+	if (command->argc > 2)
+	{
+		print_err("exit: ", "too many arguments");
+		return ;
+	}
+	if (command->argc == 1)
+		printf("exit\n");
+	if (command->argv[1])
+	{
+		handle_exit_argument(shell, command);
+		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
 	}
 	shell_exit(shell->last_exit_status);
 }
