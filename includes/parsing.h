@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:04:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 11:38:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:59:32 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_parsing
 	t_node	*command_node;
 	size_t	midparse_nodes;
 	bool	piping;
+	char	**dir_content;
 }			t_parsing;
 
 /**
