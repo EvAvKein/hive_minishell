@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:23:19 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 10:30:48 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/26 21:49:26 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,62 @@
  */
 static char	**default_env()
 {
-	char	**ret;
+	char	**env;
 
-	ret = ft_calloc(2, sizeof(char *));
-	if (!ret)
+	env = ft_calloc(2, sizeof(char *));
+	if (!env)
 		return (NULL);
-	ret[0] = ft_strdup("SHLVL=1");
-	if (!ret[0])
+	env[0] = ft_strdup("SHLVL=1");
+	if (!env[0])
 	{
-		free(ret);
+		free(env);
 		return (NULL);
 	}
-	return (ret);
+	return (env);
 }
+
+/**
+ * 
+ * Creates a duplicate of the provided `shlvl` in which the value is one bigger.
+ * If the SHLVL's value is empty or anything other than digits,
+ * the value of the returned SHLVL is 1.
+ * 
+ * @param shlvl A string beginning with "SHLVL=",
+ *              preferably (but not necessrily) followed by an unsigned number.
+ * 
+ * @returns A heap-allocated string starting with "SHLVL=" followed by a number
+ *          (or `NULL` if memory allocation fails).
+ * 
+ */
+char	*dup_shlvl_incremented(char *shlvl)
+{
+	size_t	i;
+	char	*bigger_shlvl;
+
+	i = ft_strchr(shlvl, '=') - shlvl + 1;
+	while (shlvl[i])
+	{
+		if (!ft_isdigit(shlvl[i++]))
+			return (ft_strdup("SHLVL=1"));
+	}
+	if (shlvl[--i] == '=')
+		return (ft_strdup("SHLVL=1"));
+	if (shlvl[i] < '9')
+	{
+		bigger_shlvl = ft_strdup(shlvl);
+		if (!bigger_shlvl)
+			return (NULL);
+		bigger_shlvl[i]++;
+		return (bigger_shlvl);
+	}
+	bigger_shlvl = ft_strjoin(shlvl, " ");
+	if (!bigger_shlvl)
+		return (NULL);
+	bigger_shlvl[i + 1] = '\0';
+	increment_postfixed_num(bigger_shlvl);
+	return (bigger_shlvl);
+}
+
 
 /**
  * 
@@ -54,7 +97,10 @@ char	**env_dup(char **env)
 		return (NULL);
 	while (env[i])
 	{
-		dup[i] = ft_strdup(env[i]);
+		if (!ft_strncmp(env[i], "SHLVL=", 6))
+			dup[i] = dup_shlvl_incremented(env[i]);
+		else
+			dup[i] = ft_strdup(env[i]);
 		if (!dup[i])
 		{
 			free_str_arr(dup);

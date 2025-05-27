@@ -124,6 +124,8 @@ void	heredoc_loop(t_node *node, int fd, bool expand)
  * If successful, replaces `node->argv[0]` from the delimiter to the contents'
  * file path.
  * 
+ * @param node   The heredoc node to be executed.
+ * 
  * @param expand Whether to expand environment variables written to the heredoc.
  * 
  * @returns Whether heredoc execution was successful.
@@ -145,12 +147,16 @@ bool	execute_heredoc(t_node *node, bool expand)
 	sigaction(SIGINT,
 		&(struct sigaction){.sa_handler = heredoc_sigint_handler}, NULL);
 	heredoc_loop(node, fd, expand);
-	if ((close(fd) || 1) && dup2(heredoc_fd, STDIN_FILENO) < 0)
+	if ((close(fd) < 0 || dup2(heredoc_fd, STDIN_FILENO) < 0)
+		&& (!get_shell()->heredoc_aborted || get_shell()->heredoc_aborted--))
 		return (close(heredoc_fd), free(file_name), false);
 	sigaction(SIGINT,
 		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
+	close(heredoc_fd);
 	free(node->argv[0]);
 	node->argv[0] = file_name;
 	close(heredoc_fd);
+	if (get_shell()->heredoc_aborted)
+		return (--get_shell()->heredoc_aborted);
 	return (!!node->argv[0]);
 }

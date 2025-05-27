@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/19 15:42:46 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 08:38:16 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ char	*extract_arg(t_parsing *parsing, bool disable_expansion)
 	char	*arg;
 
 	arg_len = arg_to_len(&parsing->input[parsing->i]);
-	arg = ft_calloc(1, (arg_len + 1) * (sizeof(char)));
+	arg = ft_calloc(arg_len + 1, (sizeof(char)));
 	if (!arg)
 	{
 		print_err("parsing: ", strerror(ENOMEM));
