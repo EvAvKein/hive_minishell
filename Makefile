@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/27 10:34:34 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/27 20:36:10 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRC_FILES := main.c \
 			 parsing/node_sorting_utils.c \
 			 parsing/node_handling.c \
 			 parsing/arg_handling.c \
+			 parsing/wildcards.c \
 			 parsing/num_utils.c \
 			 parsing/misc.c
 

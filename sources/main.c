@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/28 13:39:04 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 14:26:47 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,20 @@ void	init_shell(char **envp)
 	init_env(envp);
 }
 
+void	test_dircontent()
+{
+	struct dirent	**dircontent = get_dircontent();
+	if (!dircontent)
+		printf("no dircontent\n");
+	else
+	{
+		size_t	i = 0;
+		while (dircontent[i])
+			printf("%s\n", dircontent[i++]->d_name);
+	}
+	// free_str_arr(dircontent);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -34,6 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	init_shell(envp);
+	test_dircontent();
 	while (1)
 	{
 		input = readline(SHELL_PROMPT);
