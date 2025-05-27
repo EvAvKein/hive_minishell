@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
+#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
 #    Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr        #
@@ -25,17 +25,19 @@ SRC_FILES := main.c \
 			 utils/printing.c \
 			 utils/tiny_checks.c \
 			 execution/builtin_or_ext_command.c \
-			 execution/builtins.c \
+			 execution/builtins_1.c \
+			 execution/builtins_2.c \
 			 execution/builtins_ms_cd.c \
 			 execution/builtins_ms_export.c \
 			 execution/builtins_ms_export_utils.c \
-			 execution/builtins_ms_unset.c \
 			 execution/execution.c \
+			 execution/helpers.c \
 			 execution/pipeline.c \
 			 execution/pipeline_utils.c \
 			 execution/pipeline_parent_and_child.c \
 			 execution/redirections.c \
 			 execution/utils.c \
+			 execution/utils_atoll.c \
 			 parsing/parsing.c \
 			 parsing/expansion/expand.c \
 			 parsing/expansion/delete_void_expansions.c \

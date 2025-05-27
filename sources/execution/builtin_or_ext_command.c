@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_or_ext_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/26 12:49:30 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:22:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,12 @@ static char	*get_path_from_arg(char *command)
 	char	*path;
 
 	path = command;
-	if (access(path, F_OK) != 0)
+	if (access(path, O_DIRECTORY) == 0)
+	{
+		print_err(command, ": is a directory");
+		path = NULL;
+	}
+	else if (access(path, F_OK) != 0)
 	{
 		print_err(command, ": invalid path");
 		path = NULL;
@@ -84,7 +89,7 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 	char	**args;
 	char	**tmp_envp;
 
-	if (ft_strchr(current->argv[0], '/')) //TODO: access X_OK instead
+	if (ft_strchr(current->argv[0], '/'))
 		path = get_path_from_arg(current->argv[0]);
 	else
 		path = get_path_from_envp(current);
@@ -116,8 +121,8 @@ int	execute_builtin(t_shell *shell, t_node *command)
 	else if (!ft_strncmp(command->argv[0], "unset", 6))
 		return (ms_unset(shell));
 	else if (!ft_strncmp(command->argv[0], "echo", 5))
-		return (ms_echo(shell, command));
+		return (ms_echo(command));
 	else if (!ft_strncmp(command->argv[0], "exit", 5))
-		(ms_exit(shell));
+		(ms_exit(shell, command));
 	return (0);
 }

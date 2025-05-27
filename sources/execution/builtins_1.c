@@ -1,31 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:12:37 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 09:39:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:38:22 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_env(t_shell *shell)
+int	ms_unset(t_shell *shell)
+{
+	int		i;
+
+	i = 1;
+	while (shell->nodes->argv[i])
+	{
+		env_remove(shell->nodes->argv[i]);
+		i++;
+	}
+	return (0);
+}
+
+int	ms_env(t_shell *shell)
 {
 	int	i;
 
 	i = 0;
+	if (!shell->env)
+		return (1);
 	while (shell->env[i])
 	{
 		if (ft_strchr(shell->env[i], '='))
 			printf("%s\n", shell->env[i]);
 		i++;
 	}
+	return (0);
 }
 
-void	ms_pwd(char **envp)
+int	ms_pwd(char **envp)
 {
 	char	*path;
 
@@ -35,45 +51,11 @@ void	ms_pwd(char **envp)
 		path = get_pwd_from_env(envp);
 		if (!path)
 		{
-			perror("pwd: getcwd failed!");
-			return ;
+			print_err("pwd: ", "getcwd failed");
+			return (1);
 		}
 	}
 	printf("%s\n", path);
 	free(path);
-}
-
-void	ms_echo(t_shell *shell)
-{
-	int	i;
-	int	flag;
-
-	i = 1;
-	flag = 0;
-	if (shell->nodes->argv[1] && shell->nodes->argv[1][0] == '-'
-			&& shell->nodes->argv[1][1] == 'n')
-	{
-		flag = 1;
-		i++;
-	}
-	if (flag && shell->nodes->argc == 2)
-		return ;
-	if (shell->nodes->argc == 1)
-		return (ft_putchar_fd('\n', 1));
-	while (shell->nodes->argv[i])
-	{
-		ft_putstr_fd(shell->nodes->argv[i], 1);
-		i++;
-		if (i < shell->nodes->argc)
-			ft_putchar_fd(' ', 1);
-	}
-	if (!flag)
-		ft_putchar_fd('\n', 1);
-}
-
-void	ms_exit(t_shell *shell)
-{
-	ft_putstr_fd("exit\n", 1);
-	(void)shell;
-	shell_exit(0);
+	return (0);
 }

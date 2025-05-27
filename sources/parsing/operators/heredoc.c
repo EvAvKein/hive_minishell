@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 17:58:30 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 13:04:54 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ bool	execute_heredoc(t_node *node, bool expand)
 	close(heredoc_fd);
 	free(node->argv[0]);
 	node->argv[0] = file_name;
+	close(heredoc_fd);
 	if (get_shell()->heredoc_aborted)
 		return (--get_shell()->heredoc_aborted);
 	return (!!node->argv[0]);
