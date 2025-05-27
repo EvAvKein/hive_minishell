@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 10:30:48 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 08:43:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	command_cleanup()
 void	shell_cleanup()
 {
 	free_str_arr(get_shell()->env);
+	get_shell()->env = NULL;
 	command_cleanup();
 }
 

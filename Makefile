@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/26 10:32:33 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,9 +87,10 @@ neat: $(NAME) clean
 	clear
 
 verbose: export VERBOSE = 1
-verbose: re
+verbose: $(LIBFT_LIB) $(SRC_OBJ)
+	@$(MAKE) $(NAME) --no-print-directory
 
 debug: COMPILE_FLAGS += $(DEBUG_FLAGS)
 debug: re
 
-.PHONY: all clean fclean re neat debug
+.PHONY: all clean fclean re neat verbose debug

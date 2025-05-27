@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 17:40:32 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # include <fcntl.h>
 # include <errno.h>
-# include <signal.h> /** TODO: Discuess potentially unused */
+# include <signal.h> /** TODO: Discuss potentially unused */
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
