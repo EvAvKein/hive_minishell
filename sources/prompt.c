@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:15:41 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/28 14:28:55 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/28 21:48:23 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,47 @@
  * TODO: Write these docs
  * 
  */
-static bool	initialize_dirinfo(t_dirinfo *content, size_t entries)
+static bool	initialize_dirinfo(t_dirinfo *info)
 {
-	if (!entries)
+	if (!info->strlen)
 	{
-		content->arr = NULL;
+		info->str = NULL;
 		return (false);
 	}
-	content->arr = ft_calloc(entries + 1, sizeof(char *));
-	if (!content->arr)
-		print_err("parsing: wildcards: ", strerror(ENOMEM));
-	return (!!content->arr);
+	if (info->strlen >= AUTO_LS_LIMIT)
+	{
+		info->strlen += 4;
+		info->str = ft_calloc(info->strlen + 1, sizeof(char *));
+		if (!info->str)
+			ft_strlcpy(&info->str[info->strlen - 5], " ...", 5);
+		else
+			print_err("parsing: wildcards: ", strerror(ENOMEM));
+		info->i = info->strlen - 4;
+	}
+	else
+	{
+		info->str = ft_calloc(info->strlen + 1, sizeof(char *));
+		if (!info->str)
+			print_err("parsing: wildcards: ", strerror(ENOMEM));
+		info->i = info->strlen;
+	}
+	return (!!info->str);
+}
+
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ */
+static void	write_to_dirinfo_str(t_dirinfo *info, char *value)
+{
+	size_t	value_len;
+
+	value_len = ft_strlen(value);
+	ft_strlcpy(&info->str[info->i - value_len], value, value_len + 1);
+	if (info->i != info->strlen)
+		info->str[info->i] = ' ';
+	info->i -= value_len + 1;
 }
 
 /**
@@ -40,23 +70,24 @@ static bool	initialize_dirinfo(t_dirinfo *content, size_t entries)
  *         and memory allocation for the entries array was successful.
  * 
  */
-static bool	get_more_dirinfo(t_dirinfo *content, size_t index)
+static bool get_more_dirinfo(t_dirinfo *info)
 {
 	struct dirent	*value;
 
-	value = readdir(content->dir);
-	if (!value)
+	value = readdir(info->dir);
+	if (!value || info->strlen >= AUTO_LS_LIMIT)
 	{
 		if (errno)
 			print_err("parsing: wildcards: ", strerror(errno));
-		return (initialize_dirinfo(content, index));
+		return (initialize_dirinfo(info));
 	}
 	if (!ft_strncmp(value->d_name, ".", 2)
 		|| !ft_strncmp(value->d_name, "..", 3))
-		return (get_more_dirinfo(content, index));
-	if (get_more_dirinfo(content, index + 1))
+		return (get_more_dirinfo(info));
+	info->strlen += !!info->strlen + ft_strlen(value->d_name);
+	if (get_more_dirinfo(info))
 	{
-		content->arr[index] = value;
+		write_to_dirinfo_str(info, value->d_name);
 		return (true);
 	}
 	else
@@ -68,37 +99,47 @@ static bool	get_more_dirinfo(t_dirinfo *content, size_t index)
  * TODO: Write these docs 
  * 
  */
-static void	print_dirinfo()
+static void	mini_ls()
 {
-	DIR				*dir;
-	t_dirinfo	*storage;
+	t_dirinfo	info;
 	char		*cwd;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return ;
-	storage->dir = opendir(cwd);
+	ft_bzero(&info, sizeof(t_dirinfo));
+	info.dir = opendir(cwd);
 	free(cwd);
-	if (!storage->dir)
+	if (!info.dir)
 		return ;
 	errno = 0;
-	get_more_dirinfo(storage, 0);
-	if (!storage->arr)
+	get_more_dirinfo(&info);
+	closedir(info.dir);
+	if (info.str)
 	{
-		closedir(storage->dir);
-		storage->dir = NULL;
+		printf("\033[2;33m%s\033[0m\n", info.str);
+		free(info.str);
 	}
+	else
+		printf("woo\n");
 }
 
-void	prompt()
+/**
+ * 
+ * TODO: Write these docs
+ * 
+ */
+char	*shell_prompt()
 {
-	if (!parsing->dirinfo.arr)
-		printf("no dirinfo\n");
-	else
-	{
-		size_t	i = 0;
-		while (parsing->dirinfo.arr[i])
-			printf("%s\n", parsing->dirinfo.arr[i++]->d_name);
-	}
-	printf("\n");
+	// char	*line;
+	// char	*prompt;
+	// char	*path;
+	// bool	path_allocated;
+
+	mini_ls();
+
+	//path = get_shell();
+	//if ()
+	
+	return (readline(PROMPT_START PROMPT_PATH_PLACEHOLDER PROMPT_END));
 }

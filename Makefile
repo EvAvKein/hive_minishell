@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/29 14:27:00 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/29 14:27:10 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 
 SRC_FILES := main.c \
-			 dirinfo.c \
+			 prompt.c \
 			 signal_handlers.c \
 			 env/env.c \
 			 env/checks.c \
