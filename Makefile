@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/27 20:36:10 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/29 14:27:00 by ahavu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 
 SRC_FILES := main.c \
+			 dirinfo.c \
 			 signal_handlers.c \
 			 env/env.c \
 			 env/checks.c \
@@ -38,18 +39,17 @@ SRC_FILES := main.c \
 			 execution/redirections.c \
 			 execution/utils.c \
 			 execution/utils_atoll.c \
+			 parsing/misc.c \
 			 parsing/parsing.c \
-			 parsing/expansion/expand.c \
-			 parsing/expansion/delete_void_expansions.c \
+			 parsing/num_utils.c \
+			 parsing/arg_handling.c \
+			 parsing/node_handling.c \
+			 parsing/node_sorting_utils.c \
 			 parsing/operators/heredoc.c \
 			 parsing/operators/redirections.c \
 			 parsing/operators/control_flow.c \
-			 parsing/node_sorting_utils.c \
-			 parsing/node_handling.c \
-			 parsing/arg_handling.c \
-			 parsing/wildcards.c \
-			 parsing/num_utils.c \
-			 parsing/misc.c
+			 parsing/expansion/expand.c \
+			 parsing/expansion/delete_void_expansions.c \
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h parsing.h
