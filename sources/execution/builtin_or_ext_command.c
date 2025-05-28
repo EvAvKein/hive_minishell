@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 15:22:38 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/28 14:32:41 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,9 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 	if (path && path != args[0])
 		free(path);
 	free_str_arr(args);
-	print_err("execution: ", strerror(errno));
-	shell_exit(126);
+	print_err("execution: ", strerror(errno));//TODO
+	shell_cleanup(shell);
+	shell->last_exit_status = 126;//TODO
 }
 
 int	execute_builtin(t_shell *shell, t_node *command)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_ms_unset.c                                :+:      :+:    :+:   */
+/*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 14:38:29 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/28 12:57:50 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,22 @@
 
 static int	check_flag(t_node *command)
 {
-	if (command->argv[1] && command->argv[1][0] == '-'
-		&& command->argv[1][1] && command->argv[1][1] == 'n')
-		return (1);
-	else
-		return (0);
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	while (command->argv[i])
+	{
+		if (command->argv[i][0] == '-'  && command->argv[i][1] == 'n')
+		{
+			flag++;
+			if (command->argv[i][2] != 'n' && command->argv[i][2] != '\0')
+				flag = 0;
+		}
+		i++;
+	}
+	return (flag);
 }
 
 int	ms_echo(t_node *command)
@@ -29,7 +40,7 @@ int	ms_echo(t_node *command)
 	i = 1;
 	flag = check_flag(command);
 	if (flag)
-		i++;
+		i += flag;
 	if (flag && command->argc == 2)
 		return (0);
 	if (command->argc == 1)
@@ -61,7 +72,7 @@ static void	handle_exit_argument(t_shell *shell, t_node *command)
 		|| ft_atoll(command->argv[1]) < 0)
 		{
 			print_err("exit: ", "numeric argument required");
-			shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
+			shell->last_exit_status = 2;
 			shell_exit(shell->last_exit_status);
 		}
 		i++;
