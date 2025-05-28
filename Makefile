@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/28 14:18:59 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/28 20:22:50 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 
 SRC_FILES := main.c \
-			 dirinfo.c \
+			 prompt.c \
 			 signal_handlers.c \
 			 env/env.c \
 			 env/checks.c \

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/28 11:25:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/28 20:22:24 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(envp);
 	while (1)
 	{
-		input = readline(SHELL_PROMPT);
+		input = shell_prompt();
 		if (!input)
 			break ;
 		if (input_was_entirely_spaces(input))

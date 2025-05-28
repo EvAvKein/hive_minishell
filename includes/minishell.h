@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/28 14:28:34 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/28 21:49:11 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,27 @@
 
 # define SHELL_NAME "shellGBTQ+"
 
-# define SHELL_PROMPT "\
+# define PROMPT_START "\
 \001\x1b[1;38;2;162;77;167m\002shell\
 \001\x1b[1;38;2;39;115;255m\002G\
 \001\x1b[1;38;2;32;170;10m\002B\
 \001\x1b[1;38;2;220;202;0m\002T\
 \001\x1b[1;38;2;240;115;0m\002Q\
-\001\x1b[1;38;2;228;3;3m\002 + \
-\001\x1b[0m\002"
+\001\x1b[1;38;2;228;3;3m\002+\
+\001\x1b[0m\002:"
+# define PROMPT_PATH_PLACEHOLDER "[UNKNOWN PATH]"
+# define PROMPT_END "\001\x1b[1;38;2;228;3;3m\002#\001\x1b[0m\002"
+// # define PROMPT_END "\001\x1b[1;38;2;240;115;0m\002#\001\x1b[0m\002"
+
 
 /* SETTINGS *******************************************************************/
 
 # ifndef VERBOSE
 #  define VERBOSE 0
+# endif
+
+# ifndef AUTO_LS_LIMIT
+#  define AUTO_LS_LIMIT 500
 # endif
 
 /* TYPES **********************************************************************/
@@ -53,6 +61,14 @@ typedef enum e_exit_status
 	EXIT_CMD_NOT_FOUND =	127,
 	EXIT_CMD_ERROR =		128,
 }	t_node_status;
+
+typedef	struct s_dirinfo
+{
+	DIR		*dir;
+	char	*str;
+	size_t	strlen;
+	size_t	i;
+} t_dirinfo;
 
 typedef enum e_node_type
 {
@@ -84,6 +100,8 @@ typedef struct s_shell
 	int			last_exit_status;
 	t_exec		exec;
 }				t_shell;
+
+char		*shell_prompt();
 
 /* PARSING FUNCTIONS **********************************************************/
 
