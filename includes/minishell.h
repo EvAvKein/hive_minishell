@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/28 21:49:11 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 09:51:15 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 \001\x1b[1;38;2;228;3;3m\002+\
 \001\x1b[0m\002:"
 # define PROMPT_PATH_PLACEHOLDER "[UNKNOWN PATH]"
-# define PROMPT_END "\001\x1b[1;38;2;228;3;3m\002#\001\x1b[0m\002"
+# define PROMPT_END "\001\x1b[1;38;2;228;3;3m\002#\001\x1b[0m\002 "
 // # define PROMPT_END "\001\x1b[1;38;2;240;115;0m\002#\001\x1b[0m\002"
 
 
@@ -210,7 +210,8 @@ t_shell		*get_shell(void);
 
 size_t		str_arr_count(char **str_arr);
 char		**str_arr_shallow_copy(char **str_arr);
-void		*free_str_arr(char **env);
+void		*free_str_arr(char **arr);
+char		*str_arr_join(char **arr);
 
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
