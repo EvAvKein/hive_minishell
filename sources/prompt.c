@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:15:41 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/28 21:48:23 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 09:50:13 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static void	mini_ls()
 		free(info.str);
 	}
 	else
-		printf("woo\n");
+		print_err("auto ls: ", strerror(errno));
 }
 
 /**
@@ -134,12 +134,28 @@ char	*shell_prompt()
 	// char	*line;
 	// char	*prompt;
 	// char	*path;
-	// bool	path_allocated;
 
 	mini_ls();
-
-	//path = get_shell();
-	//if ()
-	
+	// path = get_shell()->working_dir;
+	// if (path)
+	// {
+	// 	prompt = str_arr_join((char **){(char *) (PROMPT_START), path, (char *) (PROMPT_END), NULL});
+	// 	if (prompt)
+	// 	{
+	// 		line = readline(prompt);
+	// 		return (free(prompt), line);
+	// 	}
+	// }
+	// path = getcwd(NULL, 0);
+	// if (path)
+	// {
+	// 	prompt = str_arr_join((char **){(char *) (PROMPT_START), path, (char *) (PROMPT_END), NULL});
+	// 	free(path);
+	// 	if (prompt)
+	// 	{
+	// 		line = readline(prompt);
+	// 		return (free(prompt), line);
+	// 	}
+	// }
 	return (readline(PROMPT_START PROMPT_PATH_PLACEHOLDER PROMPT_END));
 }
