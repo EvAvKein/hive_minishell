@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 09:51:15 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <signal.h> /** TODO: Discuss potentially unused */
 # include <sys/wait.h>
+# include <dirent.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -29,19 +30,27 @@
 
 # define SHELL_NAME "shellGBTQ+"
 
-# define SHELL_PROMPT "\
+# define PROMPT_START "\
 \001\x1b[1;38;2;162;77;167m\002shell\
 \001\x1b[1;38;2;39;115;255m\002G\
 \001\x1b[1;38;2;32;170;10m\002B\
 \001\x1b[1;38;2;220;202;0m\002T\
 \001\x1b[1;38;2;240;115;0m\002Q\
-\001\x1b[1;38;2;228;3;3m\002 + \
-\001\x1b[0m\002"
+\001\x1b[1;38;2;228;3;3m\002+\
+\001\x1b[0m\002:"
+# define PROMPT_PATH_PLACEHOLDER "[UNKNOWN PATH]"
+# define PROMPT_END "\001\x1b[1;38;2;228;3;3m\002#\001\x1b[0m\002 "
+// # define PROMPT_END "\001\x1b[1;38;2;240;115;0m\002#\001\x1b[0m\002"
+
 
 /* SETTINGS *******************************************************************/
 
 # ifndef VERBOSE
 #  define VERBOSE 0
+# endif
+
+# ifndef AUTO_LS_LIMIT
+#  define AUTO_LS_LIMIT 500
 # endif
 
 /* TYPES **********************************************************************/
@@ -53,6 +62,14 @@ typedef enum e_exit_status
 	EXIT_CMD_NOT_FOUND =	127,
 	EXIT_CMD_ERROR =		128,
 }	t_node_status;
+
+typedef	struct s_dirinfo
+{
+	DIR		*dir;
+	char	*str;
+	size_t	strlen;
+	size_t	i;
+} t_dirinfo;
 
 typedef enum e_node_type
 {
@@ -84,6 +101,8 @@ typedef struct s_shell
 	int			last_exit_status;
 	t_exec		exec;
 }				t_shell;
+
+char		*shell_prompt();
 
 /* PARSING FUNCTIONS **********************************************************/
 
@@ -198,7 +217,8 @@ t_shell		*get_shell(void);
 
 size_t		str_arr_count(char **str_arr);
 char		**str_arr_shallow_copy(char **str_arr);
-void		*free_str_arr(char **env);
+void		*free_str_arr(char **arr);
+char		*str_arr_join(char **arr);
 
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);

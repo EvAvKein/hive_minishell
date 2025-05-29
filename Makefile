@@ -6,7 +6,7 @@
 #    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/27 09:13:19 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/28 20:22:50 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME := minishell
 SRC_DIR := sources
 
 SRC_FILES := main.c \
+			 prompt.c \
 			 signal_handlers.c \
 			 env/env.c \
 			 env/checks.c \
@@ -37,18 +38,18 @@ SRC_FILES := main.c \
 			 execution/pipeline_parent_and_child.c \
 			 execution/redirections.c \
 			 execution/utils.c \
+			 parsing/misc.c \
 			 execution/utils_atoll.c \
 			 parsing/parsing.c \
-			 parsing/expansion/expand.c \
-			 parsing/expansion/delete_void_expansions.c \
+			 parsing/num_utils.c \
+			 parsing/arg_handling.c \
+			 parsing/node_handling.c \
+			 parsing/node_sorting_utils.c \
 			 parsing/operators/heredoc.c \
 			 parsing/operators/redirections.c \
 			 parsing/operators/control_flow.c \
-			 parsing/node_sorting_utils.c \
-			 parsing/node_handling.c \
-			 parsing/arg_handling.c \
-			 parsing/num_utils.c \
-			 parsing/misc.c
+			 parsing/expansion/expand.c \
+			 parsing/expansion/delete_void_expansions.c \
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h parsing.h
@@ -56,6 +57,7 @@ INCLUDE_FILES := minishell.h parsing.h
 LIBFT_DIR := libft_plus
 LIBFT_LIB := $(LIBFT_DIR)/libft_plus.a
 
+VERBOSE ?= 0
 COMPILE_FLAGS := -Wall -Wextra -Werror -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(LIBFT_DIR)/include
 LIBRARY_FLAGS := -lreadline
 DEBUG_FLAGS := -g
@@ -70,10 +72,10 @@ $(LIBFT_LIB):
 	@make -C $(LIBFT_DIR) -s --no-print-directory
 
 %.o: %.c
-	cc $(COMPILE_FLAGS) -c $< -o $@
+	cc $(COMPILE_FLAGS) -DVERBOSE=$(VERBOSE) -c $< -o $@
 
 $(NAME): $(LIBFT_LIB) $(SRC_OBJ) $(HEADERS) $(LIBFT_HEADERS)
-	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(LIBFT_LIB) -o $(NAME) $(LIBRARY_FLAGS)
+	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(LIBFT_LIB) -DVERBOSE=$(VERBOSE) -o $(NAME) $(LIBRARY_FLAGS)
 
 clean:
 	@make -C $(LIBFT_DIR) $@ --no-print-directory
@@ -87,10 +89,6 @@ re: fclean all
 
 neat: $(NAME) clean
 	clear
-
-verbose: export VERBOSE = 1
-verbose: $(LIBFT_LIB) $(SRC_OBJ)
-	@$(MAKE) $(NAME) --no-print-directory
 
 debug: COMPILE_FLAGS += $(DEBUG_FLAGS)
 debug: re

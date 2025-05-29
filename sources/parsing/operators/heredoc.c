@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/27 13:04:54 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/27 20:31:58 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ bool	is_delimiter_quoted(t_parsing *parsing)
  * 
  * @param dest An pointer to which to assign available (or `NULL`) path.
  * 
- * @returns A heap-allocated (or `NULL`) path to the next creatable hidden file.
+ * @returns A heap-allocated path to the next creatable hidden file
+ *          (or `NULL` on memory allocation failure).
  *  
  */
 static char	*get_available_file_name(char **dest)

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:02:44 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/24 14:43:24 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:12:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param var_name The name (key) of the environment variable to look for.
  * 
  * @returns The memory address where the matching variable is stored,
- *          or `NULL` or no matching environment variable was found.
+ *          or `NULL` if no matching environment variable was found.
  * 
  */
 char  **env_var_ptr(char *var_name)

@@ -24,8 +24,8 @@ static void	print_sorted_envp(char **envp)
 		printf("declare -x ");
 		if (!ft_strchr(envp[i], '='))
 		{
-			printf("%s\n", envp[i]);
-			break ;
+			printf("%s\n", envp[i++]);
+			continue ;
 		}
 		while (envp[i][k] != '=')
 		{

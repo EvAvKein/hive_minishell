@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 10:25:48 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/27 08:38:16 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 20:30:02 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ static void	arg_cpy(
  * 
  * Parses through the next valid argument and creates a copy of it.
  * 
- * @returns A copy of the next valid argument (or `NULL` on allocation failure).
+ * @returns A copy of the next valid argument
+ *          (or `NULL` on memory allocation failure).
  * 
  */
 char	*extract_arg(t_parsing *parsing, bool disable_expansion)
