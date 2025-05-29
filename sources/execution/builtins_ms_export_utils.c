@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_ms_export_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:58:43 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 13:38:03 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:20:42 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static void	sort_envp(char **envp)
 
 void	export_just_print(t_shell *shell)
 {
-	char **add;
-	
+	char	**add;
+
 	add = str_arr_shallow_copy(shell->env);
 	if (!add)
 		fatal_error(shell, "export: malloc failed");

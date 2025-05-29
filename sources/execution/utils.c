@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/23 13:43:08 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/27 14:56:04 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_infile(t_fd *fd, t_node *current)
+{
+	if (fd->prev_fd != -1)
+		close(fd->prev_fd);
+	fd->prev_fd = current->fd;
+	current->fd = -1;
+}
 
 void	fatal_error(t_shell *shell, char *msg)
 {
@@ -49,7 +57,7 @@ int	count_commands(t_shell *shell)
 
 bool	is_builtin_in_parent(t_node *nodes)
 {
-	t_node *tmp;
+	t_node	*tmp;
 	bool	builtin_found;
 
 	tmp = nodes;
