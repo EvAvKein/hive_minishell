@@ -6,11 +6,18 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:09:42 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 12:47:05 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 20:46:35 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static bool	replace_env(char **new_env)
+{
+	free(get_shell()->env);
+	get_shell()->env = new_env;
+	return (true);
+}
 
 /**
  * 
@@ -46,17 +53,8 @@ bool	env_add(char *new_var)
 		i++;
 	}
 	larger_env[i] = new_var;
-	free(get_shell()->env);
-	get_shell()->env = larger_env;
-	return (true);
+	return (replace_env(larger_env));
 }
-
-/** Created solely for Norminette line-saving */
-typedef struct s_copy_paste_i
-{
-	size_t	copy;
-	size_t	paste;
-} t_copy_paste_i;
 
 /**
  * 
@@ -70,27 +68,27 @@ bool	env_remove(char *var_to_remove)
 {
 	const char		**var_found = (const char **) env_var_ptr(var_to_remove);
 	char			**smaller_env;
-	t_copy_paste_i	i;
+	size_t			copy_i;
+	size_t			paste_i;
 
 	if (!var_found)
 		return (false);
-	i = (t_copy_paste_i){.copy = 0, .paste = 0};
+	copy_i = 0;
+	paste_i = 0;
 	smaller_env = ft_calloc(str_arr_count(get_shell()->env), sizeof(char *));
 	if (smaller_env)
 	{
-		while (get_shell()->env[i.copy])
+		while (get_shell()->env[copy_i])
 		{
-			if (&get_shell()->env[i.copy] == (char **) var_found)
-				free(get_shell()->env[i.copy++]);
+			if (&get_shell()->env[copy_i] == (char **) var_found)
+				free(get_shell()->env[copy_i++]);
 			else
-				smaller_env[i.paste++] = get_shell()->env[i.copy++];
+				smaller_env[paste_i++] = get_shell()->env[copy_i++];
 		}
-		free(get_shell()->env);
-		get_shell()->env = smaller_env;
-		return (true);
+		return (replace_env(smaller_env));
 	}
-	((char **) (ft_memmove(var_found, var_found + sizeof(char *),
-		str_arr_count((char **) var_found + sizeof(char *)))))
+	((char **)(ft_memmove(var_found, var_found + sizeof(char *),
+			str_arr_count((char **) var_found + sizeof(char *)))))
 		[str_arr_count(get_shell()->env) - 1] = NULL;
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:32:55 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/21 17:07:38 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:25:09 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	delete_void_expansions(char *input)
 	while (expansion && *expansion)
 	{
 		if ((*expansion != '$' || in_quote
-			|| toggle_quote_by_c(&in_quote, *expansion)))
+				|| toggle_quote_by_c(&in_quote, *expansion)))
 		{
 			expansion++;
 			continue ;

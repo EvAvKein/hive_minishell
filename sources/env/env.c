@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:23:19 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/27 20:31:03 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:28:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @return The shell's default env (or `NULL` on memory allocation failure).
  * 
  */
-static char	**default_env()
+static char	**default_env(void)
 {
 	char	**env;
 
@@ -74,7 +74,6 @@ char	*dup_shlvl_incremented(char *shlvl)
 	increment_postfixed_num(bigger_shlvl);
 	return (bigger_shlvl);
 }
-
 
 /**
  * 

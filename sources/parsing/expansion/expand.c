@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:33:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 09:48:15 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:25:45 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ bool	expand_into_dest(t_expand_into_dest_args var)
 	if ((var.input[*var.input_i] != '$' || var.in_quote == '\''))
 		return (false);
 	if (!var.input[*var.input_i + 1] || is_space(var.input[*var.input_i + 1])
-			|| is_quote(var.input[*var.input_i + 1])
-			|| is_control_flow(var.input[*var.input_i + 1]))
+		|| is_quote(var.input[*var.input_i + 1])
+		|| is_control_flow(var.input[*var.input_i + 1]))
 	{
 		(*var.input_i)++;
 		var.dest[(*var.dest_i)++] = '$';
