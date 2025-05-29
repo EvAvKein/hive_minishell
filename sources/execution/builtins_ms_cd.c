@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_ms_cd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/26 12:52:39 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 14:24:31 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,19 @@ static int	update_pwds(t_shell *shell)
 	while (shell->env[i])
 	{
 		if (!ft_strncmp(shell->env[i], "OLDPWD", 6))
-			if (update_oldpwd(shell, i) == 1)
+		{
+			if (shell->env[i][7] && shell->env[i][7] != '=')
+				i++;
+			else if (update_oldpwd(shell, i) == 1)
 				return (1);
-		if (!ft_strncmp(shell->env[i], "PWD=", 4))
-			if (update_current_wd(shell, i) == 1)
+		}
+		if (!ft_strncmp(shell->env[i], "PWD", 3))
+		{
+			if (shell->env[i][4] && shell->env[i][4] != '=')
+				i++;
+			else if (update_current_wd(shell, i) == 1)
 				return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -72,7 +80,7 @@ char	*get_pwd_from_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], "PWD=", 4))
+		if (!ft_strncmp(envp[i], "PWD", 3))
 		{
 			ret = envp[i];
 			return (ret);

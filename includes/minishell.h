@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/29 09:51:15 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 11:03:28 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <signal.h> /** TODO: Discuss potentially unused */
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <dirent.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -181,7 +182,7 @@ void		ms_exit(t_shell *shell, t_node *command);
 int			ms_export(t_shell *shell);
 int			ms_pwd(char **envp);
 int			ms_unset(t_shell *shell);
-int			open_redirections(t_shell *shell);
+void		open_redirections(t_shell *shell);
 void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
 int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);
 void		restore_stdout(int temp);

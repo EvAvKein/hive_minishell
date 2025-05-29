@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_parent_and_child.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/26 16:08:09 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 12:50:48 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@ void	pipeline_child(t_shell *shell, t_node *command,
 	t_fd *fd, t_node *current)
 {
 	shell->exec.child_process = true;
-	if (fd->prev_fd != -1)
+	if (fd->prev_fd == -1 || fd->pipe_fd[WRITE] == -1)
+	{
+		fd_cleanup(fd);
+		shell_exit(1);
+	}
+	if (fd->prev_fd >= 0)
 	{
 		if (dup2(fd->prev_fd, STDIN_FILENO) == -1)
 		{
@@ -24,7 +29,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 			shell_exit(1);
 		}
 	}
-	if (command && (current || fd->pipe_fd[WRITE] != -1))
+	if (command && (current || fd->pipe_fd[WRITE] != -2))
 	{
 		if (dup2(fd->pipe_fd[WRITE], STDOUT_FILENO) == -1)
 		{
@@ -41,20 +46,20 @@ void	pipeline_child(t_shell *shell, t_node *command,
 
 static void	pipeline_parent(t_fd *fd)
 {
-	if (fd->prev_fd != -1)
+	if (fd->prev_fd >= 0)
 	{
 		close(fd->prev_fd);
-		fd->prev_fd = -1;
+		fd->prev_fd = -2;
 	}
-	if (fd->pipe_fd[WRITE] != -1)
+	if (fd->pipe_fd[WRITE] >= 0)
 	{
 		close(fd->pipe_fd[WRITE]);
-		fd->pipe_fd[WRITE] = -1;
+		fd->pipe_fd[WRITE] = -2;
 	}
-	if (fd->pipe_fd[READ] != -1)
+	if (fd->pipe_fd[READ] >= 0)
 	{
 		fd->prev_fd = fd->pipe_fd[READ];
-		fd->pipe_fd[READ] = -1;
+		fd->pipe_fd[READ] = -2;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/28 12:57:50 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 10:54:41 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,16 @@ static void	handle_exit_argument(t_shell *shell, t_node *command)
 	int	i;
 
 	i = 0;
+	if (ft_atoll(command->argv[1]) > INT_MAX
+		|| ft_atoll(command->argv[1]) < 0)
+	{
+		print_err("exit: ", "numeric argument required");
+		shell->last_exit_status = 2;
+		shell_exit(shell->last_exit_status);
+	}
 	while (command->argv[1][i])
 	{
-		if (!ft_isdigit(command->argv[1][i])
-		|| ft_atoll(command->argv[1]) > INT_MAX
-		|| ft_atoll(command->argv[1]) < 0)
+		if (!ft_isdigit(command->argv[1][i]))
 		{
 			print_err("exit: ", "numeric argument required");
 			shell->last_exit_status = 2;
@@ -91,7 +96,7 @@ void	ms_exit(t_shell *shell, t_node *command)
 	if (command->argv[1])
 	{
 		handle_exit_argument(shell, command);
-		shell->last_exit_status = ft_atoi(shell->nodes->argv[1]);
+		shell->last_exit_status = ft_atoi(command->argv[1]);
 	}
 	shell_exit(shell->last_exit_status);
 }

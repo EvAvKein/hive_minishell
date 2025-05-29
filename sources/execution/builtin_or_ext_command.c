@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/28 14:32:41 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:36:32 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,21 @@ static char	*get_path_from_envp(t_node *current)
 
 static char	*get_path_from_arg(char *command)
 {
-	char	*path;
+	struct stat	stat_buf;
 
-	path = command;
-	if (access(path, O_DIRECTORY) == 0)
+	if (stat(command, &stat_buf) != 0)
+		return (0);
+	if (S_ISDIR(stat_buf.st_mode))
 	{
 		print_err(command, ": is a directory");
-		path = NULL;
+		command = NULL;
 	}
-	else if (access(path, F_OK) != 0)
+	else if (access(command, F_OK) != 0)
 	{
 		print_err(command, ": invalid path");
-		path = NULL;
+		command = NULL;
 	}
-	return (path);
+	return (command);
 }
 
 void	execute_ext_command(t_shell *shell, t_node *current)
@@ -104,6 +105,7 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 	if (path && path != args[0])
 		free(path);
 	free_str_arr(args);
+	free_str_arr(tmp_envp);
 	print_err("execution: ", strerror(errno));//TODO
 	shell_cleanup(shell);
 	shell->last_exit_status = 126;//TODO

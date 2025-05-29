@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 14:56:55 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 11:01:20 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void	execution(t_shell *shell)
 		print_err("too many commands", ".");
 		return ;
 	}
-	if (open_redirections(shell) == 1)
-		return ;
+	open_redirections(shell);
 	if (is_builtin_in_parent(shell->nodes))
 	{
 		handle_single_builtin(shell, temp);
