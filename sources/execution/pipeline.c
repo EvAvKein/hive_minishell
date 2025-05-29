@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 15:03:42 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:11:19 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	execute(t_node *command, t_node *out, t_fd *fd, t_node *current)
 	}
 	if (out)
 	{
-		if (fd->pipe_fd[WRITE] != -1)
+		if (fd->pipe_fd[WRITE] >= 0)
 			close(fd->pipe_fd[WRITE]);
 		fd->pipe_fd[WRITE] = out->fd;
 	}

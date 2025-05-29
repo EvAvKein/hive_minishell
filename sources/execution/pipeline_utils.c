@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 14:49:56 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:41:14 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	wait_for_all_children_and_clean_fd(t_shell *shell, t_fd *fd)
 		if (i == shell->exec.pid_count - 1)
 		{
 			if (WIFEXITED(status))
-				shell->last_exit_status = WEXITSTATUS(status);
-			else
-				shell->last_exit_status = 1;
+				shell->last_exit_status = WEXITSTATUS((unsigned char)status);
+			// else
+			// 	shell->last_exit_status = 1;
 		}
 		i++;
 	}
@@ -37,33 +37,33 @@ void	wait_for_all_children_and_clean_fd(t_shell *shell, t_fd *fd)
 
 void	fd_cleanup(t_fd *fd)
 {
-	if (fd->prev_fd != -1)
+	if (fd->prev_fd >= 0)
 	{
 		close(fd->prev_fd);
-		fd->prev_fd = -1;
+		fd->prev_fd = -2;
 	}
-	if (fd->pipe_fd[READ] != -1)
+	if (fd->pipe_fd[READ] >= 0)
 	{
 		close(fd->pipe_fd[READ]);
-		fd->pipe_fd[READ] = -1;
+		fd->pipe_fd[READ] = -2;
 	}
-	if (fd->pipe_fd[WRITE] != -1)
+	if (fd->pipe_fd[WRITE] >= 0)
 	{
 		close(fd->pipe_fd[WRITE]);
-		fd->pipe_fd[WRITE] = -1;
+		fd->pipe_fd[WRITE] = -2;
 	}
 }
 
 void	close_pipe(t_fd *fd)
 {
-	if (fd->pipe_fd[READ] != -1)
+	if (fd->pipe_fd[READ] >= 0)
 	{
 		close(fd->pipe_fd[READ]);
-		fd->pipe_fd[READ] = -1;
+		fd->pipe_fd[READ] = -2;
 	}
-	if (fd->pipe_fd[WRITE] != -1)
+	if (fd->pipe_fd[WRITE] >= 0)
 	{
 		close(fd->pipe_fd[WRITE]);
-		fd->pipe_fd[WRITE] = -1;
+		fd->pipe_fd[WRITE] = -2;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:02:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 15:00:44 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 11:04:21 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,20 @@ int	count_redirections(t_shell *shell)
 	return (i);
 }
 
-static int	open_infile(t_shell *shell, t_node *node)
+static void	open_infile(t_shell *shell, t_node *node)
 {
 	if (access(node->argv[0], F_OK) == -1)
 	{
 		shell->last_exit_status = 2;
 		print_err(node->argv[0], " file doesn't exist");
-		return (1);
+		return ;
 	}
 	node->fd = open(node->argv[0], O_RDONLY);
 	if (node->fd == -1)
-	{
 		print_err(node->argv[0], " couldn't be read.");
-		return (1);
-	}
-	return (0);
 }
 
-static int	open_outfile_or_appendfile(t_node *node, t_shell *shell)
+static void	open_outfile_or_appendfile(t_node *node, t_shell *shell)
 {
 	if (node->type == OUTFILE)
 	{
@@ -71,7 +67,7 @@ static int	open_outfile_or_appendfile(t_node *node, t_shell *shell)
 		{
 			shell->last_exit_status = 2;
 			print_err(node->argv[0], " couldn't be read.");
-			return (1);
+			return ;
 		}
 	}
 	if (node->type == APPENDFILE)
@@ -81,13 +77,11 @@ static int	open_outfile_or_appendfile(t_node *node, t_shell *shell)
 		{
 			shell->last_exit_status = 2;
 			print_err(node->argv[0], " couldn't be read.");
-			return (1);
 		}
 	}
-	return (0);
 }
 
-int	open_redirections(t_shell *shell)
+void	open_redirections(t_shell *shell)
 {
 	t_node	*node;
 
@@ -95,16 +89,9 @@ int	open_redirections(t_shell *shell)
 	while (node)
 	{
 		if (node->type == INFILE || node->type == HEREDOC)
-		{
-			if (open_infile(shell, node) == 1)
-				return (1);
-		}
+			open_infile(shell, node);
 		if (node->type == OUTFILE || node->type == APPENDFILE)
-		{
-			if (open_outfile_or_appendfile(node, shell) == 1)
-				return (1);
-		}
+			open_outfile_or_appendfile(node, shell);
 		node = node->next;
 	}
-	return (0);
 }

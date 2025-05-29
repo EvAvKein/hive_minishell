@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:21:45 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 14:56:30 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 12:32:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	init_structs(t_fd *fd, t_shell *shell)
 {
 	t_exec	exec;
 
-	fd->prev_fd = -1;
-	fd->pipe_fd[0] = -1;
-	fd->pipe_fd[1] = -1;
+	fd->prev_fd = -2;
+	fd->pipe_fd[0] = -2;
+	fd->pipe_fd[1] = -2;
 	ft_bzero(&exec, sizeof(t_exec));
 	shell->exec = exec;
 }

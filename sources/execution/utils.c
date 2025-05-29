@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:05:11 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/27 14:56:04 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:11:30 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_infile(t_fd *fd, t_node *current)
 {
-	if (fd->prev_fd != -1)
+	if (fd->prev_fd >= 0)
 		close(fd->prev_fd);
 	fd->prev_fd = current->fd;
 	current->fd = -1;
