@@ -40,7 +40,7 @@
 \001\x1b[1;38;2;228;3;3m\002+\
 \001\x1b[0m\002:"
 # define PROMPT_PATH_PLACEHOLDER "[UNKNOWN PATH]"
-# define PROMPT_END "\001\x1b[1;38;2;228;3;3m\002#\001\x1b[0m\002 "
+# define PROMPT_END "\001\x1b[1;38;2;162;77;167m#\001\x1b[0m\002 "
 // # define PROMPT_END "\001\x1b[1;38;2;240;115;0m\002#\001\x1b[0m\002"
 
 
@@ -50,8 +50,12 @@
 #  define VERBOSE 0
 # endif
 
-# ifndef AUTO_LS_LIMIT
-#  define AUTO_LS_LIMIT 500
+# ifndef MINI_LS
+#  define MINI_LS 0
+# endif
+
+# ifndef MINI_LS_LIMIT
+#  define MINI_LS_LIMIT 100
 # endif
 
 /* TYPES **********************************************************************/
@@ -64,13 +68,13 @@ typedef enum e_exit_status
 	EXIT_CMD_ERROR =		128,
 }	t_node_status;
 
-typedef	struct s_dirinfo
+typedef	struct s_mini_ls
 {
 	DIR		*dir;
 	char	*str;
 	size_t	strlen;
 	size_t	i;
-} t_dirinfo;
+} t_mini_ls;
 
 typedef enum e_node_type
 {
