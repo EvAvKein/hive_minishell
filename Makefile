@@ -38,6 +38,7 @@ SRC_FILES := main.c \
 			 execution/pipeline_parent_and_child.c \
 			 execution/redirections.c \
 			 execution/utils.c \
+			 parsing/misc.c \
 			 execution/utils_atoll.c \
 			 parsing/misc.c \
 			 parsing/parsing.c \
