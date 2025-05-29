@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:02:41 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/24 14:29:47 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:27:55 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ bool	is_valid_envname(char *new_env)
 			return (false);
 	return (i > 0);
 }
+
 /**
  * 
  * Counts and returns the length
@@ -96,7 +97,7 @@ bool	envncmp(char *env_str, char *var_start, size_t cmp)
 		i++;
 	}
 	if (!i || (env_str[i] && env_str[i] != '=')
-    || is_envname_char(var_start[i]))
+		|| is_envname_char(var_start[i]))
 		return (false);
 	return (true);
 }

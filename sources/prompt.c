@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:15:41 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/29 16:20:10 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:23:34 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	write_to_ls_str(t_mini_ls *info, char *value)
  *         and memory allocation for the entries array was successful.
  * 
  */
-static bool get_more_ls(t_mini_ls *info)
+static bool	get_more_ls(t_mini_ls *info)
 {
 	struct dirent	*value;
 
@@ -92,7 +92,7 @@ static bool get_more_ls(t_mini_ls *info)
  * Prints the files in the current directory (or an error text).
  * 
  */
-static void	mini_ls()
+static void	mini_ls(void)
 {
 	t_mini_ls	info;
 	char		*cwd;
@@ -127,7 +127,7 @@ static void	mini_ls()
  * @returns The `readline` string - the user's input to the prompt.
  * 
  */
-char	*shell_prompt()
+char	*shell_prompt(void)
 {
 	char	*line;
 	char	*prompt;
@@ -143,7 +143,7 @@ char	*shell_prompt()
 	if (path)
 	{
 		prompt = str_arr_join((char *[4]){
-			(char *)PROMPT_START, path, (char *)PROMPT_END, NULL});
+				(char *)PROMPT_START, path, (char *)PROMPT_END, NULL});
 		if (free_path)
 			free(path);
 		if (prompt)

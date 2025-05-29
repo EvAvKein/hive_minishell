@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:02:44 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/28 17:12:19 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:32:07 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@
  *          or `NULL` if no matching environment variable was found.
  * 
  */
-char  **env_var_ptr(char *var_name)
+char	**env_var_ptr(char *var_name)
 {
-	char    **env;
-	size_t	i;
-  size_t  name_len;
+	char		**env;
+	size_t		i;
+	size_t		name_len;
 
 	env = get_shell()->env;
-  if (!env)
-    return (NULL);
+	if (!env)
+		return (NULL);
 	i = 0;
-  name_len = env_name_len(var_name);
+	name_len = env_name_len(var_name);
 	while (env[i])
 	{
 		if (envncmp(env[i], var_name, name_len))
@@ -48,14 +48,14 @@ char  **env_var_ptr(char *var_name)
  *          or `NULL` or no matching environment variable was found.
  * 
  */
-char  *env_var(char *var_name)
+char	*env_var(char *var_name)
 {
-  char  **var_address;
+	char	**var_address;
 
-  var_address = env_var_ptr(var_name);
-  if (!var_address)
-    return (NULL);
-  return (*var_address);
+	var_address = env_var_ptr(var_name);
+	if (!var_address)
+		return (NULL);
+	return (*var_address);
 }
 
 /**
@@ -70,16 +70,16 @@ char  *env_var(char *var_name)
  */
 char	*env_value(char *var_name)
 {
-	char    *var;
-  size_t  i;
+	char		*var;
+	size_t		i;
 
 	var = env_var(var_name);
-  if (!var)
+	if (!var)
 		return (NULL);
-  i = 0;
-  while (is_envname_char(var[i]))
-    i++;
-  if (var[i] == '=')
-    i++;
-  return (&var[i]);
+	i = 0;
+	while (is_envname_char(var[i]))
+		i++;
+	if (var[i] == '=')
+		i++;
+	return (&var[i]);
 }

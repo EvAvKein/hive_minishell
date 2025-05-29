@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:13:53 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/21 13:25:29 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 18:19:07 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef enum exec_macros
 	READ = 0,
 	WRITE,
 	MAX_CMDS = 256,
-	
 }	t_exec_macros;
 
 typedef struct s_exec
