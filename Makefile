@@ -59,6 +59,8 @@ LIBFT_DIR := libft_plus
 LIBFT_LIB := $(LIBFT_DIR)/libft_plus.a
 
 VERBOSE ?= 0
+MINI_LS ?= 0
+SETTINGS = -DVERBOSE=$(VERBOSE) -DMINI_LS=$(MINI_LS)
 COMPILE_FLAGS := -Wall -Wextra -Werror -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(LIBFT_DIR)/include
 LIBRARY_FLAGS := -lreadline
 DEBUG_FLAGS := -g
@@ -73,10 +75,10 @@ $(LIBFT_LIB):
 	@make -C $(LIBFT_DIR) -s --no-print-directory
 
 %.o: %.c
-	cc $(COMPILE_FLAGS) -DVERBOSE=$(VERBOSE) -c $< -o $@
+	cc $(COMPILE_FLAGS) $(SETTINGS) -c $< -o $@
 
 $(NAME): $(LIBFT_LIB) $(SRC_OBJ) $(HEADERS) $(LIBFT_HEADERS)
-	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(LIBFT_LIB) -DVERBOSE=$(VERBOSE) -o $(NAME) $(LIBRARY_FLAGS)
+	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(LIBFT_LIB) $(SETTINGS) -o $(NAME) $(LIBRARY_FLAGS)
 
 clean:
 	@make -C $(LIBFT_DIR) $@ --no-print-directory
@@ -90,6 +92,10 @@ re: fclean all
 
 neat: $(NAME) clean
 	clear
+
+extra: export VERBOSE = 1
+extra: export MINI_LS = 1
+extra: re
 
 debug: COMPILE_FLAGS += $(DEBUG_FLAGS)
 debug: re
