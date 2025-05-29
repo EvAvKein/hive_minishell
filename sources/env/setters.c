@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:09:42 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/29 20:46:35 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 20:51:44 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,11 @@ bool	env_add(char *new_var)
 		return (true);
 	}
 	larger_env = ft_calloc(str_arr_count(get_shell()->env) + 2, sizeof(char *));
-	if (!larger_env && print_err("env: ", strerror(ENOMEM)))
+	if (!larger_env)
+	{
+		print_err("env: ", strerror(ENOMEM));
 		return (false);
+	}
 	i = 0;
 	while (get_shell()->env[i])
 	{
