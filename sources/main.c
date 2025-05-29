@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
 /*   Updated: 2025/05/28 20:22:24 by ekeinan          ###   ########.fr       */

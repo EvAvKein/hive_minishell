@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
 /*   Updated: 2025/05/29 16:06:54 by ekeinan          ###   ########.fr       */
@@ -16,6 +16,7 @@
 # define _XOPEN_SOURCE 700 // fixes vscode issue with struct sigaction
 
 # include <fcntl.h>
+# include <limits.h>
 # include <errno.h>
 # include <signal.h> /** TODO: Discuss potentially unused */
 # include <sys/wait.h>
@@ -156,10 +157,12 @@ t_redirect	redirect_of_c(char *c);
 
 /* EXECUTION FUNCTIONS ********************************************************/
 
+bool		arg_is_null(t_node *node);
 void		close_pipe(t_fd *fd);
 int			count_commands(t_shell *shell);
 int			count_outfiles(t_shell *shell);
 int			count_redirections(t_shell *shell);
+int			dup_stdout(t_shell *shell);
 int			execute_builtin(t_shell *shell, t_node *command);
 void		execute_command(t_shell *shell, t_node *command);
 void		execute_command_line(t_shell *shell, t_fd *fd);
@@ -170,20 +173,23 @@ void		fd_cleanup(t_fd *fd);
 char		*get_pwd_from_env(char **envp);
 char		*get_env(char **envp, char *find);
 int			get_env_elements(char **envp);
+void		handle_infile(t_fd *fd, t_node *current);
+void		init_structs(t_fd *fd, t_shell *shell);
 int			is_builtin(char *cmd);
 bool		is_builtin_in_parent(t_node *nodes);
 void		export_just_print(t_shell *shell);
 int			ms_cd(t_shell *shell);
-int			ms_echo(t_shell *shell, t_node *command);
+int			ms_echo(t_node *command);
 int			ms_env(t_shell *shell);
-void		ms_exit(t_shell *shell);
+void		ms_exit(t_shell *shell, t_node *command);
 int			ms_export(t_shell *shell);
 int			ms_pwd(char **envp);
 int			ms_unset(t_shell *shell);
 int			open_redirections(t_shell *shell);
 void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
 int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);
-void		wait_for_all_children(t_shell *shell);
+void		restore_stdout(int temp);
+void		wait_for_all_children_and_clean_fd(t_shell *shell, t_fd *fd);
 
 /* ENV FUNCTIONS **************************************************************/
 
@@ -210,6 +216,7 @@ void		heredoc_sigint_handler(int sig);
 
 /* UTILITY FUNCTIONS **********************************************************/
 
+long long	ft_atoll(const char *nptr);
 t_shell		*get_shell(void);
 
 size_t		str_arr_count(char **str_arr);

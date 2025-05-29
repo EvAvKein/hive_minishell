@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/20 15:27:35 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:49:56 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	wait_for_all_children(t_shell *shell)
+void	wait_for_all_children_and_clean_fd(t_shell *shell, t_fd *fd)
 {
 	int	i;
 	int	status;
@@ -32,6 +32,7 @@ void	wait_for_all_children(t_shell *shell)
 	}
 	sigaction(SIGINT,
 		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
+	fd_cleanup(fd);
 }
 
 void	fd_cleanup(t_fd *fd)
