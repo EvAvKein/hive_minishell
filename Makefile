@@ -6,7 +6,7 @@
 #    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/29 16:34:45 by ekeinan          ###   ########.fr        #
+#    Updated: 2025/05/29 18:08:32 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,9 +92,9 @@ re: fclean all
 neat: $(NAME) clean
 	clear
 
-extra: export VERBOSE = 1
-extra: export MINI_LS = 1
-extra: re
+more: export VERBOSE = 1
+more: export MINI_LS = 1
+more: re
 
 debug: COMPILE_FLAGS += $(DEBUG_FLAGS)
 debug: re
