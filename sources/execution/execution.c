@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:16:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 11:01:20 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 20:54:52 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	handle_single_builtin(t_shell *shell, int temp)
 	if (execute_builtin(shell, cmd) == 1)
 	{
 		shell->last_exit_status = 1;
-		command_cleanup(shell);
+		command_cleanup();
 	}
 	else
 		shell->last_exit_status = 0;
