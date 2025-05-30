@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/30 11:19:20 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 11:28:31 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,30 @@ void	set_child_signal_handlers(void)
  * 
  */
 void	sigint_handler(int sig, siginfo_t *info, void *prevact)
+{
+	(void)prevact;
+	(void)info;
+	(void)sig;
+	get_shell()->last_exit_status = EXIT_CMD_ERROR + SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+/**
+ * 
+ * A signal handler for SIGINT -
+ * displays a new prompt and updates the exist status.
+ * 
+ * @param sig     Ignored.
+ * 
+ * @param info    Ignored.
+ * 
+ * @param prevact Ignored.
+ * 
+ */
+void	sigint_child_handler(int sig, siginfo_t *info, void *prevact)
 {
 	(void)prevact;
 	(void)info;
