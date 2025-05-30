@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_or_ext_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 13:36:32 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 20:54:33 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,14 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 	current->argv = NULL;
 	tmp_envp = shell->env;
 	shell->env = NULL;
-	shell_cleanup(shell);
+	shell_cleanup();
 	execve(path, args, tmp_envp);
 	if (path && path != args[0])
 		free(path);
 	free_str_arr(args);
 	free_str_arr(tmp_envp);
 	print_err("execution: ", strerror(errno));//TODO
-	shell_cleanup(shell);
+	shell_cleanup();
 	shell->last_exit_status = 126;//TODO
 }
 

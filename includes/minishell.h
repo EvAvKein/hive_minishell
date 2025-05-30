@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/29 11:03:28 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/29 18:22:44 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@
 \001\x1b[1;38;2;228;3;3m\002+\
 \001\x1b[0m\002:"
 # define PROMPT_PATH_PLACEHOLDER "[UNKNOWN PATH]"
-# define PROMPT_END "\001\x1b[1;38;2;228;3;3m\002#\001\x1b[0m\002 "
-// # define PROMPT_END "\001\x1b[1;38;2;240;115;0m\002#\001\x1b[0m\002"
-
+# define PROMPT_END "\001\x1b[1;38;2;162;77;167m#\001\x1b[0m\002 "
 
 /* SETTINGS *******************************************************************/
 
@@ -50,8 +48,12 @@
 #  define VERBOSE 0
 # endif
 
-# ifndef AUTO_LS_LIMIT
-#  define AUTO_LS_LIMIT 500
+# ifndef MINI_LS
+#  define MINI_LS 0
+# endif
+
+# ifndef MINI_LS_LIMIT
+#  define MINI_LS_LIMIT 100
 # endif
 
 /* TYPES **********************************************************************/
@@ -64,13 +66,13 @@ typedef enum e_exit_status
 	EXIT_CMD_ERROR =		128,
 }	t_node_status;
 
-typedef	struct s_dirinfo
+typedef struct s_mini_ls
 {
 	DIR		*dir;
 	char	*str;
 	size_t	strlen;
 	size_t	i;
-} t_dirinfo;
+}			t_mini_ls;
 
 typedef enum e_node_type
 {
@@ -103,7 +105,10 @@ typedef struct s_shell
 	t_exec		exec;
 }				t_shell;
 
-char		*shell_prompt();
+/** CORE FUNCTIONS ************************************************************/
+
+t_shell		*get_shell(void);
+char		*shell_prompt(void);
 
 /* PARSING FUNCTIONS **********************************************************/
 
@@ -183,8 +188,10 @@ int			ms_export(t_shell *shell);
 int			ms_pwd(char **envp);
 int			ms_unset(t_shell *shell);
 void		open_redirections(t_shell *shell);
-void		pipeline_child(t_shell *shell, t_node *command, t_fd *fd, t_node *current);
-int			parent_and_child(int pid, t_fd *fd, t_node *command, t_node *current);
+void		pipeline_child(
+				t_shell *shell, t_node *command, t_fd *fd, t_node *current);
+int			parent_and_child(
+				int pid, t_fd *fd, t_node *command, t_node *current);
 void		restore_stdout(int temp);
 void		wait_for_all_children_and_clean_fd(t_shell *shell, t_fd *fd);
 
@@ -214,7 +221,6 @@ void		heredoc_sigint_handler(int sig);
 /* UTILITY FUNCTIONS **********************************************************/
 
 long long	ft_atoll(const char *nptr);
-t_shell		*get_shell(void);
 
 size_t		str_arr_count(char **str_arr);
 char		**str_arr_shallow_copy(char **str_arr);
@@ -223,7 +229,6 @@ char		*str_arr_join(char **arr);
 
 size_t		print_err(char *part1, char *part2);
 void		print_nodes(int fd, t_node *node);
-void		print_node_type(int fd, t_node_type type);
 
 bool		is_quote(char c);
 bool		is_control_flow(char c);
@@ -234,8 +239,8 @@ bool		input_was_entirely_spaces(char *input);
 /* CLEANUP FUNCTIONS **********************************************************/
 
 void		*free_nodes(t_node *node);
-void		command_cleanup();
-void		shell_cleanup();
+void		command_cleanup(void);
+void		shell_cleanup(void);
 void		shell_exit(int exit_status);
 
 #endif

@@ -3,17 +3,20 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+         #
+#    By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 08:44:47 by ekeinan           #+#    #+#              #
-#    Updated: 2025/05/29 14:27:10 by ahavu            ###   ########.fr        #
+#    Updated: 2025/05/29 18:08:32 by ekeinan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 
-SRC_DIR := sources
+VERBOSE ?= 0
+MINI_LS ?= 0
+SETTINGS = -DVERBOSE=$(VERBOSE) -DMINI_LS=$(MINI_LS)
 
+SRC_DIR := sources
 SRC_FILES := main.c \
 			 prompt.c \
 			 signal_handlers.c \
@@ -38,7 +41,6 @@ SRC_FILES := main.c \
 			 execution/pipeline_parent_and_child.c \
 			 execution/redirections.c \
 			 execution/utils.c \
-			 parsing/misc.c \
 			 execution/utils_atoll.c \
 			 parsing/misc.c \
 			 parsing/parsing.c \
@@ -50,7 +52,7 @@ SRC_FILES := main.c \
 			 parsing/operators/redirections.c \
 			 parsing/operators/control_flow.c \
 			 parsing/expansion/expand.c \
-			 parsing/expansion/delete_void_expansions.c \
+			 parsing/expansion/delete_void_expansions.c
 
 INCLUDE_DIR := includes
 INCLUDE_FILES := minishell.h parsing.h
@@ -58,7 +60,6 @@ INCLUDE_FILES := minishell.h parsing.h
 LIBFT_DIR := libft_plus
 LIBFT_LIB := $(LIBFT_DIR)/libft_plus.a
 
-VERBOSE ?= 0
 COMPILE_FLAGS := -Wall -Wextra -Werror -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(LIBFT_DIR)/include
 LIBRARY_FLAGS := -lreadline
 DEBUG_FLAGS := -g
@@ -73,10 +74,10 @@ $(LIBFT_LIB):
 	@make -C $(LIBFT_DIR) -s --no-print-directory
 
 %.o: %.c
-	cc $(COMPILE_FLAGS) -DVERBOSE=$(VERBOSE) -c $< -o $@
+	cc $(COMPILE_FLAGS) $(SETTINGS) -c $< -o $@
 
 $(NAME): $(LIBFT_LIB) $(SRC_OBJ) $(HEADERS) $(LIBFT_HEADERS)
-	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(LIBFT_LIB) -DVERBOSE=$(VERBOSE) -o $(NAME) $(LIBRARY_FLAGS)
+	cc $(COMPILE_FLAGS) $(SRC_OBJ) $(LIBFT_LIB) $(SETTINGS) -o $(NAME) $(LIBRARY_FLAGS)
 
 clean:
 	@make -C $(LIBFT_DIR) $@ --no-print-directory
@@ -90,6 +91,10 @@ re: fclean all
 
 neat: $(NAME) clean
 	clear
+
+more: export VERBOSE = 1
+more: export MINI_LS = 1
+more: re
 
 debug: COMPILE_FLAGS += $(DEBUG_FLAGS)
 debug: re

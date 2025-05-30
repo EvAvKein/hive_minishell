@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:15:41 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/29 09:50:13 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:23:34 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,27 @@
 
 /**
  * 
- * TODO: Write these docs
+ * Creates an strings based on `info`'s string length and `MINI_LS_LIMIT`,
+ * placing it (or `NULL` on memory allocation failure) in `info`.
+ * 
+ * @returns Whether an ls string was successfully allocated.
  * 
  */
-static bool	initialize_dirinfo(t_dirinfo *info)
+static bool	init_ls_str(t_mini_ls *info)
 {
-	if (!info->strlen)
-	{
-		info->str = NULL;
-		return (false);
-	}
-	if (info->strlen >= AUTO_LS_LIMIT)
+	if (info->strlen >= MINI_LS_LIMIT)
 	{
 		info->strlen += 4;
-		info->str = ft_calloc(info->strlen + 1, sizeof(char *));
-		if (!info->str)
-			ft_strlcpy(&info->str[info->strlen - 5], " ...", 5);
+		info->str = ft_calloc(info->strlen + 1, sizeof(char));
+		if (info->str)
+			ft_strlcpy(&info->str[info->strlen - 4], " ...", 5);
 		else
 			print_err("parsing: wildcards: ", strerror(ENOMEM));
 		info->i = info->strlen - 4;
 	}
 	else
 	{
-		info->str = ft_calloc(info->strlen + 1, sizeof(char *));
+		info->str = ft_calloc(info->strlen + 1, sizeof(char));
 		if (!info->str)
 			print_err("parsing: wildcards: ", strerror(ENOMEM));
 		info->i = info->strlen;
@@ -46,10 +44,10 @@ static bool	initialize_dirinfo(t_dirinfo *info)
 
 /**
  * 
- * TODO: Write these docs
+ * Writes the provided `value` into `info`'s string behind `info`'s index.
  * 
  */
-static void	write_to_dirinfo_str(t_dirinfo *info, char *value)
+static void	write_to_ls_str(t_mini_ls *info, char *value)
 {
 	size_t	value_len;
 
@@ -70,24 +68,19 @@ static void	write_to_dirinfo_str(t_dirinfo *info, char *value)
  *         and memory allocation for the entries array was successful.
  * 
  */
-static bool get_more_dirinfo(t_dirinfo *info)
+static bool	get_more_ls(t_mini_ls *info)
 {
 	struct dirent	*value;
 
 	value = readdir(info->dir);
-	if (!value || info->strlen >= AUTO_LS_LIMIT)
-	{
-		if (errno)
-			print_err("parsing: wildcards: ", strerror(errno));
-		return (initialize_dirinfo(info));
-	}
-	if (!ft_strncmp(value->d_name, ".", 2)
-		|| !ft_strncmp(value->d_name, "..", 3))
-		return (get_more_dirinfo(info));
+	if (!value || info->strlen >= MINI_LS_LIMIT)
+		return (init_ls_str(info));
+	if (value->d_name[0] == '.')
+		return (get_more_ls(info));
 	info->strlen += !!info->strlen + ft_strlen(value->d_name);
-	if (get_more_dirinfo(info))
+	if (get_more_ls(info))
 	{
-		write_to_dirinfo_str(info, value->d_name);
+		write_to_ls_str(info, value->d_name);
 		return (true);
 	}
 	else
@@ -96,66 +89,68 @@ static bool get_more_dirinfo(t_dirinfo *info)
 
 /**
  *
- * TODO: Write these docs 
+ * Prints the files in the current directory (or an error text).
  * 
  */
-static void	mini_ls()
+static void	mini_ls(void)
 {
-	t_dirinfo	info;
+	t_mini_ls	info;
 	char		*cwd;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return ;
-	ft_bzero(&info, sizeof(t_dirinfo));
+	ft_bzero(&info, sizeof(t_mini_ls));
 	info.dir = opendir(cwd);
 	free(cwd);
 	if (!info.dir)
 		return ;
 	errno = 0;
-	get_more_dirinfo(&info);
+	get_more_ls(&info);
 	closedir(info.dir);
 	if (info.str)
 	{
-		printf("\033[2;33m%s\033[0m\n", info.str);
+		printf("\x1b[38;5;243m%s\x1b[0m\n", info.str);
 		free(info.str);
 	}
-	else
+	else if (errno)
 		print_err("auto ls: ", strerror(errno));
+	else
+		printf("\x1b[38;5;243m%s\x1b[0m\n", "[NO FILES IN CWD]");
 }
 
 /**
  * 
- * TODO: Write these docs
+ * Prints the shell's full prompt
+ * (prepended by the files in the current directory if that setting is enabled).
+ * 
+ * @returns The `readline` string - the user's input to the prompt.
  * 
  */
-char	*shell_prompt()
+char	*shell_prompt(void)
 {
-	// char	*line;
-	// char	*prompt;
-	// char	*path;
+	char	*line;
+	char	*prompt;
+	char	*path;
+	bool	free_path;
 
-	mini_ls();
-	// path = get_shell()->working_dir;
-	// if (path)
-	// {
-	// 	prompt = str_arr_join((char **){(char *) (PROMPT_START), path, (char *) (PROMPT_END), NULL});
-	// 	if (prompt)
-	// 	{
-	// 		line = readline(prompt);
-	// 		return (free(prompt), line);
-	// 	}
-	// }
-	// path = getcwd(NULL, 0);
-	// if (path)
-	// {
-	// 	prompt = str_arr_join((char **){(char *) (PROMPT_START), path, (char *) (PROMPT_END), NULL});
-	// 	free(path);
-	// 	if (prompt)
-	// 	{
-	// 		line = readline(prompt);
-	// 		return (free(prompt), line);
-	// 	}
-	// }
+	if (MINI_LS)
+		mini_ls();
+	path = get_shell()->working_dir;
+	free_path = false;
+	if (!path && ++free_path)
+		path = getcwd(NULL, 0);
+	if (path)
+	{
+		prompt = str_arr_join((char *[4]){
+				(char *)PROMPT_START, path, (char *)PROMPT_END, NULL});
+		if (free_path)
+			free(path);
+		if (prompt)
+		{
+			line = readline(prompt);
+			return (free(prompt), line);
+		}
+	}
 	return (readline(PROMPT_START PROMPT_PATH_PLACEHOLDER PROMPT_END));
 }
