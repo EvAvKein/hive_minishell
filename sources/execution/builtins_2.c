@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/30 10:50:50 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/30 13:46:21 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,23 @@ static int	check_flag(t_node *command)
 	int	k;
 	int	flag;
 
-	i = 0;
+	i = 1;
 	flag = 0;
-	while (command->argv[i])
+	if (command->argc > 1)
 	{
-		if (command->argv[i][0] == '-' && command->argv[i][1] == 'n')
+		while (command->argv[i]
+			&& command->argv[i][0] == '-' && command->argv[i][1] == 'n')
 		{
 			k = 2;
 			flag++;
 			while (command->argv[i][k])
 			{
 				if (command->argv[i][k] != 'n' && command->argv[i][k] != '\0')
-					flag = 0;
+					return (--flag);
 				k++;
 			}
+			i++;
 		}
-		i++;
 	}
 	return (flag);
 }
