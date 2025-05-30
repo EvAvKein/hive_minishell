@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:02:31 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 11:04:21 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/30 10:53:03 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	open_infile(t_shell *shell, t_node *node)
 	}
 	node->fd = open(node->argv[0], O_RDONLY);
 	if (node->fd == -1)
-		print_err(node->argv[0], " couldn't be read.");
+		print_err(node->argv[0], " couldn't be opened.");
 }
 
 static void	open_outfile_or_appendfile(t_node *node, t_shell *shell)
@@ -66,7 +66,7 @@ static void	open_outfile_or_appendfile(t_node *node, t_shell *shell)
 		if (node->fd == -1)
 		{
 			shell->last_exit_status = 2;
-			print_err(node->argv[0], " couldn't be read.");
+			print_err(node->argv[0], " couldn't be opened.");
 			return ;
 		}
 	}
@@ -76,7 +76,7 @@ static void	open_outfile_or_appendfile(t_node *node, t_shell *shell)
 		if (node->fd == -1)
 		{
 			shell->last_exit_status = 2;
-			print_err(node->argv[0], " couldn't be read.");
+			print_err(node->argv[0], " couldn't be opened.");
 		}
 	}
 }

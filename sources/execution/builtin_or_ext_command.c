@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_or_ext_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 20:54:33 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 10:52:21 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,11 @@ static char	*get_path_from_arg(char *command)
 	struct stat	stat_buf;
 
 	if (stat(command, &stat_buf) != 0)
+	{
+		if (!S_ISDIR(stat_buf.st_mode))
+			print_err(command, ": not a directory");
 		return (0);
+	}
 	if (S_ISDIR(stat_buf.st_mode))
 	{
 		print_err(command, ": is a directory");
@@ -106,9 +110,9 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 		free(path);
 	free_str_arr(args);
 	free_str_arr(tmp_envp);
-	print_err("execution: ", strerror(errno));//TODO
+	print_err("execution: ", strerror(errno));
 	shell_cleanup();
-	shell->last_exit_status = 126;//TODO
+	shell->last_exit_status = EXIT_CMD_NOT_EXEC;
 }
 
 int	execute_builtin(t_shell *shell, t_node *command)
