@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
 /*   Updated: 2025/05/30 11:09:29 by ahavu            ###   ########.fr       */

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_parent_and_child.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
 /*   Updated: 2025/05/30 10:51:33 by ahavu            ###   ########.fr       */
@@ -40,6 +40,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 	if (command && command->type == COMMAND)
 		execute_command(shell, command);
 	shell_cleanup();
+
 }
 
 static void	pipeline_parent(t_fd *fd)
