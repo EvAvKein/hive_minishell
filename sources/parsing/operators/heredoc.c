@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:23:50 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/29 18:26:44 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 11:28:35 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void	heredoc_write(int fd, char *input, bool expand)
 	if (!expand)
 	{
 		write(fd, input, ft_strlen(input));
+		write(fd, "\n", 1);
 		return ;
 	}
 	while (1)
@@ -84,7 +85,7 @@ static void	heredoc_write(int fd, char *input, bool expand)
 		if (!expansion)
 			break ;
 		write(fd, input, expansion - input);
-		value = env_value(expansion);
+		value = env_value(expansion + 1);
 		if (value)
 			write(fd, value, ft_strlen(value));
 		input += (expansion - input) + env_name_len(&expansion[1]) + 1;
@@ -112,6 +113,8 @@ void	heredoc_loop(t_node *node, int fd, bool expand)
 		{
 			if (input)
 				free(input);
+			else
+				print_err("heredoc: ", "delimited by EOF");
 			break ;
 		}
 		heredoc_write(fd, input, expand);

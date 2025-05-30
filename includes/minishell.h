@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/30 11:09:29 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/30 11:28:19 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ typedef enum e_node_type
 	APPENDFILE
 }	t_node_type;
 
+typedef	struct s_og_sigacts
+{
+	struct sigaction	sigint;
+	struct sigaction	sigquit;
+}						t_og_sigacts;
+
 typedef struct s_node
 {
 	struct s_node	*prev;
@@ -96,13 +102,14 @@ typedef struct s_node
 
 typedef struct s_shell
 {
-	char		pid[20];
-	char		**env;
-	char		*working_dir;
-	t_node		*nodes;
-	bool		heredoc_aborted;
-	int			last_exit_status;
-	t_exec		exec;
+	char			pid[20];
+	char			**env;
+	char			*working_dir;
+	t_node			*nodes;
+	bool			heredoc_aborted;
+	int				last_exit_status;
+	t_og_sigacts	og_sigacts;
+	t_exec			exec;
 }				t_shell;
 
 /** CORE FUNCTIONS ************************************************************/

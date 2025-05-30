@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:31:38 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/26 17:33:47 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 11:28:31 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@
 void	init_signal_handlers(void)
 {
 	sigaction(SIGINT,
-		&(struct sigaction){.sa_sigaction = sigint_handler}, NULL);
+		&(struct sigaction){.sa_sigaction = sigint_handler},
+		&get_shell()->og_sigacts.sigint);
 	sigaction(SIGPIPE,
 		&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
 	sigaction(SIGQUIT,
-		&(struct sigaction){.sa_handler = SIG_IGN}, NULL);
+		&(struct sigaction){.sa_handler = SIG_IGN},
+		&get_shell()->og_sigacts.sigquit);
 }
 
 /**
@@ -35,11 +37,11 @@ void	init_signal_handlers(void)
 void	set_child_signal_handlers(void)
 {
 	sigaction(SIGINT,
-		&(struct sigaction){.sa_handler = SIG_DFL}, NULL);
+		&get_shell()->og_sigacts.sigint, NULL);
 	sigaction(SIGPIPE,
 		&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
 	sigaction(SIGQUIT,
-		&(struct sigaction){.sa_handler = SIG_DFL}, NULL);
+		&get_shell()->og_sigacts.sigquit, NULL);
 }
 
 /**
@@ -55,6 +57,30 @@ void	set_child_signal_handlers(void)
  * 
  */
 void	sigint_handler(int sig, siginfo_t *info, void *prevact)
+{
+	(void)prevact;
+	(void)info;
+	(void)sig;
+	get_shell()->last_exit_status = EXIT_CMD_ERROR + SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+/**
+ * 
+ * A signal handler for SIGINT -
+ * displays a new prompt and updates the exist status.
+ * 
+ * @param sig     Ignored.
+ * 
+ * @param info    Ignored.
+ * 
+ * @param prevact Ignored.
+ * 
+ */
+void	sigint_child_handler(int sig, siginfo_t *info, void *prevact)
 {
 	(void)prevact;
 	(void)info;
