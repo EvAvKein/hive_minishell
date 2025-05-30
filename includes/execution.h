@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:13:53 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 18:19:07 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 10:51:10 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct s_exec
 {
 	pid_t	pids[MAX_CMDS];
 	int		pid_count;
-	bool	child_process;
 }			t_exec;
 
 typedef struct s_fd
