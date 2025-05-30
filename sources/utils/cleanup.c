@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:53:10 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/29 18:27:14 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 09:51:44 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ void	shell_cleanup(void)
 {
 	free_str_arr(get_shell()->env);
 	get_shell()->env = NULL;
+	if (get_shell()->working_dir)
+	{
+		free(get_shell()->working_dir);
+		get_shell()->working_dir = NULL;
+	}
 	command_cleanup();
 }
 

@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:19:19 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 14:24:31 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/05/30 09:50:28 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@ static int	update_current_wd(t_shell *shell, int i)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (1);
+	if (shell->working_dir)
+		free(shell->working_dir);
+	shell->working_dir = cwd;
 	new_pwd = ft_strjoin("PWD=", cwd);
 	if (!new_pwd)
-	{
-		free(cwd);
 		return (1);
-	}
 	free(shell->env[i]);
 	shell->env[i] = new_pwd;
-	free(cwd);
 	return (0);
 }
 
@@ -55,16 +54,14 @@ static int	update_pwds(t_shell *shell)
 	{
 		if (!ft_strncmp(shell->env[i], "OLDPWD", 6))
 		{
-			if (shell->env[i][7] && shell->env[i][7] != '=')
-				i++;
-			else if (update_oldpwd(shell, i) == 1)
+			if ((!shell->env[i][6] || shell->env[i][6] == '=')
+				&& update_oldpwd(shell, i) != 0)
 				return (1);
 		}
 		if (!ft_strncmp(shell->env[i], "PWD", 3))
 		{
-			if (shell->env[i][4] && shell->env[i][4] != '=')
-				i++;
-			else if (update_current_wd(shell, i) == 1)
+			if ((!shell->env[i][3] || shell->env[i][3] == '=')
+			&& update_current_wd(shell, i) != 0)
 				return (1);
 		}
 		i++;
@@ -99,7 +96,10 @@ int	ms_cd(t_shell *shell)
 	{
 		destination = env_value("HOME");
 		if (!destination)
+		{
+			print_err("cd: ", "HOME not set");
 			return (1);
+		}
 	}
 	else
 		destination = shell->nodes->argv[1];

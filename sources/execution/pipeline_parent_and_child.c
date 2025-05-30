@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_parent_and_child.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:31:26 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 20:55:04 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 10:51:33 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	pipeline_child(t_shell *shell, t_node *command,
 	t_fd *fd, t_node *current)
 {
-	shell->exec.child_process = true;
 	if (fd->prev_fd == -1 || fd->pipe_fd[WRITE] == -1)
 	{
 		fd_cleanup(fd);
@@ -40,8 +39,7 @@ void	pipeline_child(t_shell *shell, t_node *command,
 	fd_cleanup(fd);
 	if (command && command->type == COMMAND)
 		execute_command(shell, command);
-	else
-		shell_cleanup();
+	shell_cleanup();
 }
 
 static void	pipeline_parent(t_fd *fd)

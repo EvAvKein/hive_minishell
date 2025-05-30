@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 08:32:49 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 18:24:05 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/05/30 10:50:50 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	check_flag(t_node *command)
 {
 	int	i;
+	int	k;
 	int	flag;
 
 	i = 0;
@@ -23,9 +24,14 @@ static int	check_flag(t_node *command)
 	{
 		if (command->argv[i][0] == '-' && command->argv[i][1] == 'n')
 		{
+			k = 2;
 			flag++;
-			if (command->argv[i][2] != 'n' && command->argv[i][2] != '\0')
-				flag = 0;
+			while (command->argv[i][k])
+			{
+				if (command->argv[i][k] != 'n' && command->argv[i][k] != '\0')
+					flag = 0;
+				k++;
+			}
 		}
 		i++;
 	}
