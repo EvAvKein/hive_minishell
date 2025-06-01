@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/06/02 09:33:38 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/06/02 09:40:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef enum e_node_type
 	APPENDFILE
 }	t_node_type;
 
-typedef	struct s_og_sigacts
+typedef struct s_og_sigacts
 {
 	struct sigaction	sigint;
 	struct sigaction	sigquit;
