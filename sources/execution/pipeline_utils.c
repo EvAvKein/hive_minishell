@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:08:39 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/30 12:40:19 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/06/02 10:05:34 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	wait_for_all_children_and_clean_fd(t_shell *shell, t_fd *fd)
 	{
 		waitpid(shell->exec.pids[i], &status, 0);
 		if (WIFEXITED(status))
-			shell->last_exit_status = WEXITSTATUS((unsigned char)status);
+			shell->last_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
 			shell->last_exit_status = EXIT_CMD_ERROR
