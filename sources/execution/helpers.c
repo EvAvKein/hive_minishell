@@ -6,11 +6,28 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:21:45 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/29 12:32:38 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/06/02 09:37:23 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*get_env_path(t_node *current)
+{
+	char	*env_path;
+
+	env_path = env_value("PATH");
+	if (!env_path)
+	{
+		env_path = getcwd(NULL, 0);
+		if (!env_path)
+		{
+			print_err(current->argv[0], ": path not found in environment");
+			return (NULL);
+		}
+	}
+	return (env_path);
+}
 
 void	init_structs(t_fd *fd, t_shell *shell)
 {
@@ -30,6 +47,7 @@ bool	arg_is_null(t_node *node)
 	if (node->argv[0][0] == '\0')
 	{
 		print_err(node->argv[0], ": command not found");
+		get_shell()->last_exit_status = EXIT_CMD_NOT_FOUND;
 		return (true);
 	}
 	return (false);
