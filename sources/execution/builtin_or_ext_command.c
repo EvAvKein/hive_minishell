@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/06/02 09:33:13 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/06/02 10:07:29 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	execute_ext_command(t_shell *shell, t_node *current)
 	else
 		path = get_path_from_envp(current);
 	if (!path)
-		shell_exit(127);
+		shell_exit(EXIT_CMD_NOT_FOUND);
 	args = current->argv;
 	current->argv = NULL;
 	tmp_envp = shell->env;
