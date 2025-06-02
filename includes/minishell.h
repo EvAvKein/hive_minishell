@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:14:02 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/30 12:40:10 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/06/02 09:33:38 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,7 @@ void		execution(t_shell *shell);
 void		fatal_error(t_shell *shell, char *msg);
 void		fd_cleanup(t_fd *fd);
 char		*get_pwd_from_env(char **envp);
-char		*get_env(char **envp, char *find);
-int			get_env_elements(char **envp);
+char 		*get_env_path(t_node *current);
 void		handle_infile(t_fd *fd, t_node *current);
 void		init_structs(t_fd *fd, t_shell *shell);
 int			is_builtin(char *cmd);

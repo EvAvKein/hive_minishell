@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:31:12 by ahavu             #+#    #+#             */
-/*   Updated: 2025/05/30 10:52:21 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/06/02 09:33:13 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,7 @@ static char	*get_path_from_envp(t_node *current)
 	char	*ret_path;
 	char	**path_list;
 
-	env_path = env_value("PATH");
-	if (!env_path)
-	{
-		print_err(current->argv[0], ": path not found in environment");
-		return (NULL);
-	}
+	env_path = get_env_path(current);
 	path_list = ft_split(env_path, ':');
 	if (!path_list)
 	{
@@ -61,7 +56,10 @@ static char	*get_path_from_envp(t_node *current)
 	ret_path = iterate_through_path_list(path_list, current);
 	free_str_arr(path_list);
 	if (!ret_path)
+	{
 		print_err(current->argv[0], ": command not found");
+		get_shell()->last_exit_status = EXIT_CMD_NOT_FOUND;
+	}
 	return (ret_path);
 }
 
