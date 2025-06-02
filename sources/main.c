@@ -6,7 +6,7 @@
 /*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:27:53 by ekeinan           #+#    #+#             */
-/*   Updated: 2025/05/30 11:10:32 by ekeinan          ###   ########.fr       */
+/*   Updated: 2025/06/01 15:59:10 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,7 @@ t_shell	*get_shell(void)
 void	init_shell(char **envp)
 {
 	ft_bzero(get_shell(), sizeof(t_shell));
-	sigaction(SIGINT,
-		&(struct sigaction){.sa_sigaction = sigint_handler},
-		&get_shell()->og_sigacts.sigint);
-	sigaction(SIGPIPE,
-		&(struct sigaction){.sa_sigaction = sigpipe_handler}, NULL);
-	sigaction(SIGQUIT,
-		&(struct sigaction){.sa_handler = SIG_IGN},
-		&get_shell()->og_sigacts.sigquit);
+	init_signal_handlers();
 	pid_to_buf(get_shell()->pid);
 	init_env(envp);
 }
