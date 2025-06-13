@@ -32,7 +32,7 @@ This project's about creating a small shell, supporting the following features:
 
 I was also happy to voluntarily implement:
 - A colorful prompt 🌈🌈
-- Current directory as part of the prompt
+- Current-directory path as part of the prompt
 - Shell-level (`SHLVL`) environment variable incrementation: String-based, so it can go beyond the size of the largest supported integer value!
 - Optional through compiling with `make more`:
   - Visualization of the linked-list output from parsing
