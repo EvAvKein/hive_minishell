@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: ekeinan <ekeinan@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 09:06:42 by ahavu             #+#    #+#             */
-/*   Updated: 2025/06/02 09:58:43 by ahavu            ###   ########.fr       */
+/*   Updated: 2025/06/17 13:58:45 by ekeinan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ static int	ready_to_execute(t_node *current)
 int	execute(t_node *command, t_node *out, t_fd *fd, t_node *current)
 {
 	pid_t	pid;
-	t_shell	*shell;
 
-	shell = get_shell();
 	if (current)
 	{
 		if (pipe(fd->pipe_fd) == -1)
